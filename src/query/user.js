@@ -4,8 +4,10 @@ export const GET_ALL_USER = gql`
   query {
     getAllUsers {
       id
-      username
-      age
+      date
+      place
+      title
+      descr
     }
   }
 `;

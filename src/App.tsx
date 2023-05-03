@@ -4,7 +4,6 @@ import { GET_ALL_USER, GET_ONE_USER } from './query/user';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER } from './mutations/user';
 import { HeaderMegaMenu } from './components/Hedaer/HeaderMegaMenu';
-// import { MantineProvider } from '@mantine/core';
 import { SegmentedToggle } from './components/SegmentedToggle';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { TableReviews } from './components/Table/TableReviews';

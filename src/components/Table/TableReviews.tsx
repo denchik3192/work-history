@@ -25,22 +25,18 @@ interface TableReviewsProps {
     place: String;
     title: String;
     descr: String;
-
-    // year: number;
-    // reviews: { positive: number; negative: number };
   }[];
 }
 
 export function TableReviews({ data }: TableReviewsProps) {
-  const { classes, theme } = useStyles();
-
   const rows = data.map((row) => {
-    // const totalReviews = row.reviews.negative + row.reviews.positive;
-    // const positiveReviews = (row.reviews.positive / totalReviews) * 100;
-    // const negativeReviews = (row.reviews.negative / totalReviews) * 100;
-
     return (
       <tr key={row.id}>
+        <td>
+          <Anchor component="button" fz="sm">
+            {row.id}
+          </Anchor>
+        </td>
         <td>
           <Anchor component="button" fz="sm">
             {row.date}
@@ -56,30 +52,6 @@ export function TableReviews({ data }: TableReviewsProps) {
           <Anchor component="button" fz="sm">
             {row.descr}
           </Anchor>
-        </td>
-        {/* <td>{Intl.NumberFormat().format(totalReviews)}</td> */}
-        <td>
-          <Group position="apart">
-            <Text fz="xs" c="teal" weight={700}>
-              {/* {positiveReviews.toFixed(0)}% */}
-            </Text>
-            <Text fz="xs" c="red" weight={700}>
-              {/* {negativeReviews.toFixed(0)}% */}
-            </Text>
-          </Group>
-          <Progress
-            classNames={{ bar: classes.progressBar }}
-            // sections={[
-            //   {
-            //     value: positiveReviews,
-            //     color: theme.colorScheme === 'dark' ? theme.colors.teal[9] : theme.colors.teal[6],
-            //   },
-            //   {
-            //     value: negativeReviews,
-            //     color: theme.colorScheme === 'dark' ? theme.colors.red[9] : theme.colors.red[6],
-            //   },
-            // ]}
-          />
         </td>
       </tr>
     );

@@ -150,7 +150,7 @@ export function HeaderMegaMenu() {
     <Box pb={120}>
       <Header height={60} px="md">
         <Group position="apart" sx={{ height: '100%' }}>
-          <MantineLogo size={30} />
+          {/* <MantineLogo size={30} /> */}
 
           <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
             <a href="#" className={classes.link}>
