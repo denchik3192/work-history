@@ -34,15 +34,15 @@ export function TableReviews({ data }: TableReviewsProps) {
   });
 
   return (
-    <ScrollArea>
+    <ScrollArea style={{ width: '100%' }}>
       <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
         <thead>
           <tr style={{ textAlign: 'center' }}>
             <th style={{ textAlign: 'center' }}>№</th>
-            <th style={{ textAlign: 'center' }}>Date</th>
-            <th style={{ textAlign: 'center' }}>place</th>
-            <th style={{ textAlign: 'center' }}>title</th>
-            <th style={{ textAlign: 'center' }}>descr</th>
+            <th style={{ textAlign: 'center' }}>Date/Time</th>
+            <th style={{ textAlign: 'center' }}>Place</th>
+            <th style={{ textAlign: 'center' }}>Title</th>
+            <th style={{ textAlign: 'center' }}>Descr</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

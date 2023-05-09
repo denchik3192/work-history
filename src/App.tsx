@@ -3,10 +3,13 @@ import './App.css';
 import { GET_ALL_USER, GET_ONE_USER } from './query/user';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER } from './mutations/user';
-import { HeaderMegaMenu } from './components/Hedaer/HeaderMegaMenu';
-import { SegmentedToggle } from './components/SegmentedToggle';
-import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
+import { MantineProvider, Flex, MultiSelect, Group, Button } from '@mantine/core';
 import { TableReviews } from './components/Table/TableReviews';
+import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
+import { DateTimePicker } from '@mantine/dates';
+import { workSubject, workTitle, workplace } from './db/db';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 type User = {
   id: number;
@@ -68,18 +71,64 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
-        <HeaderMegaMenu />
-        {/* <SegmentedToggle /> */}
-        <TableReviews data={users} />
+        <Flex>
+          <NavbarSegmented />
 
-        <form>
-          <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
-          <input value={age} onChange={(e) => setAge(e.target.value)} type="number" />
-          <div className="buttons">
-            <button onClick={(e) => addUser(e)}>Создать</button>
-            <button onClick={(e) => getAllUsers(e)}>Получать</button>
+          <div style={{ width: '100%' }}>
+            <TableReviews data={users} />
+            <MultiSelect maw={400} data={workplace} placeholder="Pick all workplace" clearable />
+            <MultiSelect data={workTitle} maw={400} placeholder="Pick work title" clearable />
+            <MultiSelect
+              data={workSubject}
+              maw={400}
+              placeholder="Pick all work subject "
+              clearable
+            />
+            <form>
+              <DateTimePicker
+                label="Pick date and time"
+                placeholder="Pick date and time"
+                maw={400}
+                mx="auto"
+                clearable
+              />
+              <Group position="center">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    notifications.show({
+                      id: 'load-data',
+                      loading: true,
+                      title: 'Loading your data',
+                      message: 'Data will be loaded in 1 seconds, you cannot close this yet',
+                      autoClose: false,
+                      withCloseButton: false,
+                    });
+
+                    setTimeout(() => {
+                      notifications.update({
+                        id: 'load-data',
+                        color: 'teal',
+                        title: 'Data was loaded',
+                        message:
+                          'Notification will close in 1 seconds, you can close this notification now',
+                        icon: <IconCheck size="1rem" />,
+                        autoClose: 1000,
+                      });
+                    }, 1500);
+                  }}>
+                  Show update notification
+                </Button>
+              </Group>
+              <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
+              <input value={age} onChange={(e) => setAge(e.target.value)} type="number" />
+              <div className="buttons">
+                <button onClick={(e) => addUser(e)}>Создать</button>
+                <button onClick={(e) => getAllUsers(e)}>Получать</button>
+              </div>
+            </form>
           </div>
-        </form>
+        </Flex>
 
         {users.map((u: User) => (
           <div className="user" key={u.id}>
