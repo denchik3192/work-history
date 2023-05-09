@@ -90,7 +90,8 @@ const Home: React.FC = () => {
         />
         <Group position="center">
           <Button
-            // variant="outline"
+            w={'100%'}
+            disabled
             onClick={() => {
               notifications.show({
                 id: 'load-data',
