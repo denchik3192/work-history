@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Navbar, SegmentedControl, Text, createStyles, getStylesRef, rem } from '@mantine/core';
 import {
   IconShoppingCart,
@@ -17,7 +18,13 @@ import {
   IconReceiptRefund,
   IconLogout,
   IconSwitchHorizontal,
+  IconHome,
+  IconSettingsAutomation,
+  IconReport,
 } from '@tabler/icons-react';
+import { IconSettings2 } from '@tabler/icons-react';
+import { IconSettingsBolt } from '@tabler/icons-react';
+import { Logo } from './Logo';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -76,23 +83,15 @@ const useStyles = createStyles((theme) => ({
 
 const tabs = {
   account: [
+    { link: '/', label: 'Home', icon: IconHome },
     { link: '/dashboard', label: 'Dashboard', icon: IconDatabaseImport },
-    { link: '', label: 'Notifications', icon: IconBellRinging },
+    { link: '/security', label: 'Security', icon: IconFingerprint },
+    { link: '/settings', label: 'Settings', icon: IconSettings },
     // { link: '', label: 'Billing', icon: IconReceipt2 },
-    { link: '', label: 'Security', icon: IconFingerprint },
     // { link: '', label: 'SSH Keys', icon: IconKey },
-    { link: '', label: 'Authentication', icon: Icon2fa },
-    { link: '', label: 'Other Settings', icon: IconSettings },
+    // { link: '', label: 'Authentication', icon: Icon2fa },
   ],
-  general: [
-    { link: '', label: 'Orders', icon: IconShoppingCart },
-    { link: '', label: 'Receipts', icon: IconLicense },
-    { link: '', label: 'Reviews', icon: IconMessage2 },
-    { link: '', label: 'Messages', icon: IconMessages },
-    { link: '', label: 'Customers', icon: IconUsers },
-    { link: '', label: 'Refunds', icon: IconReceiptRefund },
-    { link: '', label: 'Files', icon: IconFileAnalytics },
-  ],
+  general: [{ link: '/oracle', label: 'Oracle reports', icon: IconReport }],
 };
 
 export function NavbarSegmented() {
@@ -101,24 +100,24 @@ export function NavbarSegmented() {
   const [active, setActive] = useState('Billing');
 
   const links = tabs[section].map((item) => (
-    <a
+    <Link
       className={cx(classes.link, { [classes.linkActive]: item.label === active })}
-      href={item.link}
+      to={item.link}
       key={item.label}
       onClick={(event) => {
-        event.preventDefault();
+        // event.preventDefault();
         setActive(item.label);
       }}>
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </a>
+    </Link>
   ));
 
   return (
-    <Navbar height={840} width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar height={'100vh'} width={{ sm: 250 }} p="md" className={classes.navbar}>
       <Navbar.Section>
         <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-          Diary
+          <Logo /> Diary
         </Text>
 
         <SegmentedControl
@@ -138,15 +137,15 @@ export function NavbarSegmented() {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+        <Link to="#" className={classes.link} onClick={(event) => event.preventDefault()}>
           <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
           <span>Change account</span>
-        </a>
+        </Link>
 
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+        <Link to="#" className={classes.link} onClick={(event) => event.preventDefault()}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>Logout</span>
-        </a>
+        </Link>
       </Navbar.Section>
     </Navbar>
   );

@@ -1,4 +1,12 @@
-import { createStyles, Table, Progress, Anchor, Text, Group, ScrollArea, rem } from '@mantine/core';
+import {
+  createStyles,
+  Table,
+  ScrollArea,
+  rem,
+  Select,
+  SegmentedControl,
+  Pagination,
+} from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -34,19 +42,29 @@ export function TableReviews({ data }: TableReviewsProps) {
   });
 
   return (
-    <ScrollArea style={{ width: '100%' }}>
-      <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
-        <thead>
-          <tr style={{ textAlign: 'center' }}>
-            <th style={{ textAlign: 'center' }}>№</th>
-            <th style={{ textAlign: 'center' }}>Date/Time</th>
-            <th style={{ textAlign: 'center' }}>Place</th>
-            <th style={{ textAlign: 'center' }}>Title</th>
-            <th style={{ textAlign: 'center' }}>Descr</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </Table>
-    </ScrollArea>
+    <>
+      <ScrollArea style={{ width: '100%', marginTop: '70px' }}>
+        <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
+          <thead>
+            <tr style={{ textAlign: 'center' }}>
+              <th style={{ textAlign: 'center' }}>№</th>
+              <th style={{ textAlign: 'center' }}>Date/Time</th>
+              <th style={{ textAlign: 'center' }}>Place</th>
+              <th style={{ textAlign: 'center' }}>Title</th>
+              <th style={{ textAlign: 'center' }}>Descr</th>
+            </tr>
+          </thead>
+          <tbody>{rows}</tbody>
+        </Table>
+        <Select data={['Date', 'Workplace']} clearable />
+        <SegmentedControl
+          radius="0"
+          size="md"
+          data={['МГРЭС', 'МСРЭС', 'ОДС', 'Быхов', 'Белыничи']}
+          // classNames={classes}
+        />
+        <Pagination total={10} />
+      </ScrollArea>
+    </>
   );
 }
