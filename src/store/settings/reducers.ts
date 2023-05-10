@@ -27,7 +27,7 @@ export default function settingsReducer(state = initialState, action: any) {
     case SET_SORT_BY: {
       return {
         ...state,
-        dashboardSettings: [...state.dashboardSettings.sortBy, ...action.payload],
+        dashboardSettings: action.payload,
       };
     }
     default:

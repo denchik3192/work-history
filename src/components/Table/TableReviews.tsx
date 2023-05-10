@@ -9,6 +9,7 @@ import {
 } from '@mantine/core';
 import { setSortBy } from '../../store/settings/actions';
 import { useAppDispatch } from '../../store/store';
+import { useSelector } from 'react-redux';
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -32,6 +33,9 @@ interface TableReviewsProps {
 
 export function TableReviews({ data }: TableReviewsProps) {
   const dispatch = useAppDispatch();
+  const sortBy = useSelector((state: any) => state.settings.dashboardSettings.sortBy);
+  console.log(sortBy);
+
   const rows = data.map((row) => {
     return (
       <tr key={row.id}>
@@ -59,7 +63,12 @@ export function TableReviews({ data }: TableReviewsProps) {
           </thead>
           <tbody>{rows}</tbody>
         </Table>
-        <Select data={['Date', 'Workplace']} clearable onChange={(e) => dispatch(setSortBy(e))} />
+        <Select
+          data={['Date', 'Workplace']}
+          clearable
+          // defaultValue={sortBy}
+          onChange={(e) => dispatch(setSortBy(e))}
+        />
         <SegmentedControl
           radius="0"
           size="md"
