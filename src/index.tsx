@@ -7,6 +7,8 @@ import { Notifications } from '@mantine/notifications';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
 
 const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql',
@@ -16,12 +18,14 @@ const client = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <Router>
-      <ApolloProvider client={client}>
-        <Notifications />
-        <App />
-      </ApolloProvider>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <ApolloProvider client={client}>
+          <Notifications />
+          <App />
+        </ApolloProvider>
+      </Router>
+    </Provider>
   </React.StrictMode>,
 );
 

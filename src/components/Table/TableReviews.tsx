@@ -7,6 +7,8 @@ import {
   SegmentedControl,
   Pagination,
 } from '@mantine/core';
+import { setSortBy } from '../../store/settings/actions';
+import { useAppDispatch } from '../../store/store';
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -29,6 +31,7 @@ interface TableReviewsProps {
 }
 
 export function TableReviews({ data }: TableReviewsProps) {
+  const dispatch = useAppDispatch();
   const rows = data.map((row) => {
     return (
       <tr key={row.id}>
@@ -56,7 +59,7 @@ export function TableReviews({ data }: TableReviewsProps) {
           </thead>
           <tbody>{rows}</tbody>
         </Table>
-        <Select data={['Date', 'Workplace']} clearable />
+        <Select data={['Date', 'Workplace']} clearable onChange={(e) => dispatch(setSortBy(e))} />
         <SegmentedControl
           radius="0"
           size="md"

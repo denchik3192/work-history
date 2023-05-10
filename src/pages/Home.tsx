@@ -1,7 +1,7 @@
-import { Box, Button, Center, Group, MultiSelect, Textarea } from '@mantine/core';
+import { Box, Button, Flex, Group, MultiSelect, Radio, Textarea } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import React from 'react';
-import { workSubject, workTitle, workplace } from '../db/db';
+import React, { useState } from 'react';
+import { workTitle, workplace } from '../db/db';
 import { DateTimePicker } from '@mantine/dates';
 import { IconCheck } from '@tabler/icons-react';
 import { createStyles, SegmentedControl, rem } from '@mantine/core';
@@ -14,7 +14,8 @@ const useStyles = createStyles((theme) => ({
     border: `${rem(1)} solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]
     }`,
-    margin: '20px auto',
+    margin: '10px auto',
+    width: '100%',
   },
 
   indicator: {
@@ -36,88 +37,97 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Home: React.FC = () => {
-  //   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { classes } = useStyles();
+  const [value, setValue] = useState('react');
+
   return (
     <Box w={'100%'} style={{ margin: '70px 20px 20px 20px' }}>
-      {/* <Center></Center> */}
-      <Group position="left">
+      <Group>
         <Calendar />
       </Group>
 
-      <form>
-        <MultiSelect
-          maw={400}
-          data={workplace}
-          placeholder="Pick all workplace"
-          clearable
-          style={{ marginBottom: '10px', margin: '20px auto' }}
-        />{' '}
-        <MultiSelect
-          data={workTitle}
-          maw={400}
-          placeholder="Pick work title"
-          clearable
-          style={{ marginBottom: '10px', margin: '20px auto' }}
-        />
-        <MultiSelect
-          data={workSubject}
-          maw={400}
-          placeholder="Pick all work subject "
-          clearable
-          style={{ marginBottom: '10px', margin: '20px auto' }}
-        />
-        <DateTimePicker
-          label="Pick date and time"
-          placeholder="Pick date and time"
-          maw={400}
-          mx="auto"
-          clearable
-        />
-        <SegmentedControl
-          radius="0"
-          size="md"
-          data={['All', 'AI/ML', 'C++', 'Rust', 'TypeScript']}
-          classNames={classes}
-          //   style={{ marginBottom: '10px', margin: '20px auto' }}
-        />
-        <Textarea
-          placeholder="Your comment"
-          label="Your comment"
-          withAsterisk
-          maw={400}
-          style={{ marginBottom: '10px', margin: '20px auto' }}
-        />
-        <Group position="center">
-          <Button
-            w={'100%'}
-            disabled
-            onClick={() => {
-              notifications.show({
-                id: 'load-data',
-                loading: true,
-                title: 'Loading your data',
-                message: 'Data will be loaded in 1 seconds, you cannot close this yet',
-                autoClose: false,
-                withCloseButton: false,
-              });
+      <Group position="apart">
+        <form>
+          <Box>
+            <SegmentedControl
+              radius="0"
+              maw={500}
+              data={['МУРС', 'Диполь', 'ТМ-2000', 'DMS', 'MDB', 'OPC']}
+              classNames={classes}
+            />
+            <MultiSelect
+              maw={500}
+              data={workplace}
+              placeholder="Pick all workplace"
+              clearable
+              style={{ marginBottom: '10px', margin: '20px auto' }}
+            />
+            <MultiSelect
+              data={workTitle}
+              maw={500}
+              placeholder="Pick work title"
+              clearable
+              style={{ marginBottom: '10px', margin: '20px auto' }}
+            />
+            <DateTimePicker placeholder="Pick date and time" maw={600} mx="auto" clearable />
+          </Box>
+          <Box w={'100%'}>
+            <Radio.Group
+              value={value}
+              onChange={setValue}
+              name="substation type"
+              label="Select substation type"
+              // description="This is anonymous"
+              // withAsterisk
+            >
+              <Flex>
+                {' '}
+                <Radio value="ТП" label="ТП" color="indigo" />
+                <Radio value="КТП" label="КТП" color="indigo" />
+                <Radio value="ЗТП" label="ЗТП" color="indigo" />
+                <Radio value="МТП" label="МТП" color="indigo" />
+              </Flex>
+            </Radio.Group>
+            <Textarea
+              placeholder="Comment"
+              label="Comment"
+              withAsterisk
+              style={{ marginBottom: '10px', margin: '20px auto' }}
+            />
+          </Box>
+        </form>
+      </Group>
 
-              setTimeout(() => {
-                notifications.update({
-                  id: 'load-data',
-                  color: 'teal',
-                  title: 'Data was loaded',
-                  message:
-                    'Notification will close in 1 seconds, you can close this notification now',
-                  icon: <IconCheck size="1rem" />,
-                  autoClose: 1000,
-                });
-              }, 1500);
-            }}>
-            Apply
-          </Button>
-        </Group>
-        {/* <Group position="center" my="xl">
+      <Group position="center">
+        <Button
+          w={'100%'}
+          // disabled
+          onClick={() => {
+            notifications.show({
+              id: 'load-data',
+              loading: true,
+              title: 'Loading your data',
+              message: 'Data will be loaded in 1 seconds, you cannot close this yet',
+              autoClose: false,
+              withCloseButton: false,
+            });
+
+            setTimeout(() => {
+              notifications.update({
+                id: 'load-data',
+                color: 'teal',
+                title: 'Data was loaded',
+                message:
+                  'Notification will close in 1 seconds, you can close this notification now',
+                icon: <IconCheck size="1rem" />,
+                autoClose: 1000,
+              });
+            }, 1500);
+          }}>
+          Apply
+        </Button>
+      </Group>
+      {/* <Group position="center" my="xl">
           <ActionIcon
             onClick={() => toggleColorScheme()}
             size="lg"
@@ -129,13 +139,12 @@ const Home: React.FC = () => {
             {colorScheme === 'dark' ? <IconSun size="1.2rem" /> : <IconMoonStars size="1.2rem" />}
           </ActionIcon>
         </Group> */}
-        {/* <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
+      {/* <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
         <input value={age} onChange={(e) => setAge(e.target.value)} type="number" />
         <div className="buttons">
           <button onClick={(e) => addUser(e)}>Создать</button>
           <button onClick={(e) => getAllUsers(e)}>Получать</button>
         </div> */}
-      </form>
     </Box>
   );
 };

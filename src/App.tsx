@@ -3,24 +3,13 @@ import './App.css';
 import { GET_ALL_USER, GET_ONE_USER } from './query/user';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER } from './mutations/user';
-import {
-  MantineProvider,
-  Flex,
-  MultiSelect,
-  Group,
-  Button,
-  ColorSchemeProvider,
-} from '@mantine/core';
-import { TableReviews } from './components/Table/TableReviews';
+import { MantineProvider, Flex } from '@mantine/core';
 import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
-import { DateTimePicker } from '@mantine/dates';
-import { workSubject, workTitle, workplace } from './db/db';
-import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Settings from './pages/Settings';
 import Table from './pages/Table';
 import Home from './pages/Home';
+import Security from './pages/Security';
 
 type User = {
   id: number;
@@ -86,16 +75,11 @@ const App: React.FC = () => {
           <NavbarSegmented />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/settings" element={<Settings />} />
             <Route path="/dashboard" element={<Table />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         </Flex>
-
-        {/* {users.map((u: User) => (
-          <div className="user" key={u.id}>
-            {u.username} {u.age}
-          </div>
-        ))} */}
       </MantineProvider>
     </div>
   );
