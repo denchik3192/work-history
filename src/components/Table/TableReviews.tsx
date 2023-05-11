@@ -6,6 +6,9 @@ import {
   Select,
   SegmentedControl,
   Pagination,
+  Progress,
+  RingProgress,
+  Text,
 } from '@mantine/core';
 import { setSortBy } from '../../store/settings/actions';
 import { useAppDispatch } from '../../store/store';
@@ -27,6 +30,7 @@ interface TableReviewsProps {
     date: String;
     place: String;
     title: String;
+    subject: String;
     descr: String;
   }[];
 }
@@ -34,6 +38,7 @@ interface TableReviewsProps {
 export function TableReviews({ data }: TableReviewsProps) {
   const dispatch = useAppDispatch();
   const sortBy = useSelector((state: any) => state.settings.dashboardSettings.sortBy);
+
   console.log(sortBy);
 
   const rows = data.map((row) => {
@@ -43,6 +48,7 @@ export function TableReviews({ data }: TableReviewsProps) {
         <td>{row.date}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
+        <td>{row.subject}</td>
         <td>{row.descr}</td>
       </tr>
     );
@@ -58,23 +64,68 @@ export function TableReviews({ data }: TableReviewsProps) {
               <th style={{ textAlign: 'center' }}>Date/Time</th>
               <th style={{ textAlign: 'center' }}>Place</th>
               <th style={{ textAlign: 'center' }}>Title</th>
+              <th style={{ textAlign: 'center' }}>Subject</th>
               <th style={{ textAlign: 'center' }}>Descr</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
         </Table>
+        <RingProgress
+          sections={[{ value: 3, color: 'teal' }]}
+          label={
+            <Text color="blue" weight={700} align="center" size="xl">
+              3 rec
+            </Text>
+          }
+        />
+        <RingProgress
+          size={170}
+          thickness={16}
+          label={
+            <Text size="xs" align="center" px="xs" sx={{ pointerEvents: 'none' }}>
+              Hover sections to see tooltips
+            </Text>
+          }
+          sections={[
+            { value: 40, color: 'cyan', tooltip: 'Documents – 40 Gb' },
+            { value: 25, color: 'orange', tooltip: 'Apps – 25 Gb' },
+            { value: 15, color: 'grape', tooltip: 'Other – 15 Gb' },
+          ]}
+        />
+        <Progress
+          mt="md"
+          size="xl"
+          radius="sm"
+          sections={[
+            { value: 60, color: 'grape', label: 'МСРЭС' },
+            { value: 40, color: 'violet', label: 'МГРЭС' },
+          ]}
+        />
         <Select
           data={['Date', 'Workplace']}
           clearable
           // defaultValue={sortBy}
           onChange={(e) => dispatch(setSortBy(e))}
         />
+
         <SegmentedControl
           radius="0"
           size="md"
-          data={['МГРЭС', 'МСРЭС', 'ОДС', 'Быхов', 'Белыничи']}
+          data={[
+            'МГРЭС',
+            'МСРЭС',
+            'ОДС',
+            'Быхов',
+            'Белыничи',
+            'Чаусы',
+            'Круглое',
+            'Дрибин',
+            'Горки',
+            'Шклов',
+          ]}
           // classNames={classes}
         />
+
         <Pagination total={10} />
       </ScrollArea>
     </>

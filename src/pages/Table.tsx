@@ -3,6 +3,8 @@ import { TableReviews } from '../components/Table/TableReviews';
 import { useMutation, useQuery } from '@apollo/client';
 import { CREATE_USER } from '../mutations/user';
 import { GET_ALL_USER, GET_ONE_USER } from '../query/user';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 type User = {
   id: number;
@@ -15,14 +17,16 @@ type M = React.MouseEvent<HTMLBodyElement> & {
 };
 
 const Table: React.FC = () => {
-  const { data, loading, error, refetch } = useQuery(GET_ALL_USER);
-  const { data: oneUser, loading: loadingOneUser } = useQuery(GET_ONE_USER, {
-    variables: {
-      id: 2,
-    },
-  });
+  // const { data, loading, error, refetch } = useQuery(GET_ALL_USER);
+  // const { data: oneUser, loading: loadingOneUser } = useQuery(GET_ONE_USER, {
+  //   variables: {
+  //     id: 2,
+  //   },
+  // });
 
-  console.log(oneUser);
+  const history = useSelector((state: RootState) => state.history);
+
+  // console.log(oneUser);
 
   const [newUser] = useMutation(CREATE_USER);
   const [users, setUsers] = useState([]);
@@ -44,24 +48,22 @@ const Table: React.FC = () => {
       setAge('0');
     });
   };
-  const getAllUsers = (e: any) => {
-    e.preventDefault();
-    refetch();
-  };
+  // const getAllUsers = (e: any) => {
+  //   e.preventDefault();
+  //   refetch();
+  // };
 
-  useEffect(() => {
-    if (!loading) {
-      setUsers(data.getAllUsers);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     setUsers(data.getAllUsers);
+  //   }
+  // }, [data]);
 
-  if (loading) {
-    return <div>...loading</div>;
-  }
+  // if (loading) {
+  //   return <div>...loading</div>;
+  // }
 
-  console.log(users);
-
-  return <TableReviews data={users} />;
+  return <TableReviews data={history} />;
 };
 
 export default Table;
