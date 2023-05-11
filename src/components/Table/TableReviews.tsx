@@ -56,7 +56,15 @@ export function TableReviews({ data }: TableReviewsProps) {
 
   return (
     <>
-      <ScrollArea style={{ width: '100%', marginTop: '70px' }}>
+      <ScrollArea style={{ width: '100%', marginTop: '0px' }}>
+        <RingProgress
+          sections={[{ value: 3, color: 'teal' }]}
+          label={
+            <Text color="blue" weight={500} align="center" size="l">
+              3 rec-s
+            </Text>
+          }
+        />
         <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
           <thead>
             <tr style={{ textAlign: 'center' }}>
@@ -70,15 +78,8 @@ export function TableReviews({ data }: TableReviewsProps) {
           </thead>
           <tbody>{rows}</tbody>
         </Table>
-        <RingProgress
-          sections={[{ value: 3, color: 'teal' }]}
-          label={
-            <Text color="blue" weight={700} align="center" size="xl">
-              3 rec
-            </Text>
-          }
-        />
-        <RingProgress
+
+        {/* <RingProgress
           size={170}
           thickness={16}
           label={
@@ -91,7 +92,7 @@ export function TableReviews({ data }: TableReviewsProps) {
             { value: 25, color: 'orange', tooltip: 'Apps – 25 Gb' },
             { value: 15, color: 'grape', tooltip: 'Other – 15 Gb' },
           ]}
-        />
+        /> */}
         <Progress
           mt="md"
           size="xl"
@@ -125,9 +126,8 @@ export function TableReviews({ data }: TableReviewsProps) {
           ]}
           // classNames={classes}
         />
-
-        <Pagination total={10} />
       </ScrollArea>
+      <Pagination total={10} style={{ position: 'absolute', left: '20%', bottom: '1%' }} />
     </>
   );
 }
