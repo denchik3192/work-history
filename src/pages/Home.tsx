@@ -1,35 +1,47 @@
-import { Box, Button, Flex, Group, MultiSelect, Radio, Textarea } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import React, { useState } from 'react';
-import { workTitle, workplace } from '../db/db';
-import { DateTimePicker } from '@mantine/dates';
-import { IconCheck } from '@tabler/icons-react';
-import { createStyles, SegmentedControl, rem } from '@mantine/core';
-import { Calendar } from '@mantine/dates';
+import {
+  Box,
+  Button,
+  Flex,
+  Group,
+  MultiSelect,
+  Radio,
+  Textarea,
+} from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import React, { useEffect, useState } from "react";
+import { workTitle, workplace } from "../db/db";
+import { DateTimePicker } from "@mantine/dates";
+import { IconCheck } from "@tabler/icons-react";
+import { createStyles, SegmentedControl, rem } from "@mantine/core";
+import { Calendar } from "@mantine/dates";
+import { useAppDispatch } from "../store/store";
+import { addNewRecord } from "../store/history/actions";
+import { log } from "util";
 
 const useStyles = createStyles((theme) => ({
   root: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
     boxShadow: theme.shadows.md,
     border: `${rem(1)} solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]
+      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[1]
     }`,
-    margin: '10px auto',
-    width: '100%',
+    margin: "10px auto",
+    width: "100%",
   },
 
   indicator: {
-    backgroundImage: theme.fn.gradient({ from: 'pink', to: 'orange' }),
+    backgroundImage: theme.fn.gradient({ from: "pink", to: "orange" }),
     // marginBottom: '10px',
   },
 
   control: {
-    border: '0 !important',
+    border: "0 !important",
   },
 
   label: {
-    '&, &:hover': {
-      '&[data-active]': {
+    "&, &:hover": {
+      "&[data-active]": {
         color: theme.white,
       },
     },
@@ -37,14 +49,28 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { classes } = useStyles();
-  const [value, setValue] = useState('react');
+  const [value, setValue] = useState("react");
+  const [workPlaceValue, setWorkplaceValue] = useState(["МГРЭС"]);
+  const [workTitleValue, setWorkTitleValue] = useState(["Обновление ПО"]);
+  const [commentValue, setCommentValue] = useState("");
+  const [workSubjectValue, setWorkSubjectValue] = useState("МУРС");
+  const [dateValue, setDateValue] = useState("");
+
+  useEffect(() => {
+    const getFullDate = () => {
+      const date = new Date().toISOString().slice(0, 10);
+      const time = new Date().toISOString().slice(11, 16)
+      setDateValue(date + '/' + time);
+      
+    };
+    getFullDate();
+  }, []);
 
   return (
-    <Box w={'100%'} style={{ margin: '70px 20px 20px 20px' }}>
-      <Group>
-        <Calendar />
-      </Group>
+    <Box w={"100%"} style={{ margin: "70px 20px 20px 20px" }}>
+      <Group>{/* <Calendar /> */}</Group>
 
       <Group position="apart">
         <form>
@@ -52,26 +78,39 @@ const Home: React.FC = () => {
             <SegmentedControl
               radius="0"
               maw={500}
-              data={['МУРС', 'Диполь', 'ТМ-2000', 'DMS', 'MDB', 'OPC']}
+              data={["МУРС", "Диполь", "ТМ-2000", "DMS", "MBS", "OPC"]}
               classNames={classes}
+              value={workSubjectValue}
+              onChange={(e) => setWorkSubjectValue(e)}
             />
             <MultiSelect
               maw={500}
               data={workplace}
               placeholder="Pick all workplace"
               clearable
-              style={{ marginBottom: '10px', margin: '20px auto' }}
+              style={{ marginBottom: "10px", margin: "20px auto" }}
+              value={workPlaceValue}
+              onChange={(e) => setWorkplaceValue(e)}
             />
             <MultiSelect
               data={workTitle}
               maw={500}
               placeholder="Pick work title"
               clearable
-              style={{ marginBottom: '10px', margin: '20px auto' }}
+              style={{ marginBottom: "10px", margin: "20px auto" }}
+              value={workTitleValue}
+              onChange={(e) => setWorkTitleValue(e)}
             />
-            <DateTimePicker placeholder="Pick date and time" maw={600} mx="auto" clearable />
+            <DateTimePicker
+              placeholder="Pick date and time"
+              maw={600}
+              mx="auto"
+              clearable
+              // renderDay={true}
+              value={new Date()}
+            />
           </Box>
-          <Box w={'100%'}>
+          <Box w={"100%"}>
             <Radio.Group
               value={value}
               onChange={setValue}
@@ -81,18 +120,21 @@ const Home: React.FC = () => {
               // withAsterisk
             >
               <Flex>
-                {' '}
+                {" "}
                 <Radio value="ТП" label="ТП" color="indigo" />
                 <Radio value="КТП" label="КТП" color="indigo" />
                 <Radio value="ЗТП" label="ЗТП" color="indigo" />
                 <Radio value="МТП" label="МТП" color="indigo" />
+                <Radio value="КТПБ" label="КТПБ" color="indigo" />
               </Flex>
             </Radio.Group>
             <Textarea
               placeholder="Comment"
               label="Comment"
               withAsterisk
-              style={{ marginBottom: '10px', margin: '20px auto' }}
+              value={commentValue}
+              onChange={(e) => setCommentValue(e.target.value)}
+              style={{ marginBottom: "10px", margin: "20px auto" }}
             />
           </Box>
         </form>
@@ -100,30 +142,41 @@ const Home: React.FC = () => {
 
       <Group position="center">
         <Button
-          w={'100%'}
+          w={"100%"}
           // disabled
           onClick={() => {
             notifications.show({
-              id: 'load-data',
+              id: "load-data",
               loading: true,
-              title: 'Loading your data',
-              message: 'Data will be loaded in 1 seconds, you cannot close this yet',
+              title: "Loading your data",
+              message:
+                "Data will be loaded in 1 seconds, you cannot close this yet",
               autoClose: false,
               withCloseButton: false,
             });
 
             setTimeout(() => {
               notifications.update({
-                id: 'load-data',
-                color: 'teal',
-                title: 'Data was loaded',
+                id: "load-data",
+                color: "teal",
+                title: "Data was loaded",
                 message:
-                  'Notification will close in 1 seconds, you can close this notification now',
+                  "Notification will close in 1 seconds, you can close this notification now",
                 icon: <IconCheck size="1rem" />,
                 autoClose: 1000,
               });
             }, 1500);
-          }}>
+            dispatch(
+              addNewRecord({
+                workPlaceValue,
+                workSubjectValue,
+                workTitleValue,
+                commentValue,
+                dateValue,
+              })
+            );
+          }}
+        >
           Apply
         </Button>
       </Group>
