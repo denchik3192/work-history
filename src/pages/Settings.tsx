@@ -1,9 +1,9 @@
 import React from 'react';
-import { ColorInput } from '@mantine/core';
+import { Box, ColorInput } from '@mantine/core';
 
 function Settings() {
   return (
-    <div>
+    <Box>
       <ColorInput
         format="hex"
         swatches={[
@@ -23,7 +23,7 @@ function Settings() {
           '#fd7e14',
         ]}
       />
-    </div>
+    </Box>
   );
 }
 

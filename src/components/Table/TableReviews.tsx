@@ -113,6 +113,7 @@ export function TableReviews({ data }: TableReviewsProps) {
           radius="0"
           size="md"
           data={[
+            'Все',
             'МГРЭС',
             'МСРЭС',
             'ОДС',

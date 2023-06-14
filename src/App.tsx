@@ -10,6 +10,7 @@ import Settings from './pages/Settings';
 import Table from './pages/Table';
 import Home from './pages/Home';
 import Security from './pages/Security';
+import { Box } from '@mantine/core';
 
 type User = {
   id: number;
@@ -36,35 +37,35 @@ const App: React.FC = () => {
   const [username, setUsername] = useState('');
   const [age, setAge] = useState('0');
 
-  const addUser = (e: any) => {
-    e.preventDefault();
-    newUser({
-      variables: {
-        input: {
-          username,
-          age,
-        },
-      },
-    }).then(({ data }) => {
-      console.log(data);
-      setUsername('');
-      setAge('0');
-    });
-  };
-  const getAllUsers = (e: any) => {
-    e.preventDefault();
-    refetch();
-  };
+  // const addUser = (e: any) => {
+  //   e.preventDefault();
+  //   newUser({
+  //     variables: {
+  //       input: {
+  //         username,
+  //         age,
+  //       },
+  //     },
+  //   }).then(({ data }) => {
+  //     console.log(data);
+  //     setUsername('');
+  //     setAge('0');
+  //   });
+  // };
+  // const getAllUsers = (e: any) => {
+  //   e.preventDefault();
+  //   refetch();
+  // };
 
-  useEffect(() => {
-    if (!loading) {
-      setUsers(data.getAllUsers);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (!loading) {
+  //     setUsers(data.getAllUsers);
+  //   }
+  // }, [data]);
 
-  if (loading) {
-    return <div>...loading</div>;
-  }
+  // if (loading) {
+  //   return <div>...loading</div>;
+  // }
 
   console.log(users);
 
@@ -73,12 +74,14 @@ const App: React.FC = () => {
       <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
         <Flex>
           <NavbarSegmented />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/dashboard" element={<Table />} />
-            <Route path="/security" element={<Security />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
+          <Box w={'100%'} p={'40px 20px'}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/dashboard" element={<Table />} />
+              <Route path="/security" element={<Security />} />
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          </Box>
         </Flex>
       </MantineProvider>
     </div>

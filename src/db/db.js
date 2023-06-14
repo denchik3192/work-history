@@ -23,3 +23,11 @@ export const workSubject = [
   { value: 'dms', label: 'DMS' },
   { value: 'opc', label: 'OPC' },
 ];
+
+export const TPType = [
+  { value: 'ТП', label: 'ТП' },
+  { value: 'ЗТП', label: 'ЗТП' },
+  { value: 'РП', label: 'РП' },
+  { value: 'КТП', label: 'КТП' },
+  { value: 'МТП', label: 'МТП' },
+];
