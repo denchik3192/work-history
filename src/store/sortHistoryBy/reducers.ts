@@ -2,7 +2,7 @@ import { FILTER_BY_SUBSTATION, SORT_BY } from "./constants";
 
 const initialState: any = {
   sortBy: 'date',
-  activeSubstation: 'Все',
+  activeSubstation: 'МСРЭС',
 };
 
 export default function sortHistoryReducer(state = initialState, action: any) {
@@ -10,15 +10,15 @@ export default function sortHistoryReducer(state = initialState, action: any) {
     case SORT_BY: {
       return {
         ...state,
-        dashboardSettings: action.payload,
+        sortBy: action.payload,
       };
     }
-    case FILTER_BY_SUBSTATION: {
-      return {
-        ...state,
-        activeSubstation: action.payload,
-      };
-    }
+    // case FILTER_BY_SUBSTATION: {
+    //   return {
+    //     ...state,
+    //     activeSubstation: action.payload,
+    //   };
+    // }
     default:
       return state;
   }

@@ -11,8 +11,11 @@ import {
   Text,
 } from '@mantine/core';
 import { setSortBy } from '../../store/settings/actions';
-import { useAppDispatch } from '../../store/store';
+import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
+import { selectHistoryByFilter } from '../../store/sortHistoryBy/selectors';
+import { sortByAction } from '../../store/sortHistoryBy/actions';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   progressBar: {
@@ -37,11 +40,11 @@ interface TableReviewsProps {
 
 export function TableReviews({ data }: TableReviewsProps) {
   const dispatch = useAppDispatch();
-  const sortBy = useSelector((state: any) => state.settings.dashboardSettings.sortBy);
+  const filteredHistory = useSelector(selectHistoryByFilter);
+  // const  historydata : TableReviewsProps = useSelector((state: RootState) => state.history as TableReviewsProps);
+  console.log(filteredHistory);
 
-  console.log(sortBy);
-
-  const rows = data.map((row) => {
+  const rows = filteredHistory.map((row) => {
     return (
       <tr key={row.id}>
         <td>{row.id}</td>
@@ -53,6 +56,8 @@ export function TableReviews({ data }: TableReviewsProps) {
       </tr>
     );
   });
+
+  const changeWorkPlace = () => {};
 
   return (
     <>
@@ -106,10 +111,11 @@ export function TableReviews({ data }: TableReviewsProps) {
           data={['Date', 'Workplace']}
           clearable
           // defaultValue={sortBy}
-          onChange={(e) => dispatch(setSortBy(e))}
+          onChange={(e) => dispatch(sortByAction(e))}
         />
 
         <SegmentedControl
+          onChange={changeWorkPlace}
           radius="0"
           size="md"
           data={[

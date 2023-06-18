@@ -25,11 +25,17 @@ const initialState: any = [
     subject: "МУРС",
     descr: "КТП-210",
   },
+  {
+    id: 4,
+    date: "2022.05.04/10:19",
+    place: "одс",
+    title: "Редактирование схемы",
+    subject: "МУРС",
+    descr: "КТП-510",
+  },
 ];
 
 export default function historyReducer(state = initialState, action: any) {
-  console.log(action.payload);
-
   switch (action.type) {
     case ADD_NEW_RECORD: {
       return [
@@ -37,12 +43,11 @@ export default function historyReducer(state = initialState, action: any) {
         {
           id: state.length + 1,
           place: action.payload.workPlaceValue[0],
-          date:  action.payload.dateValue,
+          date: action.payload.dateValue,
           title: action.payload.workTitleValue[0],
           subject: action.payload.workSubjectValue,
           descr: action.payload.commentValue,
         },
-        // console.log(action.payload);
       ];
     }
     default:

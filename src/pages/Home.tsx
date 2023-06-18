@@ -192,11 +192,11 @@ const Home: React.FC = () => {
           </ActionIcon>
         </Group> */}
       {/* <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
-        <input value={age} onChange={(e) => setAge(e.target.value)} type="number" />
-        <div className="buttons">
-          <button onClick={(e) => addUser(e)}>Создать</button>
-          <button onClick={(e) => getAllUsers(e)}>Получать</button>
-        </div> */}
+      <input value={age} onChange={(e) => setAge(e.target.value)} type="number" />
+      <div className="buttons">
+        <button onClick={(e) => addUser(e)}>Создать</button>
+        <button onClick={(e) => getAllUsers(e)}>Получать</button>
+      </div> */}
     </Box>
   );
 };
