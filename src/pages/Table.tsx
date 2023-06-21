@@ -25,6 +25,7 @@ const Table: React.FC = () => {
   // });
 
   const history = useSelector((state: RootState) => state.history);
+  
 
   // console.log(oneUser);
 

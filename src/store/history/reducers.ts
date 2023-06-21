@@ -3,15 +3,15 @@ import { ADD_NEW_RECORD } from "./constants";
 const initialState: any = [
   {
     id: 1,
-    date: "2023.05.05/10:45",
-    place: "МГРЕС",
+    date: "2023-05-05/10:45",
+    place: "МГРЭС",
     title: "Обновление ПО",
     subject: "Диполь",
     descr: "новый экзешник",
   },
   {
     id: 2,
-    date: "2023.05.04/10:49",
+    date: "2023-05-04/10:49",
     place: "МСРЭС",
     title: "Обновление ПО",
     subject: "МУРС",
@@ -19,7 +19,7 @@ const initialState: any = [
   },
   {
     id: 3,
-    date: "2023.05.04/10:49",
+    date: "2023-05-04/10:49",
     place: "МСРЭС",
     title: "Редактирование схемы",
     subject: "МУРС",
@@ -27,8 +27,8 @@ const initialState: any = [
   },
   {
     id: 4,
-    date: "2022.05.04/10:19",
-    place: "одс",
+    date: "2022-05-04/10:19",
+    place: "ОДС",
     title: "Редактирование схемы",
     subject: "МУРС",
     descr: "КТП-510",

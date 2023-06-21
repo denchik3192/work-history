@@ -2,12 +2,12 @@ export const workplace = [
   { value: 'мгрэс', label: 'МГРЭС' },
   { value: 'мсрэс', label: 'МСРЭС' },
   { value: 'одс', label: 'ОДС' },
-  { value: 'быховский рэс', label: 'Быховский РЭС' },
-  { value: 'белыничский рэс', label: 'Белыничский РЭС' },
-  { value: 'горецкий рэс', label: 'Горецкий РЭС' },
-  { value: 'дрибинский рэс', label: 'Дрибинский РЭС' },
-  { value: 'круглянский рэс', label: 'Круглянский РЭС' },
-  { value: 'чаусский рэс', label: 'Чаусский РЭС' },
+  { value: 'быхов', label: 'Быхов' },
+  { value: 'белыничи', label: 'Белыничи' },
+  { value: 'горки', label: 'Горки' },
+  { value: 'дрибин', label: 'Дрибин' },
+  { value: 'круглое', label: 'Круглое' },
+  { value: 'чаусы', label: 'Чаусы' },
 ];
 
 export const workTitle = [

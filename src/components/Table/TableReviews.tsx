@@ -9,11 +9,12 @@ import {
   Progress,
   RingProgress,
   Text,
+  Box,
 } from '@mantine/core';
 import { setSortBy } from '../../store/settings/actions';
 import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
-import { selectHistoryByFilter } from '../../store/sortHistoryBy/selectors';
+import { selectHistoryByFilter, selectWorkplaceStats } from '../../store/sortHistoryBy/selectors';
 import { sortByAction } from '../../store/sortHistoryBy/actions';
 import { useState } from 'react';
 
@@ -39,12 +40,25 @@ interface TableReviewsProps {
 }
 
 export function TableReviews({ data }: TableReviewsProps) {
+  const [workplace, setWorkplace] = useState('Все')
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
-  // const  historydata : TableReviewsProps = useSelector((state: RootState) => state.history as TableReviewsProps);
-  console.log(filteredHistory);
+  const numberOfRecords = useSelector((state: RootState) => state.history.length);
+  const workplaceStats = useSelector(selectWorkplaceStats);
+  const oneRecordPersent = 100 / filteredHistory.length 
 
-  const rows = filteredHistory.map((row) => {
+  const filteredHistoryWorkplace = filteredHistory.filter((el:any) => {
+    if(workplace === 'Все') {
+      return el;
+    } else {
+      return el.place.toLowerCase() === workplace.toLowerCase()
+    }
+  })
+
+  console.log(workplaceStats);
+  
+  
+  const rows = filteredHistoryWorkplace.map((row) => {
     return (
       <tr key={row.id}>
         <td>{row.id}</td>
@@ -57,19 +71,30 @@ export function TableReviews({ data }: TableReviewsProps) {
     );
   });
 
-  const changeWorkPlace = () => {};
+  const changeWorkPlace = (e:any) => {
+    setWorkplace(e)
+  };
 
   return (
     <>
       <ScrollArea style={{ width: '100%', marginTop: '0px' }}>
-        <RingProgress
-          sections={[{ value: 3, color: 'teal' }]}
+        <Box><RingProgress
+          sections={[{ value: numberOfRecords, color: 'teal' }]}
           label={
             <Text color="blue" weight={500} align="center" size="l">
-              3 rec-s
+              {numberOfRecords} rec-s
             </Text>
           }
         />
+        <Progress
+          mt="md"
+          size="xl"
+          radius="sm"
+          sections={[
+            { value: 60, color: 'grape', label: 'МСРЭС' },
+            { value: 40, color: 'violet', label: 'МГРЭС' },
+          ]}
+        /></Box>
         <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
           <thead>
             <tr style={{ textAlign: 'center' }}>
@@ -98,15 +123,7 @@ export function TableReviews({ data }: TableReviewsProps) {
             { value: 15, color: 'grape', tooltip: 'Other – 15 Gb' },
           ]}
         /> */}
-        <Progress
-          mt="md"
-          size="xl"
-          radius="sm"
-          sections={[
-            { value: 60, color: 'grape', label: 'МСРЭС' },
-            { value: 40, color: 'violet', label: 'МГРЭС' },
-          ]}
-        />
+        
         <Select
           data={['Date', 'Workplace']}
           clearable
@@ -115,7 +132,7 @@ export function TableReviews({ data }: TableReviewsProps) {
         />
 
         <SegmentedControl
-          onChange={changeWorkPlace}
+          onChange={(e) => changeWorkPlace(e)}
           radius="0"
           size="md"
           data={[
