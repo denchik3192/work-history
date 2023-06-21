@@ -37,8 +37,9 @@ export const selectWorkplaceStats = createSelector(
   (items) => {
     return items.reduce((acc, current) => {
       let { place } = current;
-      const oneRecordPersent = 100 / items.length 
-      return {...acc, [place.toLowerCase()]: (acc[place.toLowerCase()] || 0 ) + 1 };
-  }, {});
+      const oneRecordPersent = 100 / items.length
+      console.log(oneRecordPersent);
+      return { ...acc, [place.toLowerCase()]: (acc[place.toLowerCase()] || 0) + 1 * oneRecordPersent };
+    }, {});
   }
 );
