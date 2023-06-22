@@ -8,6 +8,7 @@ export const workplace = [
   { value: 'дрибин', label: 'Дрибин' },
   { value: 'круглое', label: 'Круглое' },
   { value: 'чаусы', label: 'Чаусы' },
+  { value: 'шклов', label: 'Шклов' },
 ];
 
 export const workTitle = [

@@ -41,7 +41,7 @@ interface TableReviewsProps {
 }
 
 export function TableReviews({ data }: TableReviewsProps) {
-  const [workplace, setWorkplace] = useState('Все');
+  const [workplace, setWorkplace] = useState<String>('Все');
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
   const numberOfRecords = useSelector((state: RootState) => state.history.length);
@@ -55,7 +55,7 @@ export function TableReviews({ data }: TableReviewsProps) {
     }
   });
 
-  const rows = filteredHistoryWorkplace.map((row) => {
+  const rows = filteredHistoryWorkplace.map((row, idx) => {
     return (
       <tr key={row.id}>
         <td>{row.id}</td>
@@ -68,7 +68,7 @@ export function TableReviews({ data }: TableReviewsProps) {
     );
   });
 
-  const changeWorkPlace = (e: any) => {
+  const changeWorkPlace = (e: String) => {
     setWorkplace(e);
   };
 
@@ -88,6 +88,7 @@ export function TableReviews({ data }: TableReviewsProps) {
             mt="md"
             size="xl"
             radius="sm"
+            style={{'textTransform': 'capitalize'}}
             sections={Object.entries(workplaceStats).map((el: any, idx: number) => ({
               value: el[1],
               color: colors[idx],

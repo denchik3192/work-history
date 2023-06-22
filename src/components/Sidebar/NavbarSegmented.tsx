@@ -87,9 +87,6 @@ const tabs = {
     { link: '/dashboard', label: 'Dashboard', icon: IconDatabaseImport },
     { link: '/security', label: 'Security', icon: IconFingerprint },
     { link: '/settings', label: 'Settings', icon: IconSettings },
-    // { link: '', label: 'Billing', icon: IconReceipt2 },
-    // { link: '', label: 'SSH Keys', icon: IconKey },
-    // { link: '', label: 'Authentication', icon: Icon2fa },
   ],
   general: [{ link: '/oracle', label: 'Oracle reports', icon: IconReport }],
 };
@@ -97,7 +94,7 @@ const tabs = {
 export function NavbarSegmented() {
   const { classes, cx } = useStyles();
   const [section, setSection] = useState<'account' | 'general'>('account');
-  const [active, setActive] = useState('Billing');
+  const [active, setActive] = useState('Home');
 
   const links = tabs[section].map((item) => (
     <Link

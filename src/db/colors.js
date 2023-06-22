@@ -1,1 +1,1 @@
-export const colors = ['grape', 'violet', 'pink', 'red', 'lime'];
+export const colors = ['grape', 'violet',  'pink', 'indigo', 'red', 'lime','cyan', 'green', 'orange', 'purple'];
