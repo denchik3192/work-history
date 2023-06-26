@@ -32,3 +32,31 @@ export const TPType = [
   { value: 'КТП', label: 'КТП' },
   { value: 'МТП', label: 'МТП' },
 ];
+
+export const substations = [
+  { value: 'ПС N1', label: 'ПС N1' },
+  { value: 'ПС N2', label: 'ПС N2' },
+  { value: 'ПС №3', label: 'ПС №3' },
+  { value: 'ПС №4', label: 'ПС №4' },
+  { value: 'ПС №5 35/10', label: 'МТПС №5 35/10П' },
+  { value: 'ПС N6', label: 'ПС N6' },
+  { value: 'ПС N7', label: 'ПС N7' },
+  { value: 'ПС N8', label: 'ПС N8' },
+];
+
+export const substations_real = [
+  { value: 'Александрия', label: 'Александрия' },
+  { value: 'Автозавод', label: 'Автозавод' },
+  { value: 'Быхов', label: 'Быхов' },
+  { value: 'Белыничи', label: 'Белыничи' },
+  { value: 'Круглое', label: 'Круглое' },
+  { value: 'Шклов', label: 'Шклов' },
+  { value: 'Восток', label: 'Восток' },
+  { value: 'Чаусы', label: 'Чаусы' },
+  { value: 'Восток', label: 'Восток' },
+  { value: 'Пролетарий', label: 'Пролетарий' },
+  { value: 'Присно', label: 'Присно' },
+  { value: 'Силикатная', label: 'Силикатная' },
+  { value: 'Литейная', label: 'Литейная' },
+  
+];

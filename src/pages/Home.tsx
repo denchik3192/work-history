@@ -6,18 +6,20 @@ import {
   Group,
   MultiSelect,
   Radio,
+  TextInput,
   Textarea,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import React, { useEffect, useState } from "react";
-import { workTitle, workplace } from "../db/db";
+import { substations, workTitle, workplace } from "../db/db";
 import { DateTimePicker } from "@mantine/dates";
 import { IconCheck } from "@tabler/icons-react";
-import { createStyles, SegmentedControl, rem } from "@mantine/core";
+import { createStyles, SegmentedControl, rem, Tooltip } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import { useAppDispatch } from "../store/store";
 import { addNewRecord } from "../store/history/actions";
 import { TPType } from "../db/db";
+import Substations from "../components/Substations/Substations";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -52,14 +54,19 @@ const useStyles = createStyles((theme) => ({
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
-  const [value, setValue] = useState("react");
+  // const [value, setValue] = useState("");
   const [workPlaceValue, setWorkplaceValue] = useState(["МГРЭС"]);
   const [workTitleValue, setWorkTitleValue] = useState(["Обновление ПО"]);
   const [commentValue, setCommentValue] = useState("");
   const [workSubjectValue, setWorkSubjectValue] = useState("МУРС");
   const [substationType, setSubstationType] = useState("");
   const [dateValue, setDateValue] = useState("");
-  const [chipValue, setChipValue] = useState(["react"]);
+  const [timeValue, setTimeValue] = useState("");
+  const [numberOfTP, setNumberOfTP] = useState("");
+  const [focused, setFocused] = useState(false);
+  const [chipValue, setChipValue] = useState([""]);
+ 
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,20 +74,19 @@ const Home: React.FC = () => {
       const getFullDate = () => {
         const date = new Date().toISOString().slice(0, 10);
         const time = new Date().toISOString().slice(11, 16);
-        setDateValue(date + "/" + time);
+        setDateValue(date);
+        setTimeValue(time);
       };
       getFullDate();
-    }, 10000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
+  console.log(numberOfTP);
+  
   return (
     <Box w={"100%"} style={{ margin: "70px 20px 20px 20px" }}>
-      <Group>
-        <Calendar />
-      </Group>
-
-      <Group position="apart">
+       <Flex><Group position="apart">
         <form>
           <Box>
             <SegmentedControl
@@ -118,19 +124,12 @@ const Home: React.FC = () => {
               value={new Date()}
             />
 
-            {/* <Chip.Group multiple value={chipValue} onChange={setChipValue}>
-              <Flex>
-              <Chip value="react">React</Chip>
-              <Chip value="ng">Angular</Chip>
-              <Chip value="svelte">Svelte</Chip>
-              <Chip value="vue">Vue</Chip>
-              </Flex>
-            </Chip.Group> */}
+            
           </Box>
           <Box w={"100%"}>
             <Radio.Group
-              value={value}
-              onChange={setValue}
+              value={substationType}
+              onChange={setSubstationType}
               name="substation type"
               label="Select substation type"
               // description="This is anonymous"
@@ -149,6 +148,22 @@ const Home: React.FC = () => {
                 ))}
               </Flex>
             </Radio.Group>
+            <TextInput
+            type="number"
+            onChange={(e: any) => setNumberOfTP(e.target.value)}
+              label="Number of substation"
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              inputContainer={(children) => (
+                <Tooltip
+                  label="Enter the number"
+                  position="top-start"
+                  opened={focused}
+                >
+                  {children}
+                </Tooltip>
+              )}
+            />
             <Textarea
               placeholder="Comment"
               label="Comment"
@@ -160,6 +175,10 @@ const Home: React.FC = () => {
           </Box>
         </form>
       </Group>
+      <Substations ></Substations>
+      </Flex>
+
+      
 
       <Group position="center">
         <Button
@@ -192,8 +211,9 @@ const Home: React.FC = () => {
                 workPlaceValue,
                 workSubjectValue,
                 workTitleValue,
-                commentValue,
+                commentValue: substationType+'-' + numberOfTP +' '+ commentValue ,
                 dateValue,
+                timeValue
               })
             );
           }}

@@ -1,9 +1,12 @@
 import { ADD_NEW_RECORD } from "./constants";
+import {addNewRecord} from "./actions"
+
+type TActions =  typeof addNewRecord;
 
 const initialState: any = [
   {
     id: 1,
-    date: "2023-05-05/10:45",
+    date: "2023-05-05",
     place: "МГРЭС",
     title: "Обновление ПО",
     subject: "Диполь",
@@ -11,7 +14,7 @@ const initialState: any = [
   },
   {
     id: 2,
-    date: "2023-05-04/10:49",
+    date: "2023-05-04",
     place: "МСРЭС",
     title: "Обновление ПО",
     subject: "МУРС",
@@ -19,7 +22,7 @@ const initialState: any = [
   },
   {
     id: 3,
-    date: "2023-05-04/10:49",
+    date: "2023-05-04",
     place: "МСРЭС",
     title: "Редактирование схемы",
     subject: "МУРС",
@@ -27,7 +30,7 @@ const initialState: any = [
   },
   {
     id: 4,
-    date: "2022-05-04/10:19",
+    date: "2022-05-04",
     place: "ОДС",
     title: "Редактирование схемы",
     subject: "МУРС",
@@ -46,7 +49,7 @@ export default function historyReducer(state = initialState, action: any) {
           date: action.payload.dateValue,
           title: action.payload.workTitleValue[0],
           subject: action.payload.workSubjectValue,
-          descr: action.payload.commentValue,
+          descr: action.payload.commentValue + action.payload.commentValue,
         },
       ];
     }
