@@ -33,8 +33,8 @@ interface TableReviewsProps {
   data: {
     id: number;
     date: String;
-    place: String;
-    title: String;
+    place: String[];
+    title: String[];
     subject: String;
     descr: String;
   }[];
@@ -60,8 +60,8 @@ export function TableReviews({ data }: TableReviewsProps) {
       <tr key={row.id}>
         <td>{row.id}</td>
         <td>{row.date}</td>
-        <td>{row.place}</td>
-        <td>{row.title}</td>
+        <td>{row.place + ' '}</td>
+        <td>{row.title + ' '}</td>
         <td>{row.subject}</td>
         <td>{row.descr}</td>
       </tr>
@@ -88,7 +88,7 @@ export function TableReviews({ data }: TableReviewsProps) {
             mt="md"
             size="xl"
             radius="sm"
-            style={{'textTransform': 'capitalize'}}
+            style={{ textTransform: 'capitalize' }}
             sections={Object.entries(workplaceStats).map((el: any, idx: number) => ({
               value: el[1],
               color: colors[idx],

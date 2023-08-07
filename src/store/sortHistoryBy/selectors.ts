@@ -38,8 +38,17 @@ export const selectWorkplaceStats = createSelector(
     return items.reduce((acc, current) => {
       let { place } = current;
       const oneRecordPersent = 100 / items.length
-      console.log(oneRecordPersent);
-      return { ...acc, [place.toLowerCase()]: (acc[place.toLowerCase()] || 0) + oneRecordPersent };
+      return { ...acc, [place[0].toLowerCase()]: (acc[place[0].toLowerCase()] || 0) + oneRecordPersent };
     }, {});
   }
 );
+// export const selectWorkplaceStats = createSelector(//!
+//   [historyItems],
+//   (items) => {
+//     return items.reduce((acc, current) => {
+//       let { id } = current;
+//       const oneRecordPersent = 100 / items.length
+//       return { ...acc, [id]: (acc[id] || 0) + oneRecordPersent };
+//     }, {});
+//   }
+// );
