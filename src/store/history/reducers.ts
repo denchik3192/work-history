@@ -7,35 +7,20 @@ const initialState: any = [
   {
     id: 1,
     date: "2023-05-05",
-    place: ["МГРЭС"],
+    place: "МГРЭС",
     title: "Обновление ПО",
     subject: "Диполь",
     descr: "новый экзешник",
   },
-  // {
-  //   id: 2,
-  //   date: "2023-05-04",
-  //   place: "МСРЭС",
-  //   title: "Обновление ПО",
-  //   subject: "МУРС",
-  //   descr: "новый экзешник",
-  // },
-  // {
-  //   id: 3,
-  //   date: "2023-05-04",
-  //   place: "МСРЭС",
-  //   title: "Редактирование схемы",
-  //   subject: "МУРС",
-  //   descr: "КТП-210",
-  // },
-  // {
-  //   id: 4,
-  //   date: "2022-05-04",
-  //   place: "ОДС",
-  //   title: "Редактирование схемы",
-  //   subject: "МУРС",
-  //   descr: "КТП-510",
-  // },
+  {
+    id: 2,
+    date: "2023-05-04",
+    place: "МСРЭС",
+    title: "Обновление ПО",
+    subject: "МУРС",
+    descr: "новый экзешник",
+  },
+
 ];
 
 export default function historyReducer(state = initialState, action: any) {

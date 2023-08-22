@@ -1,7 +1,7 @@
 export type TNewRecord = {
-  workPlaceValue: String[];
+  workPlaceValue: string;
   workSubjectValue: string;
-  workTitleValue: String[];
+  workTitleValue: string;
   commentValue: String;
   dateValue: String;
   timeValue: String;

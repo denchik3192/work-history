@@ -1,20 +1,10 @@
-import {
-  Box,
-  Button,
-  Chip,
-  Flex,
-  Group,
-  MultiSelect,
-  Radio,
-  TextInput,
-  Textarea,
-} from '@mantine/core';
+import { Box, Button, Flex, Group, MultiSelect } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import React, { useEffect, useState } from 'react';
 import { substations, workTitle, workplace } from '../db/db';
 import { DateTimePicker } from '@mantine/dates';
 import { IconCheck } from '@tabler/icons-react';
-import { createStyles, SegmentedControl, rem, Tooltip } from '@mantine/core';
+import { createStyles, SegmentedControl, rem, Select } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
 import { useAppDispatch } from '../store/store';
 import { addNewRecord } from '../store/history/actions';
@@ -53,18 +43,14 @@ const useStyles = createStyles((theme) => ({
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
-  // const [value, setValue] = useState("");
-  const [workPlaceValue, setWorkplaceValue] = useState(['МГРЭС']);
-  const [workTitleValue, setWorkTitleValue] = useState(['Обновление ПО']);
+  const [workPlaceValue, setWorkplaceValue] = useState<string>('');
+  const [workTitleValue, setWorkTitleValue] = useState<string>('');
   const [commentValue, setCommentValue] = useState('');
   const [workSubjectValue, setWorkSubjectValue] = useState('МУРС');
-  const [substationType, setSubstationType] = useState('');
+  const [substationType, setSubstationType] = useState<String>('');
   const [dateValue, setDateValue] = useState('');
   const [timeValue, setTimeValue] = useState('');
   const [numberOfTP, setNumberOfTP] = useState('');
-  const [focused, setFocused] = useState(false);
-  const [chipValue, setChipValue] = useState(['']);
-  console.log(workPlaceValue);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,25 +67,6 @@ const Home: React.FC = () => {
   }, []);
 
   const saveData = () => {
-    notifications.show({
-      id: 'load-data',
-      loading: true,
-      title: 'Loading your data',
-      message: 'Data will be loaded in 1 seconds, you cannot close this yet',
-      autoClose: false,
-      withCloseButton: false,
-    });
-
-    setTimeout(() => {
-      notifications.update({
-        id: 'load-data',
-        color: 'teal',
-        title: 'Data was loaded',
-        message: 'Notification will close in 1 seconds, you can close this notification now',
-        icon: <IconCheck size="1rem" />,
-        autoClose: 1000,
-      });
-    }, 1500);
     dispatch(
       addNewRecord({
         workPlaceValue,
@@ -110,9 +77,9 @@ const Home: React.FC = () => {
         timeValue,
       }),
     );
-    setWorkplaceValue([]);
+    setWorkplaceValue('');
     setWorkSubjectValue('');
-    setWorkTitleValue([]);
+    setWorkTitleValue('');
     setSubstationType('');
     setNumberOfTP('');
     setCommentValue('');
@@ -132,23 +99,23 @@ const Home: React.FC = () => {
                 value={workSubjectValue}
                 onChange={(e) => setWorkSubjectValue(e)}
               />
-              <MultiSelect
+              <Select
                 maw={500}
                 data={workplace}
-                placeholder="Pick all workplace"
+                placeholder="Pick workplace"
                 clearable
                 style={{ marginBottom: '10px', margin: '20px auto' }}
                 value={workPlaceValue}
-                onChange={(e) => setWorkplaceValue(e)}
+                onChange={(e: any) => setWorkplaceValue(e)}
               />
-              <MultiSelect
+              <Select
                 data={workTitle}
                 maw={500}
-                placeholder="Pick work title"
+                placeholder="Pick title"
                 clearable
                 style={{ marginBottom: '10px', margin: '20px auto' }}
                 value={workTitleValue}
-                onChange={(e) => setWorkTitleValue(e)}
+                onChange={(e: any) => setWorkTitleValue(e)}
               />
               <DateTimePicker
                 placeholder="Pick date and time"
@@ -159,81 +126,27 @@ const Home: React.FC = () => {
                 value={new Date()}
               />
             </Box>
-            <Box w={'100%'}>
-              <Radio.Group
-                value={substationType}
-                onChange={setSubstationType}
-                name="substation type"
-                label="Select substation type"
-                // description="This is anonymous"
-                // withAsterisk
-              >
-                <Flex>
-                  {TPType.map((tp, idx) => (
-                    <Radio
-                      onChange={() => setSubstationType(tp.value)}
-                      key={idx}
-                      value={tp.value}
-                      label={tp.label}
-                      color="indigo"
-                      style={{ marginRight: '10px' }}
-                    />
-                  ))}
-                </Flex>
-              </Radio.Group>
-              <TextInput
-                type="number"
-                onChange={(e: any) => setNumberOfTP(e.target.value)}
-                value={numberOfTP}
-                label="Number of substation"
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                inputContainer={(children) => (
-                  <Tooltip label="Enter the number" position="top-start" opened={focused}>
-                    {children}
-                  </Tooltip>
-                )}
-              />
-              <Textarea
-                placeholder="Comment"
-                label="Comment"
-                withAsterisk
-                value={commentValue}
-                onChange={(e) => setCommentValue(e.target.value)}
-                style={{ marginBottom: '10px', margin: '20px auto' }}
-              />
-            </Box>
           </form>
         </Group>
-        <Substations></Substations>
+        <Substations
+          substationType={substationType}
+          setSubstation={setSubstationType}
+          numberOfTP={numberOfTP}
+          setNumberOfTP={setNumberOfTP}
+          commentValue={commentValue}
+          setCommentValue={setCommentValue}></Substations>
       </Flex>
 
       <Group position="center">
         <Button
           w={'100%'}
+          h={'50px'}
           // disabled
+          // style={{ position: 'absolute', bottom: '20px' }}
           onClick={saveData}>
           Apply
         </Button>
       </Group>
-      {/* <Group position="center" my="xl">
-          <ActionIcon
-            onClick={() => toggleColorScheme()}
-            size="lg"
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-              color: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.blue[6],
-            })}>
-            {colorScheme === 'dark' ? <IconSun size="1.2rem" /> : <IconMoonStars size="1.2rem" />}
-          </ActionIcon>
-        </Group> */}
-      {/* <input value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
-      <input value={age} onChange={(e) => setAge(e.target.value)} type="number" />
-      <div className="buttons">
-        <button onClick={(e) => addUser(e)}>Создать</button>
-        <button onClick={(e) => getAllUsers(e)}>Получать</button>
-      </div> */}
     </Box>
   );
 };
