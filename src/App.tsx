@@ -11,6 +11,7 @@ import Table from './pages/Table';
 import Home from './pages/Home';
 import Security from './pages/Security';
 import { Box } from '@mantine/core';
+import { NotFoundTitle } from './pages/NotFoundTitle';
 
 type User = {
   id: number;
@@ -80,6 +81,7 @@ const App: React.FC = () => {
               <Route path="/dashboard" element={<Table />} />
               <Route path="/security" element={<Security />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="*" element={<NotFoundTitle />} />
             </Routes>
           </Box>
         </Flex>

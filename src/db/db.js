@@ -17,13 +17,7 @@ export const workTitle = [
   { value: 'редактирование бд', label: 'Редактирование БД' },
   { value: 'редактирование схем', label: 'Редактирование схем' },
 ];
-export const workSubject = [
-  { value: 'мурс', label: 'МУРС' },
-  { value: 'диполь', label: 'Диполь' },
-  { value: 'тм-2000', label: 'ТМ-2000' },
-  { value: 'dms', label: 'DMS' },
-  { value: 'opc', label: 'OPC' },
-];
+export const workSubject = ["МУРС", "Диполь", "ТМ-2000", "DMS", "MBS", "OPC", "MEC-104"];
 
 export const TPType = [
   { value: 'ТП', label: 'ТП' },
@@ -53,10 +47,9 @@ export const substations_real = [
   { value: 'Шклов', label: 'Шклов' },
   { value: 'Восток', label: 'Восток' },
   { value: 'Чаусы', label: 'Чаусы' },
-  { value: 'Восток', label: 'Восток' },
   { value: 'Пролетарий', label: 'Пролетарий' },
   { value: 'Присно', label: 'Присно' },
   { value: 'Силикатная', label: 'Силикатная' },
   { value: 'Литейная', label: 'Литейная' },
-  
+
 ];

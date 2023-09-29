@@ -1,6 +1,14 @@
-import { Box, Flex, Radio, Select, TextInput, Textarea, Tooltip } from '@mantine/core';
-import React, { useState } from 'react';
-import { TPType, substations_real } from '../../db/db';
+import {
+  Box,
+  Flex,
+  Radio,
+  Select,
+  TextInput,
+  Textarea,
+  Tooltip,
+} from "@mantine/core";
+import React, { useState } from "react";
+import { TPType, substations_real } from "../../db/db";
 
 const Substations = ({
   substation,
@@ -10,14 +18,14 @@ const Substations = ({
   setCommentValue,
   commentValue,
 }: any): JSX.Element => {
-  const [searchValue, onSearchChange] = useState('');
+  const [searchValue, onSearchChange] = useState("");
   const [focused, setFocused] = useState(false);
 
   return (
     <>
-      <Box w={'50%'}>
+      <Box >
         <Select
-          w={'100%'}
+          w={"100%"}
           label="Select substation"
           searchValue={searchValue}
           onSearchChange={onSearchChange}
@@ -25,15 +33,18 @@ const Substations = ({
           searchable
           nothingFound="No options"
           data={substations_real}
-          transitionProps={{ transition: 'pop-top-left', duration: 100, timingFunction: 'ease' }}
+          transitionProps={{
+            transition: "pop-top-left",
+            duration: 100,
+            timingFunction: "ease",
+          }}
         />
+
         <Radio.Group
           value={substation}
           onChange={setSubstation}
           name="substation type"
           label="Select substation type"
-          // description="This is anonymous"
-          // withAsterisk
         >
           <Flex>
             {TPType.map((tp, idx) => (
@@ -43,18 +54,21 @@ const Substations = ({
                 value={tp.value}
                 label={tp.label}
                 color="indigo"
-                style={{ marginRight: '10px' }}
+                style={{ marginRight: "10px", alignSelf: "center" }}
               />
             ))}
             <TextInput
               type="number"
               onChange={(e: any) => setNumberOfTP(e.target.value)}
               value={numberOfTP}
-              label="Number of substation"
               onFocus={() => setFocused(true)}
               onBlur={() => setFocused(false)}
               inputContainer={(children) => (
-                <Tooltip label="Enter the number" position="top-start" opened={focused}>
+                <Tooltip
+                  label="Enter the number"
+                  position="top-start"
+                  opened={focused}
+                >
                   {children}
                 </Tooltip>
               )}
@@ -65,10 +79,10 @@ const Substations = ({
         <Textarea
           placeholder="Comment"
           label="Comment"
-          withAsterisk
+          // withAsterisk
           value={commentValue}
           onChange={(e) => setCommentValue(e.target.value)}
-          style={{ marginBottom: '10px', margin: '20px auto' }}
+          style={{ marginBottom: "10px", margin: "20px auto" }}
         />
       </Box>
     </>

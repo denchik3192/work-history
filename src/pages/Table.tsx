@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { TableReviews } from '../components/Table/TableReviews';
-import { useMutation, useQuery } from '@apollo/client';
-import { CREATE_USER } from '../mutations/user';
-import { GET_ALL_USER, GET_ONE_USER } from '../query/user';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import React, { useEffect, useState } from "react";
+import { TableReviews } from "../components/Table/TableReviews";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_USER } from "../mutations/user";
+import { GET_ALL_USER, GET_ONE_USER } from "../query/user";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { Container, Title } from "@mantine/core";
 
 type User = {
   id: number;
@@ -25,14 +26,13 @@ const Table: React.FC = () => {
   // });
 
   const history = useSelector((state: RootState) => state.history);
-  
 
   // console.log(oneUser);
 
   const [newUser] = useMutation(CREATE_USER);
   const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState('');
-  const [age, setAge] = useState('0');
+  const [username, setUsername] = useState("");
+  const [age, setAge] = useState("0");
 
   const addUser = (e: any) => {
     e.preventDefault();
@@ -45,8 +45,8 @@ const Table: React.FC = () => {
       },
     }).then(({ data }) => {
       console.log(data);
-      setUsername('');
-      setAge('0');
+      setUsername("");
+      setAge("0");
     });
   };
   // const getAllUsers = (e: any) => {
@@ -63,8 +63,11 @@ const Table: React.FC = () => {
   // if (loading) {
   //   return <div>...loading</div>;
   // }
-
-  return <TableReviews data={history} />;
+  return (
+    <Container>
+      <TableReviews data={history} />
+    </Container>
+  );
 };
 
 export default Table;
