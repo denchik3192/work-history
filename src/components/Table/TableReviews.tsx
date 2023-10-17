@@ -1,33 +1,25 @@
 import {
-  createStyles,
   Table,
   ScrollArea,
-  rem,
   Select,
   SegmentedControl,
-  Pagination,
-  Progress,
-  RingProgress,
-  Text,
-  Box,
-} from '@mantine/core';
-import { setSortBy } from '../../store/settings/actions';
-import { RootState, useAppDispatch } from '../../store/store';
-import { useSelector } from 'react-redux';
-import { selectHistoryByFilter, selectWorkplaceStats } from '../../store/sortHistoryBy/selectors';
-import { sortByAction } from '../../store/sortHistoryBy/actions';
-import { useState } from 'react';
-import { colors } from '../../db/colors';
-
-const useStyles = createStyles((theme) => ({
-  progressBar: {
-    '&:not(:first-of-type)': {
-      borderLeft: `${rem(3)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
-      }`,
-    },
-  },
-}));
+  Button,
+  Modal,
+} from "@mantine/core";
+import { setSortBy } from "../../store/settings/actions";
+import { RootState, useAppDispatch } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectHistoryByFilter,
+  selectWorkplaceStats,
+} from "../../store/sortHistoryBy/selectors";
+import { sortByAction } from "../../store/sortHistoryBy/actions";
+import { useState } from "react";
+import { colors } from "../../db/colors";
+import { useDisclosure } from "@mantine/hooks";
+import { Icon360View, IconHttpDelete, IconPalette } from "@tabler/icons-react";
+import { Link } from "react-router-dom";
+import { deleteRecord } from "../../store/history/actions";
 
 interface TableReviewsProps {
   data: {
@@ -41,14 +33,15 @@ interface TableReviewsProps {
 }
 
 export function TableReviews({ data }: TableReviewsProps) {
-  const [workplace, setWorkplace] = useState<String>('Все');
+  const [isopened, { open, close }] = useDisclosure(false);
+  const [workplace, setWorkplace] = useState<String>("Все");
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
-  const numberOfRecords = useSelector((state: RootState) => state.history.length);
+
   const workplaceStats = useSelector(selectWorkplaceStats);
 
   const filteredHistoryWorkplace = filteredHistory.filter((el: any) => {
-    if (workplace === 'Все') {
+    if (workplace === "Все") {
       return el;
     } else {
       return el.place.toLowerCase() === workplace.toLowerCase();
@@ -56,6 +49,7 @@ export function TableReviews({ data }: TableReviewsProps) {
   });
 
   const rows = filteredHistoryWorkplace.map((row, idx) => {
+    
     return (
       <tr key={row.id}>
         <td>{row.id}</td>
@@ -64,6 +58,22 @@ export function TableReviews({ data }: TableReviewsProps) {
         <td>{row.title}</td>
         <td>{row.subject}</td>
         <td>{row.descr}</td>
+        <td>
+          <Link to={`/history/:${row.id}`}>
+            <Button
+              variant="light"
+              onClick={open}
+              radius="xs"
+              style={{ marginRight: "10px" }}
+            >
+              View
+            </Button>
+          </Link>
+
+          <Button variant="light" color="red" radius="xs" onClick={(id:any)=> dispatch(deleteRecord(id))}>
+            Del
+          </Button>
+        </td>
       </tr>
     );
   });
@@ -74,44 +84,24 @@ export function TableReviews({ data }: TableReviewsProps) {
 
   return (
     <>
-      <ScrollArea style={{ width: '100%', marginTop: '0px' }}>
-        <Box>
-          <RingProgress
-            sections={[{ value: numberOfRecords, color: 'teal' }]}
-            label={
-              <Text color="blue" weight={500} align="center" size="l">
-                {numberOfRecords} rec-s
-              </Text>
-            }
-          />
-          <Progress
-            mt="md"
-            size="xl"
-            radius="sm"
-            style={{ textTransform: 'capitalize' }}
-            sections={Object.entries(workplaceStats).map((el: any, idx: number) => ({
-              value: el[1],
-              color: colors[idx],
-              label: el[0],
-            }))}
-          />
-        </Box>
+      <ScrollArea style={{ width: "100%", marginTop: "0px" }}>
         <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
           <thead>
-            <tr style={{ textAlign: 'center' }}>
-              <th style={{ textAlign: 'center' }}>№</th>
-              <th style={{ textAlign: 'center' }}>Date/Time</th>
-              <th style={{ textAlign: 'center' }}>Place</th>
-              <th style={{ textAlign: 'center' }}>Title</th>
-              <th style={{ textAlign: 'center' }}>Subject</th>
-              <th style={{ textAlign: 'center' }}>Descr</th>
+            <tr style={{ textAlign: "center" }}>
+              <th style={{ textAlign: "center" }}>№</th>
+              <th style={{ textAlign: "center" }}>Date/Time</th>
+              <th style={{ textAlign: "center" }}>Place</th>
+              <th style={{ textAlign: "center" }}>Title</th>
+              <th style={{ textAlign: "center" }}>Subject</th>
+              <th style={{ textAlign: "center" }}>Descr</th>
+              <th style={{ textAlign: "center" }}>view/del</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
         </Table>
 
         <Select
-          data={['Date', 'Workplace']}
+          data={["Date", "Workplace"]}
           clearable
           // defaultValue={sortBy}
           onChange={(e) => dispatch(sortByAction(e))}
@@ -122,22 +112,25 @@ export function TableReviews({ data }: TableReviewsProps) {
           radius="0"
           size="md"
           data={[
-            'Все',
-            'МГРЭС',
-            'МСРЭС',
-            'ОДС',
-            'Быхов',
-            'Белыничи',
-            'Чаусы',
-            'Круглое',
-            'Дрибин',
-            'Горки',
-            'Шклов',
+            "Все",
+            "МГРЭС",
+            "МСРЭС",
+            "ОДС",
+            "Быхов",
+            "Белыничи",
+            "Чаусы",
+            "Круглое",
+            "Дрибин",
+            "Горки",
+            "Шклов",
           ]}
           // classNames={classes}
         />
       </ScrollArea>
-      <Pagination total={10} style={{ position: 'absolute', left: '20%', bottom: '1%' }} />
+
+      <Modal opened={isopened} onClose={close} title="Record" centered>
+        pess
+      </Modal>
     </>
   );
 }

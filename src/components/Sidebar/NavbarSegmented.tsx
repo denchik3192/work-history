@@ -21,6 +21,7 @@ import {
   IconHome,
   IconSettingsAutomation,
   IconReport,
+  IconHomeStats,
 } from '@tabler/icons-react';
 import { IconSettings2 } from '@tabler/icons-react';
 import { IconSettingsBolt } from '@tabler/icons-react';
@@ -84,8 +85,8 @@ const useStyles = createStyles((theme) => ({
 const tabs = {
   account: [
     { link: '/', label: 'Home', icon: IconHome },
-    { link: '/dashboard', label: 'Dashboard', icon: IconDatabaseImport },
-    { link: '/security', label: 'Security', icon: IconFingerprint },
+    { link: '/history', label: 'History', icon: IconDatabaseImport },
+    { link: '/statistic', label: 'Statistic', icon: IconHomeStats },
     { link: '/settings', label: 'Settings', icon: IconSettings },
   ],
   general: [{ link: '/oracle', label: 'Oracle reports', icon: IconReport }],

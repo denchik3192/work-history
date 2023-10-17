@@ -5,68 +5,36 @@ import { CREATE_USER } from "../mutations/user";
 import { GET_ALL_USER, GET_ONE_USER } from "../query/user";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
-import { Container, Title } from "@mantine/core";
-
-type User = {
-  id: number;
-  username: String;
-  age: String;
-};
-
-type M = React.MouseEvent<HTMLBodyElement> & {
-  path: Node[];
-};
+import { Container, Progress, RingProgress, Text, Pagination, createStyles, rem} from "@mantine/core";
+import { colors } from "../db/colors";
+import { selectWorkplaceStats } from "../store/sortHistoryBy/selectors";
 
 const Table: React.FC = () => {
-  // const { data, loading, error, refetch } = useQuery(GET_ALL_USER);
-  // const { data: oneUser, loading: loadingOneUser } = useQuery(GET_ONE_USER, {
-  //   variables: {
-  //     id: 2,
-  //   },
-  // });
-
+  
+  const numberOfRecords = useSelector(
+    (state: RootState) => state.history.length
+  );
   const history = useSelector((state: RootState) => state.history);
+  const workplaceStats = useSelector(selectWorkplaceStats);
 
-  // console.log(oneUser);
-
-  const [newUser] = useMutation(CREATE_USER);
-  const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState("");
-  const [age, setAge] = useState("0");
-
-  const addUser = (e: any) => {
-    e.preventDefault();
-    newUser({
-      variables: {
-        input: {
-          username,
-          age,
-        },
-      },
-    }).then(({ data }) => {
-      console.log(data);
-      setUsername("");
-      setAge("0");
-    });
-  };
-  // const getAllUsers = (e: any) => {
-  //   e.preventDefault();
-  //   refetch();
-  // };
-
-  // useEffect(() => {
-  //   if (!loading) {
-  //     setUsers(data.getAllUsers);
-  //   }
-  // }, [data]);
-
-  // if (loading) {
-  //   return <div>...loading</div>;
-  // }
   return (
-    <Container>
+    <>
+      <Progress
+        mt="md"
+        size="xl"
+        radius="sm"
+        style={{ textTransform: "capitalize" }}
+        sections={Object.entries(workplaceStats).map(
+          (el: any, idx: number) => ({
+            value: el[1],
+            color: colors[idx],
+            label: el[0],
+          })
+        )}
+      />
       <TableReviews data={history} />
-    </Container>
+      <Pagination total={10} style={{ position: 'absolute', left: '20%', bottom: '1%' }} />
+    </>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   TextInput,
   Textarea,
   Tooltip,
+  SegmentedControl,
 } from "@mantine/core";
 import React, { useState } from "react";
 import { TPType, substations_real } from "../../db/db";
@@ -23,7 +24,7 @@ const Substations = ({
 
   return (
     <>
-      <Box >
+      
         <Select
           w={"100%"}
           label="Select substation"
@@ -46,18 +47,17 @@ const Substations = ({
           name="substation type"
           label="Select substation type"
         >
-          <Flex>
-            {TPType.map((tp, idx) => (
-              <Radio
-                onChange={() => setSubstation(tp.value)}
-                key={idx}
-                value={tp.value}
-                label={tp.label}
-                color="indigo"
-                style={{ marginRight: "10px", alignSelf: "center" }}
-              />
-            ))}
+          <Flex style={{ alignItems: "center" }}>
+            <SegmentedControl
+              data={TPType}
+              // classNames={classes}
+              value={substation}
+              // onChange={(e) => setWorkSubjectValue(e)}
+              onChange={(e) => setSubstation(e)}
+            />
+            <span>-</span>
             <TextInput
+              style={{ flexGrow: "1" }}
               type="number"
               onChange={(e: any) => setNumberOfTP(e.target.value)}
               value={numberOfTP}
@@ -75,16 +75,14 @@ const Substations = ({
             />
           </Flex>
         </Radio.Group>
-        -
         <Textarea
           placeholder="Comment"
           label="Comment"
-          // withAsterisk
           value={commentValue}
           onChange={(e) => setCommentValue(e.target.value)}
           style={{ marginBottom: "10px", margin: "20px auto" }}
         />
-      </Box>
+      
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { ADD_NEW_RECORD } from "./constants";
+import { ADD_NEW_RECORD, DELETE_RECORD } from "./constants";
 import { addNewRecord } from "./actions"
 
 type TActions = typeof addNewRecord;
@@ -24,6 +24,8 @@ const initialState: any = [
 ];
 
 export default function historyReducer(state = initialState, action: any) {
+  console.log(action.payload);
+  
   switch (action.type) {
     case ADD_NEW_RECORD: {
       return [
@@ -37,6 +39,12 @@ export default function historyReducer(state = initialState, action: any) {
           descr: action.payload.commentValue,
         },
       ];
+    }
+    case DELETE_RECORD: {
+      return {
+        
+        ...state.filter((item: any) => item !== action.payload)
+      }
     }
     default:
       return state;

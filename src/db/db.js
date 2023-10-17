@@ -12,10 +12,11 @@ export const workplace = [
 ];
 
 export const workTitle = [
-  { value: 'инсталяция по', label: 'Инсталяция ПО' },
-  { value: 'обновление по', label: 'Обновление ПО' },
   { value: 'редактирование бд', label: 'Редактирование БД' },
   { value: 'редактирование схем', label: 'Редактирование схем' },
+  { value: 'инсталяция по', label: 'Инсталяция ПО' },
+  { value: 'обновление по', label: 'Обновление ПО' },
+  { value: 'редактирование конфигурации', label: 'Редактирование конфигурации' },
 ];
 export const workSubject = ["МУРС", "Диполь", "ТМ-2000", "DMS", "MBS", "OPC", "MEC-104"];
 
@@ -24,6 +25,7 @@ export const TPType = [
   { value: 'ЗТП', label: 'ЗТП' },
   { value: 'РП', label: 'РП' },
   { value: 'КТП', label: 'КТП' },
+  { value: 'КТПБ', label: 'КТПБ' },
   { value: 'МТП', label: 'МТП' },
 ];
 
