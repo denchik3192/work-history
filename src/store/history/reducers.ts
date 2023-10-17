@@ -25,7 +25,7 @@ const initialState: any = [
 
 export default function historyReducer(state = initialState, action: any) {
   console.log(action.payload);
-  
+
   switch (action.type) {
     case ADD_NEW_RECORD: {
       return [
@@ -42,7 +42,7 @@ export default function historyReducer(state = initialState, action: any) {
     }
     case DELETE_RECORD: {
       return {
-        
+
         ...state.filter((item: any) => item !== action.payload)
       }
     }

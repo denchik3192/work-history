@@ -1,19 +1,16 @@
 import React from 'react';
-import './App.css';
 import { MantineProvider, Flex } from '@mantine/core';
 import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
 import { Routes, Route } from 'react-router-dom';
 import Settings from './pages/Settings';
 import Table from './pages/Table';
 import Home from './pages/Home';
-import Security from './pages/Statistic';
 import { Box } from '@mantine/core';
 import { NotFoundTitle } from './pages/NotFoundTitle';
 import Statistic from './pages/Statistic';
 import HistoryRecord from './pages/HistoryRecord';
 
 const App: React.FC = () => {
-
   return (
     <div className="App">
       <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
