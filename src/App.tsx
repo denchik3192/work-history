@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MantineProvider, Flex } from '@mantine/core';
 import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
 import { Routes, Route } from 'react-router-dom';
 import Settings from './pages/Settings';
 import Table from './pages/Table';
 import Home from './pages/Home';
-import { Box } from '@mantine/core';
+import { Box, ColorSchemeProvider, ColorScheme} from '@mantine/core';
 import { NotFoundTitle } from './pages/NotFoundTitle';
 import Statistic from './pages/Statistic';
 import HistoryRecord from './pages/HistoryRecord';
 
 const App: React.FC = () => {
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
+  const toggleColorScheme = (value?: ColorScheme) => {
+    const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
+    setColorScheme(nextColorScheme);
+  };
   return (
     <div className="App">
-      <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
+      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider theme={{ colorScheme: 'dark' }} withCSSVariables withGlobalStyles withNormalizeCSS>
         <Flex>
           <NavbarSegmented />
           <Box w={'100%'} p={'40px 20px'}>
@@ -28,6 +34,7 @@ const App: React.FC = () => {
           </Box>
         </Flex>
       </MantineProvider>
+      </ColorSchemeProvider>
     </div>
   );
 };

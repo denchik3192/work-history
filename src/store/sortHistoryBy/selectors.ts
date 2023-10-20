@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
-export const historyItems = (state: RootState) => state.history as Array<any>;
+export const historyItems = (state: RootState) => state.history.items as Array<any>;
 export const selectActiveFilter = (state: RootState) =>
   state.sortHistory.sortBy;
 export const selectActiveWorkplace = (state: RootState) =>
@@ -38,7 +38,7 @@ export const selectWorkplaceStats = createSelector(
     return items.reduce((acc, current) => {
       let { place } = current;
       console.log(place);
-
+      
       const oneRecordPersent = 100 / items.length
       return { ...acc, [place.toLowerCase()]: (acc[place.toLowerCase()] || 0) + oneRecordPersent };
     }, {});

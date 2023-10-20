@@ -4,12 +4,15 @@ import { RootState, useAppDispatch } from '../../store/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectHistoryByFilter, selectWorkplaceStats } from '../../store/sortHistoryBy/selectors';
 import { sortByAction } from '../../store/sortHistoryBy/actions';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { colors } from '../../db/colors';
 import { useDisclosure } from '@mantine/hooks';
 import { Icon360View, IconHttpDelete, IconPalette } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import { deleteRecord } from '../../store/history/actions';
+import { addItems, deleteRecord } from '../../store/history/actions';
+import { TNewRecord } from '../../types/TNewRecord';
+import { setItemsToLS } from '../../utils/SetItemsToLS';
+import { getItemsFromLS } from '../../utils/GetItemsFromLS';
 
 interface TableReviewsProps {
   data: {
@@ -22,34 +25,36 @@ interface TableReviewsProps {
   }[];
 }
 
-export function TableReviews({ data }: TableReviewsProps) {
-  const [isopened, { open, close }] = useDisclosure(false);
+export function TableReviews() {
   const [workplace, setWorkplace] = useState<String>('Все');
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
+   useEffect(() => {
+    const items = getItemsFromLS();
+    if (items.length) dispatch(addItems(items));
+    
+  }, [dispatch]);
 
-  const workplaceStats = useSelector(selectWorkplaceStats);
-
-  const filteredHistoryWorkplace = filteredHistory.filter((el: any) => {
+  const filteredHistoryWorkplace = filteredHistory?.filter((el: any) => {
     if (workplace === 'Все') {
       return el;
     } else {
-      return el.place.toLowerCase() === workplace.toLowerCase();
+      return el.place?.toLowerCase() === workplace.toLowerCase();
     }
   });
 
-  const rows = filteredHistoryWorkplace.map((row, idx) => {
+  const rows = filteredHistoryWorkplace?.map((row, idx) => {
     return (
       <tr key={row.id}>
-        <td>{row.id}</td>
+        <td>{row.number}</td>
         <td>{row.date}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
         <td>{row.subject}</td>
         <td>{row.descr}</td>
         <td>
-          <Link to={`/history/:${row.id}`}>
-            <Button variant="light" onClick={open} radius="xs" style={{ marginRight: '10px' }}>
+          <Link to={`/history/:${row.number}`}>
+            <Button variant="light" radius="xs" style={{ marginRight: '10px' }}>
               View
             </Button>
           </Link>
@@ -58,13 +63,19 @@ export function TableReviews({ data }: TableReviewsProps) {
             variant="light"
             color="red"
             radius="xs"
-            onClick={(id: any) => dispatch(deleteRecord(id))}>
+            onClick={(id: any) => dispatch(deleteRecord(row.id))}>
             Del
           </Button>
         </td>
       </tr>
     );
   });
+
+ 
+
+  useEffect(() => {
+    setItemsToLS(filteredHistoryWorkplace);
+  }, [filteredHistoryWorkplace]);
 
   const changeWorkPlace = (e: String) => {
     setWorkplace(e);
@@ -112,13 +123,8 @@ export function TableReviews({ data }: TableReviewsProps) {
             'Горки',
             'Шклов',
           ]}
-          // classNames={classes}
         />
       </ScrollArea>
-
-      <Modal opened={isopened} onClose={close} title="Record" centered>
-        pess
-      </Modal>
     </>
   );
 }

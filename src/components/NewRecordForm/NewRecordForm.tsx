@@ -4,7 +4,6 @@ import { useForm } from "@mantine/form";
 import { addNewRecord } from "../../store/history/actions";
 import {
   Button,
-  Group,
   SegmentedControl,
   Select,
   Box,
@@ -108,11 +107,11 @@ function NewRecordForm() {
               onChange={(e) => setWorkSubjectValue(e)}
             />
             <Select
+            label="Workplace"
               withAsterisk
               data={workplace}
               placeholder="Pick workplace"
               clearable
-              style={{ marginBottom: "10px", margin: "20px auto" }}
               value={workPlaceValue}
               onChange={(e: any) => setWorkplaceValue(e)}
               transitionProps={{
@@ -122,10 +121,11 @@ function NewRecordForm() {
               }}
             />
             <Select
+            label="Title"
               data={workTitle}
               placeholder="Pick work title"
               clearable
-              style={{ marginBottom: "10px", margin: "20px auto" }}
+              
               value={workTitleValue}
               onChange={(e: any) => setWorkTitleValue(e)}
               transitionProps={{
@@ -135,6 +135,7 @@ function NewRecordForm() {
               }}
             />
             <DateTimePicker
+            label="Date/Time"
               placeholder="Pick date and time"
               mx="auto"
               clearable

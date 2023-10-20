@@ -1,50 +1,42 @@
-import { ADD_NEW_RECORD, DELETE_RECORD } from "./constants";
-import { addNewRecord } from "./actions"
+import { ADD_ITEMS, ADD_NEW_RECORD, DELETE_RECORD } from "./constants";
+import { addNewRecord } from "./actions";
 
 type TActions = typeof addNewRecord;
 
-const initialState: any = [
-  {
-    id: 1,
-    date: "2023-05-05",
-    place: "МГРЭС",
-    title: "Обновление ПО",
-    subject: "Диполь",
-    descr: "новый экзешник",
-  },
-  {
-    id: 2,
-    date: "2023-05-04",
-    place: "МСРЭС",
-    title: "Обновление ПО",
-    subject: "МУРС",
-    descr: "новый экзешник",
-  },
-
-];
+const initialState: any = {
+  items: [],
+};
 
 export default function historyReducer(state = initialState, action: any) {
-  console.log(action.payload);
-
   switch (action.type) {
     case ADD_NEW_RECORD: {
-      return [
+      return {
         ...state,
-        {
-          id: state.length + 1,
-          place: action.payload.workPlaceValue,
-          date: action.payload.dateValue,
-          title: action.payload.workTitleValue,
-          subject: action.payload.workSubjectValue,
-          descr: action.payload.commentValue,
-        },
-      ];
+        items: [
+          ...state.items,
+          {
+            number: state.items.length + 1,
+            id: Math.random,
+            place: action.payload.workPlaceValue,
+            date: action.payload.dateValue,
+            title: action.payload.workTitleValue,
+            subject: action.payload.workSubjectValue,
+            descr: action.payload.commentValue,
+          },
+        ],
+      };
     }
     case DELETE_RECORD: {
       return {
-
-        ...state.filter((item: any) => item !== action.payload)
-      }
+        ...state,
+        items: state.items.filter((item: any) => item.id !== action.payload),
+      };
+    }
+    case ADD_ITEMS: {
+      return {
+        ...state,
+        items:action.payload,
+      };
     }
     default:
       return state;

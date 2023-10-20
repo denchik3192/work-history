@@ -14,7 +14,6 @@ const Table: React.FC = () => {
   const numberOfRecords = useSelector(
     (state: RootState) => state.history.length
   );
-  const history = useSelector((state: RootState) => state.history);
   const workplaceStats = useSelector(selectWorkplaceStats);
 
   return (
@@ -32,7 +31,7 @@ const Table: React.FC = () => {
           })
         )}
       />
-      <TableReviews data={history} />
+      <TableReviews />
       <Pagination total={10} style={{ position: 'absolute', left: '20%', bottom: '1%' }} />
     </>
   );
