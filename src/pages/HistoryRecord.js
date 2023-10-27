@@ -6,14 +6,13 @@ import classes from './HistoryRecord.module.css';
 
 function HistoryRecord() {
   const { id } = useParams();
-  const record = useSelector((state) => state.history.items[id.slice(1) - 1]);
-  console.log(record);
+  const record = useSelector((state) => state.history.items[id.slice(1) - 1])
 
   return (
     <>
       <Card withBorder radius="md" className={classes.card} maw={"400px"}>
         <Card.Section className={classes.imageSection}>
-          <Image src="https://i.imgur.com/ZL52Q2D.png" alt="Tesla Model S" />
+          <Title order={1}>{record.place}</Title>
         </Card.Section>
 
         <Group justify="space-between" mt="md">

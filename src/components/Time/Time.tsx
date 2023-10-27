@@ -6,13 +6,13 @@ function Time() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const time = new Date().toLocaleTimeString();
-      setTime(time);
+      const newTime = new Date().toLocaleTimeString();
+      setTime(newTime);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  return <Title order={2}>{time}</Title>;
+  return <Title order={1}>{time}</Title>;
 }
 
 export default Time;

@@ -16,7 +16,7 @@ export default function historyReducer(state = initialState, action: any) {
           ...state.items,
           {
             number: state.items.length + 1,
-            id: Math.random,
+            id: Math.random(),
             place: action.payload.workPlaceValue,
             date: action.payload.dateValue,
             title: action.payload.workTitleValue,

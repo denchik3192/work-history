@@ -103,7 +103,7 @@ const tabs = {
 export function NavbarSegmented() {
   const { classes, cx } = useStyles();
   const [section, setSection] = useState<"history" | "todo">("history");
-  const [active, setActive] = useState("History");
+  const [active, setActive] = useState("Home");
 
   const links = tabs[section].map((item) => (
     <Link

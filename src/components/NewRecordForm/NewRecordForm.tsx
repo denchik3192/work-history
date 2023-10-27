@@ -56,6 +56,16 @@ function NewRecordForm() {
   const [timeValue, setTimeValue] = useState("");
   const [numberOfTP, setNumberOfTP] = useState("");
 
+  // const form = useForm({
+  //   initialValues: { place: '', title: '' },
+
+    
+  //   validate: {
+  //     place: (value) => (value.length < 1 ? "Not Empty" : null),
+  //     title: (value) => (value.length < 1 ? "Not Empty" : null),
+  //   },
+  // });
+
   useEffect(() => {
     const interval = setInterval(() => {
       const getFullDate = () => {
@@ -65,11 +75,12 @@ function NewRecordForm() {
         setTimeValue(time);
       };
       getFullDate();
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  const saveData = (e: any) => {
+  const saveData = (e:any) => {
+    
     e.preventDefault();
     dispatch(
       addNewRecord({
@@ -90,7 +101,6 @@ function NewRecordForm() {
   };
   return (
     <>
-
       <Flex
         gap="md"
         justify="center"
@@ -98,7 +108,7 @@ function NewRecordForm() {
         direction="row"
         wrap="wrap"
       >
-        <form onSubmit={saveData} >
+        <form onSubmit={saveData}>
           <Box>
             <SegmentedControl
               data={workSubject}
@@ -107,7 +117,8 @@ function NewRecordForm() {
               onChange={(e) => setWorkSubjectValue(e)}
             />
             <Select
-            label="Workplace"
+              label="Workplace"
+              // {...form.getInputProps("place")}
               withAsterisk
               data={workplace}
               placeholder="Pick workplace"
@@ -121,11 +132,11 @@ function NewRecordForm() {
               }}
             />
             <Select
-            label="Title"
+              label="Title"
+              // {...form.getInputProps("title")}
               data={workTitle}
               placeholder="Pick work title"
               clearable
-              
               value={workTitleValue}
               onChange={(e: any) => setWorkTitleValue(e)}
               transitionProps={{
@@ -135,7 +146,8 @@ function NewRecordForm() {
               }}
             />
             <DateTimePicker
-            label="Date/Time"
+              style={{ display: "none" }}
+              label="Date/Time"
               placeholder="Pick date and time"
               mx="auto"
               clearable
@@ -153,7 +165,7 @@ function NewRecordForm() {
               setCommentValue={setCommentValue}
             ></Substations>
           </Box>
-          <Button fullWidth size="lg" type="submit" >
+          <Button fullWidth size="lg" type="submit">
             Submit
           </Button>
         </form>
