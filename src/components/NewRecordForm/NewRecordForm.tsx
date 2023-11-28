@@ -133,6 +133,7 @@ function NewRecordForm() {
             />
             <Select
               label="Title"
+              withAsterisk
               // {...form.getInputProps("title")}
               data={workTitle}
               placeholder="Pick work title"
