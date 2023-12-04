@@ -1,17 +1,13 @@
 import {
   Table,
   ScrollArea,
-  Select,
-  SegmentedControl,
   Button,
-  Modal,
 } from "@mantine/core";
 import {} from "../../store/settings/actions";
 import { useAppDispatch } from "../../store/store";
 import { useSelector } from "react-redux";
 import {
   selectHistoryByFilter,
-  selectWorkplaceStats,
 } from "../../store/sortHistoryBy/selectors";
 import { sortByAction } from "../../store/sortHistoryBy/actions";
 import { useEffect, useState } from "react";
@@ -35,10 +31,6 @@ export function TableReviews() {
   const [workplace, setWorkplace] = useState<String>("Все");
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
-  useEffect(() => {
-    const items = getItemsFromLS();
-    if (items.length) dispatch(addItems(items));
-  }, [dispatch]);
 
   const filteredHistoryWorkplace = filteredHistory?.filter((el: any) => {
     if (workplace === "Все") {
@@ -54,7 +46,7 @@ export function TableReviews() {
       <tr key={row.id}>
         <td>{idx+1}</td>
         <td>{row.date}</td>
-        <td>{row.place}</td>
+        <td>{row.place.toUpperCase()}</td>
         <td>{row.title}</td>
         <td>{row.subject}</td>
         <td>{row.descr}</td>
@@ -77,14 +69,9 @@ export function TableReviews() {
       </tr>
     );
   });
-
-  useEffect(() => {
-    setItemsToLS(filteredHistoryWorkplace);
-  }, [filteredHistoryWorkplace]);
-
-  const changeWorkPlace = (e: String) => {
-    setWorkplace(e);
-  };
+  // const changeWorkPlace = (e: String) => {
+  //   setWorkplace(e);
+  // };
 
   return (
     <>

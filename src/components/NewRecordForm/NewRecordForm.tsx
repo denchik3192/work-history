@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../store/store";
-import { useForm } from "@mantine/form";
+import { useForm, isNotEmpty,hasLength } from '@mantine/form';
 import { addNewRecord } from "../../store/history/actions";
 import {
   Button,
@@ -56,15 +56,17 @@ function NewRecordForm() {
   const [timeValue, setTimeValue] = useState("");
   const [numberOfTP, setNumberOfTP] = useState("");
 
-  // const form = useForm({
-  //   initialValues: { place: '', title: '' },
-
-    
-  //   validate: {
-  //     place: (value) => (value.length < 1 ? "Not Empty" : null),
-  //     title: (value) => (value.length < 1 ? "Not Empty" : null),
-  //   },
-  // });
+  const form = useForm({
+      initialValues: {
+        place: '',
+        title: '',
+      },
+  
+      validate: {
+        place: hasLength({ min: 2, max: 20 }, 'Field must be 2-10 characters long'),
+        title: isNotEmpty('Enter the title'),
+      },
+    });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -118,7 +120,7 @@ function NewRecordForm() {
             />
             <Select
               label="Workplace"
-              // {...form.getInputProps("place")}
+              {...form.getInputProps("place")}
               withAsterisk
               data={workplace}
               placeholder="Pick workplace"
@@ -134,7 +136,7 @@ function NewRecordForm() {
             <Select
               label="Title"
               withAsterisk
-              // {...form.getInputProps("title")}
+              {...form.getInputProps("title")}
               data={workTitle}
               placeholder="Pick work title"
               clearable

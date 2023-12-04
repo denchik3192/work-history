@@ -3,9 +3,29 @@ import { Title, Group, Indicator, Flex } from "@mantine/core";
 import { Calendar } from "@mantine/dates";
 import NewRecordForm from "../components/NewRecordForm/NewRecordForm";
 import Time from "../components/Time/Time";
+import { useAppDispatch } from "../store/store";
+import { useSelector } from "react-redux";
+import { selectHistoryByFilter } from "../store/sortHistoryBy/selectors";
+import { addItems } from "../store/history/actions";
+import { getItemsFromLS } from "../utils/GetItemsFromLS";
+import { setItemsToLS } from "../utils/SetItemsToLS";
 
 const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const filteredHistory = useSelector(selectHistoryByFilter);
   console.log("home render");
+  useEffect(() => {
+    const items = getItemsFromLS();
+    if (items.length) dispatch(addItems(items));
+  }, [dispatch]);
+
+  useEffect(() => {
+    setItemsToLS(filteredHistory);
+  }, [filteredHistory]);
+
+  // const changeWorkPlace = (e: String) => {
+  //   setWorkplace(e);
+  // };
 
   return (
     <>
