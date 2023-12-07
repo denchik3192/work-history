@@ -1,43 +1,34 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../store/store";
-import { useForm, isNotEmpty,hasLength } from '@mantine/form';
-import { addNewRecord } from "../../store/history/actions";
-import {
-  Button,
-  SegmentedControl,
-  Select,
-  Box,
-  rem,
-  createStyles,
-  Flex,
-} from "@mantine/core";
-import { workSubject, workTitle, workplace } from "../../db/db";
-import { DateTimePicker } from "@mantine/dates";
-import Substations from "../Substations/Substations";
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '../../store/store';
+import { useForm, isNotEmpty, hasLength } from '@mantine/form';
+import { addNewRecord } from '../../store/history/actions';
+import { Button, SegmentedControl, Select, Box, rem, createStyles, Flex } from '@mantine/core';
+import { workSubject, workTitle, workplace } from '../../db/db';
+import { DateTimePicker } from '@mantine/dates';
+import Substations from '../Substations/Substations';
 const useStyles = createStyles((theme) => ({
   root: {
-    backgroundColor:
-      theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
     boxShadow: theme.shadows.md,
     border: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[1]
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1]
     }`,
-    margin: "10px auto",
-    width: "100%",
+    margin: '10px auto',
+    width: '100%',
   },
 
   indicator: {
-    backgroundImage: theme.fn.gradient({ from: "pink", to: "orange" }),
+    backgroundImage: theme.fn.gradient({ from: 'pink', to: 'orange' }),
     // marginBottom: '10px',
   },
 
   control: {
-    border: "0 !important",
+    border: '0 !important',
   },
 
   label: {
-    "&, &:hover": {
-      "&[data-active]": {
+    '&, &:hover': {
+      '&[data-active]': {
         color: theme.white,
       },
     },
@@ -47,26 +38,26 @@ const useStyles = createStyles((theme) => ({
 function NewRecordForm() {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
-  const [workPlaceValue, setWorkplaceValue] = useState<string>("");
-  const [workTitleValue, setWorkTitleValue] = useState<string>("");
-  const [commentValue, setCommentValue] = useState("");
-  const [workSubjectValue, setWorkSubjectValue] = useState("МУРС");
-  const [substationType, setSubstationType] = useState<String>("");
-  const [dateValue, setDateValue] = useState("");
-  const [timeValue, setTimeValue] = useState("");
-  const [numberOfTP, setNumberOfTP] = useState("");
+  const [workPlaceValue, setWorkplaceValue] = useState<string>('');
+  const [workTitleValue, setWorkTitleValue] = useState<string>('');
+  const [commentValue, setCommentValue] = useState('');
+  const [workSubjectValue, setWorkSubjectValue] = useState('МУРС');
+  const [substationType, setSubstationType] = useState<String>('');
+  const [dateValue, setDateValue] = useState('');
+  const [timeValue, setTimeValue] = useState('');
+  const [numberOfTP, setNumberOfTP] = useState('');
 
   const form = useForm({
-      initialValues: {
-        place: '',
-        title: '',
-      },
-  
-      validate: {
-        place: hasLength({ min: 2, max: 20 }, 'Field must be 2-10 characters long'),
-        title: isNotEmpty('Enter the title'),
-      },
-    });
+    initialValues: {
+      place: '',
+      title: '',
+    },
+
+    validate: {
+      place: hasLength({ min: 2, max: 20 }, 'Field must be 2-10 characters long'),
+      title: isNotEmpty('Enter the title'),
+    },
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -81,35 +72,28 @@ function NewRecordForm() {
     return () => clearInterval(interval);
   }, []);
 
-  const saveData = (e:any) => {
-    
+  const saveData = (e: any) => {
     e.preventDefault();
     dispatch(
       addNewRecord({
         workPlaceValue,
         workSubjectValue,
         workTitleValue,
-        commentValue: commentValue + substationType + "-" + numberOfTP + " ",
+        commentValue: commentValue + substationType + '-' + numberOfTP + ' ',
         dateValue,
         timeValue,
-      })
+      }),
     );
-    setWorkplaceValue("");
-    setWorkSubjectValue("");
-    setWorkTitleValue("");
-    setSubstationType("");
-    setNumberOfTP("");
-    setCommentValue("");
+    setWorkplaceValue('');
+    setWorkSubjectValue('');
+    setWorkTitleValue('');
+    setSubstationType('');
+    setNumberOfTP('');
+    setCommentValue('');
   };
   return (
     <>
-      <Flex
-        gap="md"
-        justify="center"
-        align="center"
-        direction="row"
-        wrap="wrap"
-      >
+      <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
         <form onSubmit={saveData}>
           <Box>
             <SegmentedControl
@@ -120,36 +104,36 @@ function NewRecordForm() {
             />
             <Select
               label="Workplace"
-              {...form.getInputProps("place")}
+              {...form.getInputProps('place')}
               withAsterisk
               data={workplace}
               placeholder="Pick workplace"
               clearable
-              value={workPlaceValue}
-              onChange={(e: any) => setWorkplaceValue(e)}
+              // value={workPlaceValue}
+              // onChange={(e: any) => setWorkplaceValue(e)}
               transitionProps={{
-                transition: "pop-top-left",
+                transition: 'pop-top-left',
                 duration: 100,
-                timingFunction: "ease",
+                timingFunction: 'ease',
               }}
             />
             <Select
               label="Title"
               withAsterisk
-              {...form.getInputProps("title")}
+              {...form.getInputProps('title')}
               data={workTitle}
               placeholder="Pick work title"
               clearable
-              value={workTitleValue}
-              onChange={(e: any) => setWorkTitleValue(e)}
+              // value={workTitleValue}
+              // onChange={(e: any) => setWorkTitleValue(e)}
               transitionProps={{
-                transition: "pop-top-left",
+                transition: 'pop-top-left',
                 duration: 100,
-                timingFunction: "ease",
+                timingFunction: 'ease',
               }}
             />
             <DateTimePicker
-              style={{ display: "none" }}
+              style={{ display: 'none' }}
               label="Date/Time"
               placeholder="Pick date and time"
               mx="auto"
@@ -165,8 +149,7 @@ function NewRecordForm() {
               numberOfTP={numberOfTP}
               setNumberOfTP={setNumberOfTP}
               commentValue={commentValue}
-              setCommentValue={setCommentValue}
-            ></Substations>
+              setCommentValue={setCommentValue}></Substations>
           </Box>
           <Button fullWidth size="lg" type="submit">
             Submit
