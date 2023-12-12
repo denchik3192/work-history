@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Title, Group, Indicator, Flex } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
-import NewRecordForm from '../components/NewRecordForm/NewRecordForm';
 import Time from '../components/Time/Time';
 import { useAppDispatch } from '../store/store';
 import { useSelector } from 'react-redux';

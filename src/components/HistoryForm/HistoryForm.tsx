@@ -1,11 +1,31 @@
 import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
-import { Button, SegmentedControl, Flex, createStyles, Box, Select, rem } from '@mantine/core';
-import { workSubject, workTitle, workplace } from '../../db/db';
-import { DateTimePicker } from '@mantine/dates';
-import Substations from '../Substations/Substations';
+import {
+  Button,
+  SegmentedControl,
+  Flex,
+  createStyles,
+  Box,
+  Select,
+  rem,
+  Textarea,
+  Tooltip,
+  Radio,
+  TextInput,
+} from '@mantine/core';
+import { TPType, substations_real, workSubject, workTitle, workplace } from '../../db/db';
 import { useEffect, useState } from 'react';
 import { addNewRecord } from '../../store/history/actions';
 import { useAppDispatch } from '../../store/store';
+
+interface IRecord {
+  id?: number;
+  place: string;
+  date?: string;
+  title: string;
+  subject: string;
+  descr?: string;
+  weather?: string;
+}
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -38,8 +58,9 @@ const useStyles = createStyles((theme) => ({
 function HistoryForm() {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
+  const [searchValue, onSearchChange] = useState('');
+  const [focused, setFocused] = useState(false);
   const [commentValue, setCommentValue] = useState('');
-  const [workSubjectValue, setWorkSubjectValue] = useState('МУРС');
   const [substationType, setSubstationType] = useState<String>('');
   const [dateValue, setDateValue] = useState('');
   const [timeValue, setTimeValue] = useState('');
@@ -47,16 +68,14 @@ function HistoryForm() {
   const form = useForm({
     initialValues: {
       place: '',
-      subject: '',
+      subject: `${workSubject[0]}`,
       title: '',
-      // comment: '',
     },
 
     validate: {
       place: isNotEmpty(),
       title: isNotEmpty(),
       subject: isNotEmpty(),
-      // comment: isNotEmpty(),
     },
   });
 
@@ -73,7 +92,7 @@ function HistoryForm() {
     return () => clearInterval(interval);
   }, []);
 
-  const saveData = (data: any, event: any) => {
+  const saveData = (data: IRecord, event: any) => {
     event.preventDefault();
     console.log(data);
 
@@ -128,13 +147,48 @@ function HistoryForm() {
             />
           </Box>
           <Box>
-            <Substations
-              substationType={substationType}
-              setSubstation={setSubstationType}
-              numberOfTP={numberOfTP}
-              setNumberOfTP={setNumberOfTP}
-              commentValue={commentValue}
-              setCommentValue={setCommentValue}></Substations>
+            <Select
+              w={'100%'}
+              label="Select substation"
+              searchValue={searchValue}
+              onSearchChange={onSearchChange}
+              placeholder="Pick one"
+              searchable
+              nothingFound="No options"
+              data={substations_real}
+              transitionProps={{
+                transition: 'pop-top-left',
+                duration: 100,
+                timingFunction: 'ease',
+              }}
+            />
+
+            <Radio.Group name="substation type" label="Select substation type">
+              <Flex style={{ alignItems: 'center' }}>
+                <SegmentedControl data={TPType} onChange={(e) => setSubstationType(e)} />
+                <span>-</span>
+                <TextInput
+                  style={{ flexGrow: '1' }}
+                  type="number"
+                  onChange={(e: any) => setNumberOfTP(e.target.value)}
+                  value={numberOfTP}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  inputContainer={(children) => (
+                    <Tooltip label="Enter the number" position="top-start" opened={focused}>
+                      {children}
+                    </Tooltip>
+                  )}
+                />
+              </Flex>
+            </Radio.Group>
+            <Textarea
+              placeholder="Comment"
+              label="Comment"
+              value={commentValue}
+              onChange={(e) => setCommentValue(e.target.value)}
+              style={{ marginBottom: '10px', margin: '20px auto' }}
+            />
           </Box>
           <Button fullWidth size="lg" type="submit">
             Submit
