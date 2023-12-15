@@ -41,10 +41,10 @@ function HistoryRecord() {
           <Group gap={30}>
             <div>
               <Text fz="xl" fw={700} style={{ lineHeight: 1 }}>
-                Date
+                Date/time
               </Text>
               <Text fz="sm" c="dimmed" fw={500} style={{ lineHeight: 1 }} mt={3}>
-                {record.date}
+                {record.date} {record.time}
               </Text>
             </div>
 

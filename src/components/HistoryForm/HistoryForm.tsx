@@ -21,10 +21,14 @@ interface IRecord {
   id?: number;
   place: string;
   date?: string;
+  // time: string;
   title: string;
+  comment: string;
+  numberOfTP?: string;
   subject: string;
   descr?: string;
   weather?: string;
+  substationType: string;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -60,22 +64,24 @@ function HistoryForm() {
   const { classes } = useStyles();
   const [searchValue, onSearchChange] = useState('');
   const [focused, setFocused] = useState(false);
-  const [commentValue, setCommentValue] = useState('');
-  const [substationType, setSubstationType] = useState<String>('');
   const [dateValue, setDateValue] = useState('');
   const [timeValue, setTimeValue] = useState('');
-  const [numberOfTP, setNumberOfTP] = useState('');
+
   const form = useForm({
     initialValues: {
-      place: '',
-      subject: `${workSubject[0]}`,
+      place: `МГРЭС`,
+      subject: '',
       title: '',
+      comment: '',
+      numberOfTP: '',
+      substationType: `${TPType[0].value}`
     },
 
     validate: {
       place: isNotEmpty(),
       title: isNotEmpty(),
       subject: isNotEmpty(),
+      // comment: isNotEmpty(),
     },
   });
 
@@ -94,14 +100,13 @@ function HistoryForm() {
 
   const saveData = (data: IRecord, event: any) => {
     event.preventDefault();
-    console.log(data);
-
+    
     dispatch(
       addNewRecord({
         workPlaceValue: data.place,
         workSubjectValue: data.subject,
         workTitleValue: data.title,
-        commentValue: commentValue + substationType + '-' + numberOfTP + ' ',
+        commentValue: data.comment + data.substationType + '-' + data.numberOfTP + ' ',
         dateValue,
         timeValue,
       }),
@@ -115,16 +120,16 @@ function HistoryForm() {
         <form onSubmit={form.onSubmit(saveData)}>
           <Box>
             <SegmentedControl
-              {...form.getInputProps('subject')}
-              data={workSubject}
+              {...form.getInputProps('place')}
+              data={workplace}
               classNames={classes}
             />
             <Select
-              label="Workplace"
-              {...form.getInputProps('place')}
+              label="Subject"
+              {...form.getInputProps('subject')}
               withAsterisk
-              data={workplace}
-              placeholder="Pick workplace"
+              data={workSubject}
+              placeholder="Pick worksubject"
               clearable
               transitionProps={{
                 transition: 'pop-top-left',
@@ -165,13 +170,12 @@ function HistoryForm() {
 
             <Radio.Group name="substation type" label="Select substation type">
               <Flex style={{ alignItems: 'center' }}>
-                <SegmentedControl data={TPType} onChange={(e) => setSubstationType(e)} />
+                <SegmentedControl data={TPType} {...form.getInputProps('substationType')} />
                 <span>-</span>
                 <TextInput
                   style={{ flexGrow: '1' }}
                   type="number"
-                  onChange={(e: any) => setNumberOfTP(e.target.value)}
-                  value={numberOfTP}
+                  {...form.getInputProps('numberOfTP')}
                   onFocus={() => setFocused(true)}
                   onBlur={() => setFocused(false)}
                   inputContainer={(children) => (
@@ -185,8 +189,7 @@ function HistoryForm() {
             <Textarea
               placeholder="Comment"
               label="Comment"
-              value={commentValue}
-              onChange={(e) => setCommentValue(e.target.value)}
+              {...form.getInputProps('comment')}
               style={{ marginBottom: '10px', margin: '20px auto' }}
             />
           </Box>
