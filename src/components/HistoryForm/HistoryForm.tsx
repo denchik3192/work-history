@@ -1,4 +1,4 @@
-import { useForm, isNotEmpty, isEmail, isInRange, hasLength, matches } from '@mantine/form';
+import { useForm, isNotEmpty } from '@mantine/form';
 import {
   Button,
   SegmentedControl,
@@ -12,24 +12,11 @@ import {
   Radio,
   TextInput,
 } from '@mantine/core';
-import { TPType, substations_real, workSubject, workTitle, workplace } from '../../db/db';
+import { TPType, substations, workSubject, workTitle, workplace } from '../../db/db';
 import { useEffect, useState } from 'react';
 import { addNewRecord } from '../../store/history/actions';
 import { useAppDispatch } from '../../store/store';
-
-interface IRecord {
-  id?: number;
-  place: string;
-  date?: string;
-  // time: string;
-  title: string;
-  comment: string;
-  numberOfTP?: string;
-  subject: string;
-  descr?: string;
-  weather?: string;
-  substationType: string;
-}
+import { TNewRecord } from '../../types/TNewRecord';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -64,17 +51,18 @@ function HistoryForm() {
   const { classes } = useStyles();
   const [searchValue, onSearchChange] = useState('');
   const [focused, setFocused] = useState(false);
-  const [dateValue, setDateValue] = useState('');
-  const [timeValue, setTimeValue] = useState('');
+  const [dateValue, setDateValue] = useState<string>('');
+  const [timeValue, setTimeValue] = useState<string>('');
 
   const form = useForm({
     initialValues: {
-      place: `МГРЭС`,
+      place: `${workplace[0].value}`,
       subject: '',
       title: '',
       comment: '',
       numberOfTP: '',
-      substationType: `${TPType[0].value}`
+      substationType: ``,
+      // transformerSubstation: '',
     },
 
     validate: {
@@ -98,17 +86,19 @@ function HistoryForm() {
     return () => clearInterval(interval);
   }, []);
 
-  const saveData = (data: IRecord, event: any) => {
+  const saveData = (data: TNewRecord, event: any) => {
     event.preventDefault();
-    
+
     dispatch(
       addNewRecord({
-        workPlaceValue: data.place,
-        workSubjectValue: data.subject,
-        workTitleValue: data.title,
-        commentValue: data.comment + data.substationType + '-' + data.numberOfTP + ' ',
+        place: data.place,
+        subject: data.subject,
+        title: data.title,
+        comment: data.comment,
         dateValue,
         timeValue,
+        substationType: data.substationType,
+        numberOfTP: data.numberOfTP,
       }),
     );
     form.reset();
@@ -120,8 +110,8 @@ function HistoryForm() {
         <form onSubmit={form.onSubmit(saveData)}>
           <Box>
             <SegmentedControl
-              {...form.getInputProps('place')}
               data={workplace}
+              {...form.getInputProps('place')}
               classNames={classes}
             />
             <Select
@@ -160,7 +150,7 @@ function HistoryForm() {
               placeholder="Pick one"
               searchable
               nothingFound="No options"
-              data={substations_real}
+              data={substations}
               transitionProps={{
                 transition: 'pop-top-left',
                 duration: 100,

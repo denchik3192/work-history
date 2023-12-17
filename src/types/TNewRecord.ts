@@ -1,8 +1,11 @@
 export type TNewRecord = {
-  workPlaceValue: string;
-  workSubjectValue: string;
-  workTitleValue: string;
-  commentValue: String;
-  dateValue: String;
-  timeValue: String;
+  // id: number
+  place: string;
+  subject: string;
+  title: string;
+  comment: string;
+  dateValue?: string;
+  timeValue?: string;
+  substationType: string;
+  numberOfTP: string;
 };

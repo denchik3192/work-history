@@ -1,39 +1,33 @@
-import {
-  Table,
-  ScrollArea,
-  Button,
-} from "@mantine/core";
-import {} from "../../store/settings/actions";
-import { useAppDispatch } from "../../store/store";
-import { useSelector } from "react-redux";
-import {
-  selectHistoryByFilter,
-} from "../../store/sortHistoryBy/selectors";
-import { sortByAction } from "../../store/sortHistoryBy/actions";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { addItems, deleteRecord } from "../../store/history/actions";
-import { setItemsToLS } from "../../utils/SetItemsToLS";
-import { getItemsFromLS } from "../../utils/GetItemsFromLS";
+import { Table, ScrollArea, Button } from '@mantine/core';
+import {} from '../../store/settings/actions';
+import { useAppDispatch } from '../../store/store';
+import { useSelector } from 'react-redux';
+import { selectHistoryByFilter } from '../../store/sortHistoryBy/selectors';
+import { sortByAction } from '../../store/sortHistoryBy/actions';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { addItems, deleteRecord } from '../../store/history/actions';
+import { setItemsToLS } from '../../utils/SetItemsToLS';
+import { getItemsFromLS } from '../../utils/GetItemsFromLS';
 
-interface TableReviewsProps {
-  data: {
-    id: number;
-    date: String;
-    place: String;
-    title: String;
-    subject: String;
-    descr: String;
-  }[];
-}
+// interface TableReviewsProps {
+//   data: {
+//     id: number;
+//     date: String;
+//     place: String;
+//     title: String;
+//     subject: String;
+//     descr: String;
+//   }[];
+// }
 
 export function TableReviews() {
-  const [workplace, setWorkplace] = useState<String>("Все");
+  const [workplace, setWorkplace] = useState<String>('Все');
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
 
   const filteredHistoryWorkplace = filteredHistory?.filter((el: any) => {
-    if (workplace === "Все") {
+    if (workplace === 'Все') {
       return el;
     } else {
       return el.place?.toLowerCase() === workplace.toLowerCase();
@@ -42,17 +36,16 @@ export function TableReviews() {
 
   const rows = filteredHistoryWorkplace?.map((row, idx) => {
     return (
-      
       <tr key={row.id}>
-        <td>{idx+1}</td>
+        <td>{idx + 1}</td>
         <td>{row.date}</td>
-        <td>{row.place.toUpperCase()}</td>
+        <td>{row.place}</td>
         <td>{row.title}</td>
-        <td>{row.subject}</td>
+        {/* <td>{row.subject}</td> */}
         <td>{row.descr}</td>
         <td>
           <Link to={`/history/:${row.number}`}>
-            <Button variant="light" radius="xs" style={{ marginRight: "10px" }}>
+            <Button variant="light" radius="xs" style={{ marginRight: '10px' }}>
               View
             </Button>
           </Link>
@@ -61,8 +54,7 @@ export function TableReviews() {
             variant="light"
             color="red"
             radius="xs"
-            onClick={(id: any) => dispatch(deleteRecord(row.id))}
-          >
+            onClick={(id: any) => dispatch(deleteRecord(row.id))}>
             Del
           </Button>
         </td>
@@ -101,22 +93,21 @@ export function TableReviews() {
           ]}
         /> */}
       <ScrollArea h={'80vh'}>
-      <Table verticalSpacing="xs">
-        <thead>
-          <tr>
-            <th>№</th>
-            <th>Date/Time</th>
-            <th>Place</th>
-            <th>Title</th>
-            <th>Subject</th>
-            <th>Descr</th>
-            <th>view/del</th>
-          </tr>
-        </thead>
+        <Table verticalSpacing="xs">
+          <thead>
+            <tr>
+              <th>№</th>
+              <th>Date/Time</th>
+              <th>Place</th>
+              <th>Title</th>
+              {/* <th>Subject</th> */}
+              <th>Descr</th>
+              <th>view/del</th>
+            </tr>
+          </thead>
 
-        <tbody>{rows}</tbody>
-      </Table>
-
+          <tbody>{rows}</tbody>
+        </Table>
       </ScrollArea>
     </>
   );
