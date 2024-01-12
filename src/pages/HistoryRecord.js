@@ -1,16 +1,20 @@
 import { Modal, Button, Title } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import { Card, Image, Text, Group, Badge, Center } from '@mantine/core';
+import { Card, Text, Group, Badge } from '@mantine/core';
 import classes from './HistoryRecord.module.css';
 
 function HistoryRecord() {
   const { id } = useParams();
-  const record = useSelector((state) => state.history.items[id.slice(1) - 1])
+  const record = useSelector((state) => state.history.items[id.slice(1) - 1]);
+
+  if (!record) {
+    return <Card>{'Can not find the record'} </Card>;
+  }
 
   return (
     <>
-      <Card withBorder radius="md" className={classes.card} maw={"400px"}>
+      <Card withBorder radius="md" className={classes.card} maw={'400px'}>
         <Card.Section className={classes.imageSection}>
           <Title order={1}>{record.place}</Title>
         </Card.Section>
@@ -24,7 +28,7 @@ function HistoryRecord() {
               {record.place}
             </Text>
           </div>
-          <Badge variant="outline">№{record.number}</Badge>
+          <Badge variant="outline">№{id}</Badge>
         </Group>
 
         <Card.Section className={classes.section} mt="md">
@@ -47,20 +51,22 @@ function HistoryRecord() {
                 {record.date} {record.time}
               </Text>
             </div>
-
-            <Link to={'/history'}>
-              {' '}
-              <Button variant={'outline'} radius="md">
-                Back
-              </Button>
-            </Link>
-            <Link to={'/'}>
-              <Button variant={'gradient'} radius="md">
-                Home
-              </Button>
-            </Link>
           </Group>
         </Card.Section>
+      </Card>
+      <Card withBorder mt={10} radius="md" className={classes.card} maw={'400px'}>
+        <Group position="apart">
+          <Link to={'/history'} w={'100%'}>
+            <Button color="black" radius="md">
+              Back
+            </Button>
+          </Link>
+          <Link to={'/'}>
+            <Button color="green" radius="md">
+              Home
+            </Button>
+          </Link>
+        </Group>
       </Card>
     </>
   );

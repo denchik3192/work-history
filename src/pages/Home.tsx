@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Title, Group, Indicator, Flex } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
 import Time from '../components/Time/Time';
@@ -9,30 +9,37 @@ import { addItems } from '../store/history/actions';
 import { getItemsFromLS } from '../utils/GetItemsFromLS';
 import { setItemsToLS } from '../utils/SetItemsToLS';
 import HistoryForm from '../components/HistoryForm/HistoryForm';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { collection } from 'firebase/firestore';
+import { Context } from '..';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
   const filteredHistory = useSelector(selectHistoryByFilter);
+
+  const { auth, firestore } = useContext(Context);
+  const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
+  console.log(value);
+
+  useEffect(() => {
+    dispatch(addItems(value));
+  }, [value]);
+
+  // useEffect(() => {
+  //   const items = getItemsFromLS();
+  //   if (items.length) dispatch(addItems(items));
+  // }, [dispatch]);
+
+  // useEffect(() => {
+  //   setItemsToLS(filteredHistory);
+  // }, [filteredHistory]);
+
   console.log('home render');
-  useEffect(() => {
-    const items = getItemsFromLS();
-    if (items.length) dispatch(addItems(items));
-  }, [dispatch]);
-
-  useEffect(() => {
-    setItemsToLS(filteredHistory);
-  }, [filteredHistory]);
-
-  // const changeWorkPlace = (e: String) => {
-  //   setWorkplace(e);
-  // };
-
   return (
     <>
       <Title order={1}>New record</Title>
       <Group>
         <HistoryForm />
-        {/* <NewRecordForm /> */}
         <Flex direction={'column'} style={{ alignSelf: 'flex-start' }} align="center">
           <Time></Time>
           <Calendar

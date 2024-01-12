@@ -1,16 +1,17 @@
+import { TNewRecord } from './../../types/TNewRecord';
 import { ADD_ITEMS, ADD_NEW_RECORD, DELETE_RECORD } from "./constants";
-import { addNewRecord } from "./actions";
-import { TNewRecord } from "../../types/TNewRecord";
+import { addItems, addNewRecord } from "./actions";
 
 type TActions = typeof addNewRecord;
 
 export interface IHistoryState {
-  items: TNewRecord[]
+  items: any[]
 }
 
 const initialState: IHistoryState = {
   items: [],
 };
+
 
 export default function historyReducer(state = initialState, action: any) {
   switch (action.type) {
@@ -20,7 +21,6 @@ export default function historyReducer(state = initialState, action: any) {
         items: [
           ...state.items,
           {
-            number: state.items.length + 1,
             id: Math.random(),
             place: action.payload.place,
             date: action.payload.dateValue,
@@ -38,6 +38,8 @@ export default function historyReducer(state = initialState, action: any) {
       };
     }
     case ADD_ITEMS: {
+      console.log(action);
+
       return {
         ...state,
         items: action.payload,
@@ -47,3 +49,4 @@ export default function historyReducer(state = initialState, action: any) {
       return state;
   }
 }
+

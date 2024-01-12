@@ -1,4 +1,5 @@
 import { useForm, isNotEmpty } from '@mantine/form';
+import { serverTimestamp, addDoc, doc, collection } from 'firebase/firestore';
 import {
   Button,
   SegmentedControl,
@@ -13,10 +14,12 @@ import {
   TextInput,
 } from '@mantine/core';
 import { TPType, substations, workSubject, workTitle, workplace } from '../../db/db';
-import { useEffect, useState } from 'react';
-import { addNewRecord } from '../../store/history/actions';
+import { useContext, useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { TNewRecord } from '../../types/TNewRecord';
+import { Context } from '../..';
+import Spiner from '../Spiner/Spiner';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -47,12 +50,12 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function HistoryForm() {
+  const { auth, firestore } = useContext(Context);
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
   const [searchValue, onSearchChange] = useState('');
   const [focused, setFocused] = useState(false);
-  const [dateValue, setDateValue] = useState<string>('');
-  const [timeValue, setTimeValue] = useState<string>('');
+  const [history, loading] = useCollectionData();
 
   const form = useForm({
     initialValues: {
@@ -62,52 +65,78 @@ function HistoryForm() {
       comment: '',
       numberOfTP: '',
       substationType: ``,
-      // transformerSubstation: '',
     },
 
     validate: {
       place: isNotEmpty(),
       title: isNotEmpty(),
       subject: isNotEmpty(),
-      // comment: isNotEmpty(),
     },
   });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const getFullDate = () => {
-        const date = new Date().toISOString().slice(0, 10);
-        const time = new Date().toISOString().slice(11, 16);
-        setDateValue(date);
-        setTimeValue(time);
-      };
-      getFullDate();
-    }, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const getFullDate = () => {
+  //       const date = new Date().toISOString().slice(0, 10);
+  //       const time = new Date().toISOString().slice(11, 16);
+  //       setDateValue(date);
+  //       setTimeValue(time);
+  //     };
+  //     getFullDate();
+  //   }, 2000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
-  const saveData = (data: TNewRecord, event: any) => {
+  const sendData = async (data: TNewRecord, event: any) => {
     event.preventDefault();
 
-    dispatch(
-      addNewRecord({
-        place: data.place,
-        subject: data.subject,
-        title: data.title,
-        comment: data.comment,
-        dateValue,
-        timeValue,
-        substationType: data.substationType,
-        numberOfTP: data.numberOfTP,
-      }),
-    );
+    // const id = Math.random().toString();
+    // await setDoc(doc(firestore, 'work-history', id), {
+    //   place: data.place,
+    //   subject: data.subject,
+    //   title: data.title,
+    //   comment: data.comment,
+    //   // dateValue,
+    //   timeValue: serverTimestamp(),
+    //   substationType: data.substationType,
+    //   numberOfTP: data.numberOfTP,
+    // });
+
+    await addDoc(collection(firestore, 'work-history'), {
+      id: Math.random(),
+      place: data.place,
+      subject: data.subject,
+      title: data.title,
+      comment: data.comment,
+      // dateValue,
+      timeValue: serverTimestamp(),
+      substationType: data.substationType,
+      numberOfTP: data.numberOfTP,
+    });
+
+    // dispatch(
+    //   addNewRecord({
+    //     place: data.place,
+    //     subject: data.subject,
+    //     title: data.title,
+    //     comment: data.comment,
+    //     dateValue,
+    //     timeValue,
+    //     substationType: data.substationType,
+    //     numberOfTP: data.numberOfTP,
+    //   }),
+    // );
     form.reset();
   };
+
+  if (loading) {
+    return <Spiner />;
+  }
 
   return (
     <>
       <Flex gap="md" justify="center" align="center" direction="row" wrap="wrap">
-        <form onSubmit={form.onSubmit(saveData)}>
+        <form onSubmit={form.onSubmit(sendData)}>
           <Box>
             <SegmentedControl
               data={workplace}

@@ -3,12 +3,15 @@ import {} from '../../store/settings/actions';
 import { useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { selectHistoryByFilter } from '../../store/sortHistoryBy/selectors';
-import { sortByAction } from '../../store/sortHistoryBy/actions';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { addItems, deleteRecord } from '../../store/history/actions';
-import { setItemsToLS } from '../../utils/SetItemsToLS';
-import { getItemsFromLS } from '../../utils/GetItemsFromLS';
+import { Context } from '../..';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getFirestore, collection, getDocs, query } from 'firebase/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { TNewRecord } from '../../types/TNewRecord';
+import Spiner from '../Spiner/Spiner';
 
 // interface TableReviewsProps {
 //   data: {
@@ -22,29 +25,22 @@ import { getItemsFromLS } from '../../utils/GetItemsFromLS';
 // }
 
 export function TableReviews() {
-  const [workplace, setWorkplace] = useState<String>('Все');
+  const { auth, firestore } = useContext(Context);
   const dispatch = useAppDispatch();
-  const filteredHistory = useSelector(selectHistoryByFilter);
+  const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
 
-  const filteredHistoryWorkplace = filteredHistory?.filter((el: any) => {
-    if (workplace === 'Все') {
-      return el;
-    } else {
-      return el.place?.toLowerCase() === workplace.toLowerCase();
-    }
-  });
-
-  const rows = filteredHistoryWorkplace?.map((row, idx) => {
+  const rows = value?.map((row, idx) => {
+    const date = new Date(row.timeValue.seconds * 1000).toLocaleString().replace(',', '/');
     return (
-      <tr key={row.id}>
+      //fix key
+      <tr key={idx}>
         <td>{idx + 1}</td>
-        <td>{row.date}</td>
+        <td>{date}</td>
         <td>{row.place}</td>
-        <td>{row.title}</td>
-        {/* <td>{row.subject}</td> */}
-        <td>{row.descr}</td>
+        <td>{row.title + ' ' + row.subject}</td>
+        <td>{row.comment}</td>
         <td>
-          <Link to={`/history/:${row.number}`}>
+          <Link to={`/history/:${idx + 1}`}>
             <Button variant="light" radius="xs" style={{ marginRight: '10px' }}>
               View
             </Button>
@@ -61,9 +57,10 @@ export function TableReviews() {
       </tr>
     );
   });
-  // const changeWorkPlace = (e: String) => {
-  //   setWorkplace(e);
-  // };
+
+  if (loading) {
+    return <Spiner />;
+  }
 
   return (
     <>
@@ -93,14 +90,13 @@ export function TableReviews() {
           ]}
         /> */}
       <ScrollArea h={'80vh'}>
-        <Table verticalSpacing="xs">
+        <Table verticalSpacing="xs" withBorder>
           <thead>
             <tr>
               <th>№</th>
               <th>Date/Time</th>
               <th>Place</th>
               <th>Title</th>
-              {/* <th>Subject</th> */}
               <th>Descr</th>
               <th>view/del</th>
             </tr>
