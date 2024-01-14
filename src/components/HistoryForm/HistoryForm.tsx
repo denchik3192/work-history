@@ -20,6 +20,7 @@ import { TNewRecord } from '../../types/TNewRecord';
 import { Context } from '../..';
 import Spiner from '../Spiner/Spiner';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -51,11 +52,12 @@ const useStyles = createStyles((theme) => ({
 
 function HistoryForm() {
   const { auth, firestore } = useContext(Context);
+  const [user] = useAuthState(auth);
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
   const [searchValue, onSearchChange] = useState('');
   const [focused, setFocused] = useState(false);
-  const [history, loading] = useCollectionData();
+  const [loading] = useCollectionData();
 
   const form = useForm({
     initialValues: {
@@ -74,41 +76,14 @@ function HistoryForm() {
     },
   });
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     const getFullDate = () => {
-  //       const date = new Date().toISOString().slice(0, 10);
-  //       const time = new Date().toISOString().slice(11, 16);
-  //       setDateValue(date);
-  //       setTimeValue(time);
-  //     };
-  //     getFullDate();
-  //   }, 2000);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   const sendData = async (data: TNewRecord, event: any) => {
     event.preventDefault();
 
-    // const id = Math.random().toString();
-    // await setDoc(doc(firestore, 'work-history', id), {
-    //   place: data.place,
-    //   subject: data.subject,
-    //   title: data.title,
-    //   comment: data.comment,
-    //   // dateValue,
-    //   timeValue: serverTimestamp(),
-    //   substationType: data.substationType,
-    //   numberOfTP: data.numberOfTP,
-    // });
-
     await addDoc(collection(firestore, 'work-history'), {
-      id: Math.random(),
       place: data.place,
       subject: data.subject,
       title: data.title,
       comment: data.comment,
-      // dateValue,
       timeValue: serverTimestamp(),
       substationType: data.substationType,
       numberOfTP: data.numberOfTP,
@@ -143,12 +118,13 @@ function HistoryForm() {
               {...form.getInputProps('place')}
               classNames={classes}
             />
+
             <Select
-              label="Subject"
-              {...form.getInputProps('subject')}
+              label="Title"
               withAsterisk
-              data={workSubject}
-              placeholder="Pick worksubject"
+              {...form.getInputProps('title')}
+              data={workTitle}
+              placeholder="Pick work title"
               clearable
               transitionProps={{
                 transition: 'pop-top-left',
@@ -157,11 +133,11 @@ function HistoryForm() {
               }}
             />
             <Select
-              label="Title"
+              label="Subject"
+              {...form.getInputProps('subject')}
               withAsterisk
-              {...form.getInputProps('title')}
-              data={workTitle}
-              placeholder="Pick work title"
+              data={workSubject}
+              placeholder="Pick worksubject"
               clearable
               transitionProps={{
                 transition: 'pop-top-left',

@@ -1,17 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { MantineProvider, Flex } from '@mantine/core';
+import { MantineProvider, Flex, AppShell } from '@mantine/core';
 import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
-import { Routes, Route } from 'react-router-dom';
-import Settings from './pages/Settings';
-import Table from './pages/Table';
-import Home from './pages/Home';
-import { Box, ColorSchemeProvider, ColorScheme } from '@mantine/core';
-import Statistic from './pages/Statistic';
-import HistoryRecord from './pages/HistoryRecord';
-import { Login } from './components/Login/Login';
+import { ColorSchemeProvider, ColorScheme } from '@mantine/core';
 import { Context } from '.';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Spiner from './components/Spiner/Spiner';
+import AppShellComponent from './layout/AppShell';
 
 const App: React.FC = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
@@ -21,7 +15,7 @@ const App: React.FC = () => {
   };
 
   const { auth } = useContext(Context);
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
 
   if (loading) {
     return <Spiner />;
@@ -35,27 +29,7 @@ const App: React.FC = () => {
           withCSSVariables
           withGlobalStyles
           withNormalizeCSS>
-          <Flex>
-            <NavbarSegmented />
-            {user ? (
-              <Box w={'100%'} p={'40px 20px'}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/history" element={<Table />} />
-                  <Route path="/history/:id" element={<HistoryRecord />} />
-                  <Route path="/statistic" element={<Statistic />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="*" element={<Home />} />
-                </Routes>
-              </Box>
-            ) : (
-              <Box w={'100%'} p={'40px 20px'}>
-                <Routes>
-                  <Route path="*" element={<Login />} />
-                </Routes>
-              </Box>
-            )}
-          </Flex>
+          <AppShellComponent />
         </MantineProvider>
       </ColorSchemeProvider>
     </div>

@@ -10,6 +10,10 @@ export const store = configureStore({
     history: historyReducer,
     sortHistory: sortHistoryReducer,
   },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>

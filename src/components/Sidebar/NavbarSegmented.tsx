@@ -89,7 +89,7 @@ const tabs = {
   todo: [{ link: '/todo', label: 'ToDo', icon: IconReport }],
 };
 
-export function NavbarSegmented() {
+export function NavbarSegmented({ hidden, setOpened }: any) {
   const { classes, cx } = useStyles();
   const [section, setSection] = useState<'history' | 'todo'>('history');
   const [active, setActive] = useState('Home');
@@ -105,6 +105,7 @@ export function NavbarSegmented() {
       key={item.label}
       onClick={(event) => {
         // event.preventDefault();
+        // setOpened(!hidden);
         setActive(item.label);
       }}>
       <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -118,14 +119,8 @@ export function NavbarSegmented() {
   };
 
   return (
-    <Navbar height={'100vh'} width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar p="md" hiddenBreakpoint="sm" hidden={!hidden} width={{ sm: 200, lg: 300 }}>
       <Navbar.Section>
-        <Group>
-          <Text weight={500} size="sm" className={classes.title} color="dimmed" mb="xs">
-            Diary
-          </Text>
-        </Group>
-
         <SegmentedControl
           value={section}
           onChange={(value: 'history' | 'todo') => setSection(value)}
@@ -143,12 +138,7 @@ export function NavbarSegmented() {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        {/* <Link to="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
-          <span>Change account</span>
-        </Link> */}
-
-        <Link to="/login" className={classes.link} onClick={logout}>
+        <Link to={'/login'} className={classes.link} onClick={logout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           {user ? <span>Logout {auth.currentUser.displayName}</span> : ''}
         </Link>

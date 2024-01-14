@@ -2,17 +2,16 @@ import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { Notifications } from '@mantine/notifications';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 import { initializeApp } from 'firebase/app';
-// import { getAnalytics } from 'firebase/analytics';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { AppShell } from '@mantine/core';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDSa-pR79VoGj0RNHoqe3-jJo6PG4KNs6A',
@@ -37,13 +36,12 @@ root.render(
     <Context.Provider
       value={{
         firebase,
-        // analytics,
         auth,
         firestore,
       }}>
       <Provider store={store}>
         <Router>
-          <Notifications />
+          {/* <AppShell/> */}
           <App />
         </Router>
       </Provider>

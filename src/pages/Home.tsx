@@ -3,36 +3,35 @@ import { Title, Group, Indicator, Flex } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
 import Time from '../components/Time/Time';
 import { useAppDispatch } from '../store/store';
-import { useSelector } from 'react-redux';
-import { selectHistoryByFilter } from '../store/sortHistoryBy/selectors';
 import { addItems } from '../store/history/actions';
-import { getItemsFromLS } from '../utils/GetItemsFromLS';
-import { setItemsToLS } from '../utils/SetItemsToLS';
 import HistoryForm from '../components/HistoryForm/HistoryForm';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { collection } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { Context } from '..';
+import Template from '../components/Template/Template';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
-  const filteredHistory = useSelector(selectHistoryByFilter);
-
   const { auth, firestore } = useContext(Context);
-  const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
-  console.log(value);
+  // const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
+  // console.log(value);
 
   useEffect(() => {
-    dispatch(addItems(value));
-  }, [value]);
-
-  // useEffect(() => {
-  //   const items = getItemsFromLS();
-  //   if (items.length) dispatch(addItems(items));
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   setItemsToLS(filteredHistory);
-  // }, [filteredHistory]);
+    async function getData() {
+      const querySnapshot = await getDocs(collection(firestore, 'work-history'))
+        .then((snapshot: any) => {
+          let historyCollection: any[] = [];
+          snapshot.docs.forEach((doc: any) => {
+            historyCollection.push({ ...doc.data(), id: doc.id });
+          });
+          dispatch(addItems(historyCollection));
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+    getData();
+  }, [dispatch]);
 
   console.log('home render');
   return (
@@ -55,6 +54,7 @@ const Home: React.FC = () => {
             }}
           />
         </Flex>
+        <Template />
       </Group>
     </>
   );

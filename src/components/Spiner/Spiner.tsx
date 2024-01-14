@@ -1,10 +1,10 @@
-import { Center, Container, Loader } from '@mantine/core';
+import { Center, Loader } from '@mantine/core';
 
 function Spiner() {
   return (
     <>
-      <Center>
-        <Loader color="cyan" size={'lg'} />
+      <Center bg={'dark'} style={{ height: window.innerHeight }}>
+        <Loader color="white" size={'lg'} h={'100vh'} variant="dots" />
       </Center>
     </>
   );

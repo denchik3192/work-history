@@ -14,14 +14,14 @@ export function Login() {
   };
 
   return (
-    <div className={classes.wrapper}>
+    <div style={{ height: window.innerHeight }}>
       <Paper className={classes.form} radius={0} p={30}>
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
           Welcome!
         </Title>
 
-        <Button fullWidth mt="xl" size="md" onClick={login}>
-          Sign in with Google
+        <Button fullWidth mt="xl" size="xl" onClick={login}>
+          Sign in with Google Account.
         </Button>
       </Paper>
     </div>

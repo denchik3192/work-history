@@ -1,12 +1,17 @@
-import { Modal, Button, Title } from '@mantine/core';
+import { Button, Title } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { Card, Text, Group, Badge } from '@mantine/core';
 import classes from './HistoryRecord.module.css';
+import { selectItemById, selectRecordById } from '../store/history/selectors';
 
 function HistoryRecord() {
   const { id } = useParams();
-  const record = useSelector((state) => state.history.items[id.slice(1) - 1]);
+  const record = useSelector(
+    (state) => state.history.items.filter((el) => el.id === id.slice(1))[0],
+  );
+  // const record = useSelector(selectItemById);
+  const date = new Date(record.timeValue.seconds * 1000).toLocaleString().replace(',', '/');
 
   if (!record) {
     return <Card>{'Can not find the record'} </Card>;
@@ -37,7 +42,7 @@ function HistoryRecord() {
           </Text>
 
           <Group gap={8} mb={-8}>
-            {record.descr}
+            {record.comment}
           </Group>
         </Card.Section>
 
@@ -48,7 +53,7 @@ function HistoryRecord() {
                 Date/time
               </Text>
               <Text fz="sm" c="dimmed" fw={500} style={{ lineHeight: 1 }} mt={3}>
-                {record.date} {record.time}
+                {date}
               </Text>
             </div>
           </Group>
@@ -56,8 +61,8 @@ function HistoryRecord() {
       </Card>
       <Card withBorder mt={10} radius="md" className={classes.card} maw={'400px'}>
         <Group position="apart">
-          <Link to={'/history'} w={'100%'}>
-            <Button color="black" radius="md">
+          <Link to={'/history'}>
+            <Button color="black" radius="md" style={{ width: 'calc(100% + 12px)' }}>
               Back
             </Button>
           </Link>

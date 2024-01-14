@@ -5,7 +5,7 @@ import { addItems, addNewRecord } from "./actions";
 type TActions = typeof addNewRecord;
 
 export interface IHistoryState {
-  items: any[]
+  items: any[],
 }
 
 const initialState: IHistoryState = {
@@ -38,7 +38,6 @@ export default function historyReducer(state = initialState, action: any) {
       };
     }
     case ADD_ITEMS: {
-      console.log(action);
 
       return {
         ...state,

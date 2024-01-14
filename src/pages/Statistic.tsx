@@ -6,7 +6,7 @@ import { RootState } from '../store/store';
 import { selectWorkplaceStats } from '../store/sortHistoryBy/selectors';
 import { colors } from '../db/colors';
 import {
-  selectDatesStats,
+  // selectDatesStats,
   selectNumberOfWorkplaceStats,
   selectTitlesStats,
   //  selectWorkSubjectStats
@@ -16,7 +16,7 @@ export function Statistic() {
   const numberOfRecords = useSelector((state: RootState) => state.history.items.length);
   // const subjects = useSelector(selectWorkSubjectStats);
   const workplaceStats = useSelector(selectWorkplaceStats);
-  const datesStats = useSelector(selectDatesStats);
+  // const datesStats = useSelector(selectDatesStats);
   const titleStats = useSelector(selectTitlesStats);
   const numberofWorkplaceStats = useSelector(selectNumberOfWorkplaceStats);
   const numberofWorkplace = Object.values(numberofWorkplaceStats);
@@ -70,7 +70,7 @@ export function Statistic() {
         <Badge variant="dot" color="violet" size="xl" radius="sm">
           {numberOfRecords}
         </Badge>
-        <Text>({datesStats})</Text>
+        {/* <Text>({datesStats})</Text> */}
       </Group>
 
       <Progress

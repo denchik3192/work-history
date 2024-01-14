@@ -13,13 +13,13 @@ export const historyItems = (state: RootState) => state.history.items as Array<a
 //   }
 // );
 
-export const selectDatesStats = createSelector(
-  [historyItems],
-  (items) => {
-    const filteredDate = items.map(el => el.date.slice(0, 4)).sort((a, b) => a - b);
-    return `${filteredDate[0]} - ${filteredDate[items.length - 1]}`;
-  }
-);
+// export const selectDatesStats = createSelector(
+//   [historyItems],
+//   (items) => {
+//     const filteredDate = items.map(el => el.date.slice(0, 4)).sort((a, b) => a - b);
+//     return `${filteredDate[0]} - ${filteredDate[items.length - 1]}`;
+//   }
+// );
 export const selectTitlesStats = createSelector(
   [historyItems],
   (items) => {
