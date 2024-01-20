@@ -22,7 +22,6 @@ export default function AppShellComponent() {
       header={
         <Header height={{ base: 50, md: 50 }} p="md">
           <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-            <Database />
             <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
               <Burger
                 opened={opened}

@@ -11,27 +11,6 @@ import { Context } from '..';
 import Template from '../components/Template/Template';
 
 const Home: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { auth, firestore } = useContext(Context);
-  // const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
-  // console.log(value);
-
-  useEffect(() => {
-    async function getData() {
-      const querySnapshot = await getDocs(collection(firestore, 'work-history'))
-        .then((snapshot: any) => {
-          let historyCollection: any[] = [];
-          snapshot.docs.forEach((doc: any) => {
-            historyCollection.push({ ...doc.data(), id: doc.id });
-          });
-          dispatch(addItems(historyCollection));
-        })
-        .catch((err) => {
-          console.log(err.message);
-        });
-    }
-    getData();
-  }, [dispatch]);
 
   console.log('home render');
   return (

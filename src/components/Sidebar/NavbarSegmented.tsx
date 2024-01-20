@@ -104,8 +104,7 @@ export function NavbarSegmented({ hidden, setOpened }: any) {
       to={item.link}
       key={item.label}
       onClick={(event) => {
-        // event.preventDefault();
-        // setOpened(!hidden);
+        setOpened((o:any) => !o)
         setActive(item.label);
       }}>
       <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -114,6 +113,7 @@ export function NavbarSegmented({ hidden, setOpened }: any) {
   ));
 
   const logout = (event: any) => {
+    setOpened((o:any) => !o)
     event.preventDefault();
     auth.signOut();
   };

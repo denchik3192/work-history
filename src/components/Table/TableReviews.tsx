@@ -4,7 +4,6 @@ import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-// import { addItems, deleteRecord } from '../../store/history/actions'
 import { Context } from '../..';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { getFirestore, collection, getDocs, query } from 'firebase/firestore';
@@ -81,8 +80,8 @@ export function TableReviews() {
             'Шклов',
           ]}
         /> */}
-      <ScrollArea h={'85vh'}>
-        <Table verticalSpacing="xs">
+      <ScrollArea h={'calc(100vh - 110px)'}>
+        <Table verticalSpacing="xs" >
           <thead
             style={{
               position: 'sticky',
