@@ -9,6 +9,8 @@ import AppShellComponent from "./layout/AppShell";
 import { collection, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { useAppDispatch } from "./store/store";
 import { addItems } from "./store/history/actions";
+import AppRouter from "./components/AppRouter";
+
 
 const App: React.FC = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
@@ -55,7 +57,8 @@ const App: React.FC = () => {
           withGlobalStyles
           withNormalizeCSS
         >
-          <AppShellComponent />
+        <AppShellComponent/>
+
         </MantineProvider>
       </ColorSchemeProvider>
     </div>

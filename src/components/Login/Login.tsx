@@ -17,7 +17,7 @@ export function Login() {
     <div style={{ height: window.innerHeight }}>
       <Paper className={classes.form} radius={0} p={30}>
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
-          Welcome!
+          Welcome to Work History App!
         </Title>
 
         <Button fullWidth mt="xl" size="xl" onClick={login}>

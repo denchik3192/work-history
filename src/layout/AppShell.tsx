@@ -7,6 +7,8 @@ import { Database, World } from 'tabler-icons-react';
 import { IconWorldCheck } from '@tabler/icons-react';
 
 export default function AppShellComponent() {
+  // const { auth } = useContext(Context);
+  // const [user] = useAuthState(auth);
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   return (
