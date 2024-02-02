@@ -27,10 +27,9 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 function HistoryForm() {
   const { auth, firestore } = useContext(Context);
-  const [user] = useAuthState(auth);
-  const dispatch = useAppDispatch();
-  const [searchValue, onSearchChange] = useState("");
-  const [focused, setFocused] = useState(false);
+  // const [user] = useAuthState(auth);
+  const [searchValue, onSearchChange] = useState<string>("");
+  const [focused, setFocused] = useState<boolean>(false);
   const [loading] = useCollectionData();
 
   const form = useForm({
@@ -79,8 +78,6 @@ function HistoryForm() {
         
       >
         <form onSubmit={form.onSubmit(sendData)}>
-          
-            
               <Select
                 label="Place"
                 withAsterisk

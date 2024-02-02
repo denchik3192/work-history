@@ -4,11 +4,13 @@ import { Link, useParams } from "react-router-dom";
 import { Card, Text, Group, Badge } from "@mantine/core";
 // import classes from "./HistoryRecord.module.css";
 import { selectItemById, selectRecordById } from "../store/history/selectors";
+import { RootState } from "../store/store";
+import { TNewRecord } from "../types/TNewRecord";
 
 function HistoryRecord() {
   const { id } = useParams();
   const record = useSelector(
-    (state) => state.history.items.filter((el) => el.id === id.slice(1))[0]
+    (state) => state.history.items.filter((el) => el.id === id?.slice(1))[0]
   );
   // const record = useSelector(selectItemById);
   const date = new Date(record.timeValue.seconds * 1000)

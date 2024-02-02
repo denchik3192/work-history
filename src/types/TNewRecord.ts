@@ -1,5 +1,5 @@
 export type TNewRecord = {
-  // id: number
+  id?: string
   place: string;
   subject: string;
   title: string;

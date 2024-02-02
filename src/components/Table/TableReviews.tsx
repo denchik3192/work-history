@@ -1,4 +1,4 @@
-import { Table, ScrollArea, Button } from '@mantine/core';
+import { Table, ScrollArea, Button, CSSObject, MediaQuery } from '@mantine/core';
 import {} from '../../store/settings/actions';
 import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
@@ -11,8 +11,15 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { TNewRecord } from '../../types/TNewRecord';
 import Spiner from '../Spiner/Spiner';
 import { doc, deleteDoc } from 'firebase/firestore';
+import { Cane, Viewfinder } from 'tabler-icons-react';
+
+const table: CSSObject = {
+ display:"none"
+};
 
 export function TableReviews() {
+  
+  
   const { auth, firestore } = useContext(Context);
   const dispatch = useAppDispatch();
   const historyData = useSelector((state: RootState) => state.history.items);
@@ -33,16 +40,19 @@ export function TableReviews() {
         <td>{date}</td>
         <td>{row.place}</td>
         <td>{row.title + ' ' + row.subject}</td>
+        <MediaQuery smallerThan={'sm'} styles={table}>
         <td style={{ maxWidth: '200px', overflow: 'hidden' }}>{row.comment}</td>
+              </MediaQuery>
+        
         <td>
           <Link to={`/history/:${row.id}`}>
-            <Button variant="light" radius="xs" style={{ marginRight: '10px' }}>
-              View
+            <Button variant="light" radius="xs" style={{  height:'20px' }} >
+             View
             </Button>
           </Link>
 
-          <Button variant="light" color="red" radius="xs" onClick={() => deleteRecord(row.id)}>
-            Del
+          <Button variant="light" color="red" radius="xs" onClick={() => deleteRecord(row.id)} style={{height:'20px' }}>
+            Dele
           </Button>
         </td>
       </tr>
@@ -81,7 +91,8 @@ export function TableReviews() {
           ]}
         /> */}
       <ScrollArea h={'calc(100vh - 110px)'}>
-        <Table verticalSpacing="xs" >
+        
+        <Table verticalSpacing="xs" fontSize="xs">
           <thead
             style={{
               position: 'sticky',
@@ -94,13 +105,16 @@ export function TableReviews() {
               <th>Date/Time</th>
               <th>Place</th>
               <th>Title</th>
+              <MediaQuery smallerThan={'sm'} styles={table}>
               <th>Descr</th>
+              </MediaQuery>
               <th>view/del</th>
             </tr>
           </thead>
 
           <tbody>{rows}</tbody>
         </Table>
+       
       </ScrollArea>
     </>
   );

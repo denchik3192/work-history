@@ -19,7 +19,7 @@ function AppRouter() {
       {user ? (
           // <AppShellComponent>
         <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/history" element={<Table />} />
             <Route path="/history/:id" element={<HistoryRecord />} />
             <Route path="/statistic" element={<Statistic />} />
