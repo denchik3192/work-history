@@ -1,57 +1,74 @@
-import { Table, ScrollArea, Button, CSSObject, MediaQuery } from '@mantine/core';
-import {} from '../../store/settings/actions';
-import { RootState, useAppDispatch } from '../../store/store';
-import { useSelector } from 'react-redux';
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { Context } from '../..';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { getFirestore, collection, getDocs, query } from 'firebase/firestore';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { TNewRecord } from '../../types/TNewRecord';
-import Spiner from '../Spiner/Spiner';
-import { doc, deleteDoc } from 'firebase/firestore';
-import { Cane, Viewfinder } from 'tabler-icons-react';
+import {
+  Table,
+  ScrollArea,
+  Button,
+  CSSObject,
+  MediaQuery,
+} from "@mantine/core";
+import {} from "../../store/settings/actions";
+import { RootState, useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Context } from "../..";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getFirestore, collection, getDocs, query } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { TNewRecord } from "../../types/TNewRecord";
+import Spiner from "../Spiner/Spiner";
+import { doc, deleteDoc } from "firebase/firestore";
+import { Cane, Viewfinder } from "tabler-icons-react";
 
 const table: CSSObject = {
- display:"none"
+  display: "none",
 };
 
 export function TableReviews() {
-  
-  
   const { auth, firestore } = useContext(Context);
   const dispatch = useAppDispatch();
   const historyData = useSelector((state: RootState) => state.history.items);
-  const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
+  const [value, loading, error] = useCollectionData(
+    collection(firestore, "work-history")
+  );
 
   console.log(historyData);
 
-  async function deleteRecord(id: any) {
-    await deleteDoc(doc(firestore, 'work-history', `${id}`));
+  async function deleteRecord(id: string) {
+    await deleteDoc(doc(firestore, "work-history", `${id}`));
   }
 
   const rows = historyData?.map((row: any, idx: number) => {
-    const date = new Date(row.timeValue.seconds * 1000).toLocaleString().replace(',', '/');
+    const date = new Date(row.timeValue.seconds * 1000)
+      .toLocaleString()
+      .replace(",", "/");
     return (
       //fix key
-      <tr key={idx}>
+      
+      <tr key={row.id}>
         <td>{idx + 1}</td>
         <td>{date}</td>
         <td>{row.place}</td>
-        <td>{row.title + ' ' + row.subject}</td>
-        <MediaQuery smallerThan={'sm'} styles={table}>
-        <td style={{ maxWidth: '200px', overflow: 'hidden' }}>{row.comment}</td>
-              </MediaQuery>
-        
+        <td>{row.title + " " + row.subject}</td>
+        <MediaQuery smallerThan={"sm"} styles={table}>
+          <td style={{ maxWidth: "200px", overflow: "hidden" }}>
+            {row.comment}
+          </td>
+        </MediaQuery>
+
         <td>
           <Link to={`/history/:${row.id}`}>
-            <Button variant="light" radius="xs" style={{  height:'20px' }} >
-             View
+            <Button variant="light" radius="xs" style={{ height: "20px" }}>
+              View
             </Button>
           </Link>
 
-          <Button variant="light" color="red" radius="xs" onClick={() => deleteRecord(row.id)} style={{height:'20px' }}>
+          <Button
+            variant="light"
+            color="red"
+            radius="xs"
+            onClick={() => deleteRecord(row.id)}
+            style={{ height: "20px" }}
+          >
             Dele
           </Button>
         </td>
@@ -90,23 +107,23 @@ export function TableReviews() {
             'Шклов',
           ]}
         /> */}
-      <ScrollArea h={'calc(100vh - 110px)'}>
-        
+      <ScrollArea h={"calc(100vh - 110px)"}>
         <Table verticalSpacing="xs" fontSize="xs">
           <thead
             style={{
-              position: 'sticky',
-              top: '0',
-              background: '#1A1B1E',
-              zIndex: '10',
-            }}>
+              position: "sticky",
+              top: "0",
+              background: "#1A1B1E",
+              zIndex: "10",
+            }}
+          >
             <tr>
               <th>№</th>
               <th>Date/Time</th>
               <th>Place</th>
               <th>Title</th>
-              <MediaQuery smallerThan={'sm'} styles={table}>
-              <th>Descr</th>
+              <MediaQuery smallerThan={"sm"} styles={table}>
+                <th>Descr</th>
               </MediaQuery>
               <th>view/del</th>
             </tr>
@@ -114,7 +131,6 @@ export function TableReviews() {
 
           <tbody>{rows}</tbody>
         </Table>
-       
       </ScrollArea>
     </>
   );

@@ -27,7 +27,7 @@ type NewNavBarProps = {
 
 const tabs = {
   history: [
-    { link: '/home', label: 'Home', icon: IconHome },
+    { link: '/', label: 'Home', icon: IconHome },
     { link: '/history', label: 'History', icon: IconDatabaseImport },
     { link: '/statistic', label: 'Statistic', icon: IconHomeStats },
     { link: '/settings', label: 'Settings', icon: IconSettings },
@@ -36,10 +36,10 @@ const tabs = {
 };
 
 export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
-  const capitalizedURL = getPathNameURL()  
+  // const capitalizedURL = getPathNameURL()  
   const { classes, cx } = useStyles();
   const [section, setSection] = useState<'history' | 'todo'>('history');
-  const [active, setActive] = useState<string>(`${capitalizedURL}`);
+  const [active, setActive] = useState<string>('Home');
   const { auth } = useContext(Context);
   const [user] = useAuthState(auth);
 

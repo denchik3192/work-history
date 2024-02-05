@@ -10,6 +10,7 @@ import { Login } from "./Login/Login";
 import { Context } from "..";
 import { useAuthState } from "react-firebase-hooks/auth";
 import AppShellComponent from "../layout/AppShell";
+import { NotFoundTitle } from "../pages/NotFoundTitle";
 
 function AppRouter() {
   const { auth } = useContext(Context);
@@ -19,12 +20,12 @@ function AppRouter() {
       {user ? (
           // <AppShellComponent>
         <Routes>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/history" element={<Table />} />
             <Route path="/history/:id" element={<HistoryRecord />} />
             <Route path="/statistic" element={<Statistic />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<Home />} />
+            <Route path="*" element={<NotFoundTitle />} />
         </Routes>
         //  </AppShellComponent>
       ) : (
