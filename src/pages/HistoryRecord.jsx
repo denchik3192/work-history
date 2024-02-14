@@ -22,7 +22,7 @@ function HistoryRecord() {
   }
 
   return (
-    <Center>
+    <Center w={800}>
       <Card shadow="sm" padding="lg" radius="md" withBorder w={'100%'}>
         <Card.Section component="a" href="https://mantine.dev/">
           <Image

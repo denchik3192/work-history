@@ -25,12 +25,13 @@ function AppRouter() {
             <Route path="/history/:id" element={<HistoryRecord />} />
             <Route path="/statistic" element={<Statistic />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFoundTitle />} />
+            
+            <Route path="*" element={<Home />} />
         </Routes>
         //  </AppShellComponent>
       ) : (
         <Routes>
-          <Route path="*" element={<Login />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       )}
     </>

@@ -48,7 +48,7 @@ export function TableReviews() {
         <td>{idx + 1}</td>
         <td>{date}</td>
         <td>{row.place}</td>
-        <td>{row.title + " " + row.subject}</td>
+        <td>{row.title}</td>
         <MediaQuery smallerThan={"sm"} styles={table}>
           <td style={{ maxWidth: "200px", overflow: "hidden" }}>
             {row.comment}

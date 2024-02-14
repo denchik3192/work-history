@@ -1,5 +1,5 @@
 .root {
-    padding: calc(var(--mantine-spacing-xl) * 1.5);
+    padding: 0;
   }
   
   .value {
@@ -21,4 +21,18 @@
   .title {
     font-weight: 700;
     text-transform: uppercase;
+  }
+
+  .workPlaceRow {
+    /* display: flex;
+    align-items: center; */
+    justify-content: space-between;
+    text-transform: uppercase;
+    
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 45px;
   }

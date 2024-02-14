@@ -25,7 +25,7 @@ export default function historyReducer(state = initialState, action: any) {
             place: action.payload.place,
             date: action.payload.dateValue,
             time: action.payload.timeValue,
-            title: action.payload.title + ' ' + action.payload.subject,
+            title: action.payload.title,
             descr: action.payload.comment + action.payload.substationType + action.payload.numberOfTP,
           },
         ],

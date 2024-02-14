@@ -54,8 +54,7 @@ function HistoryForm() {
 
     await addDoc(collection(firestore, "work-history"), {
       place: data.place,
-      subject: data.subject,
-      title: data.title,
+      title: data.title + ' ' + data.subject,
       comment: data.comment,
       timeValue: serverTimestamp(),
       substationType: data.substationType,

@@ -1,1 +1,1 @@
-export const colors: string[] = ['grape', 'violet',  'pink', 'indigo', 'red', 'lime','cyan', 'green', 'orange', 'purple'];
+export const colors: string[] = ['lime', 'orange',  'blue', 'purple', 'red', 'purple','cyan', 'green', 'grey'];

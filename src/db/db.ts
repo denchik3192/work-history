@@ -18,7 +18,7 @@ export const workTitle = [
   { value: 'обновление по', label: 'Обновление ПО' },
   { value: 'инсталяция по', label: 'Инсталяция ПО' },
 ];
-export const workSubject = ['МУРС', 'Диполь', 'ТМ-2000', 'DMS', 'MBS', 'OPC', 'MEC-104'];
+export const workSubject = ['МУРС', 'Диполь', 'ТМ-2000', 'DMS', 'MBS', 'OPC', 'MEC-104', 'ORACLE'];
 
 export const TPType = [
   { value: 'ТП', label: 'ТП' },

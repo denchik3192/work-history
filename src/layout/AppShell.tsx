@@ -10,7 +10,9 @@ export default function AppShellComponent() {
   // const { auth } = useContext(Context);
   // const [user] = useAuthState(auth);
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
+
+  const [opened, setOpened] = useState<boolean>(false);
+  
   return (
     <AppShell
       styles={{

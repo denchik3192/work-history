@@ -5,7 +5,7 @@ const Table: React.FC = () => {
   return (
     <>
       <TableReviews />
-      {/* <Pagination total={10} style={{ position: 'absolute', left: '350px', bottom: '1%' }} /> */}
+      <Pagination total={10} style={{ position: 'absolute', left: '350px', bottom: '1%' }} />
     </>
   );
 };
