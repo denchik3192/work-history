@@ -68,6 +68,7 @@ function HistoryForm() {
         color: "teal",
         title: "Success",
         message: "Your record is sucsessfully added!",
+        autoClose: 1000
       });
     });
     form.reset();

@@ -38,6 +38,7 @@ export function TableReviews() {
         icon: <IconCheck />,
         title: 'Seccess',
         message: 'Your record was deleted!',
+        autoClose: 1000
       })
     });
   }

@@ -6,7 +6,7 @@ import { Context } from ".";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Spiner from "./components/Spiner/Spiner";
 import AppShellComponent from "./layout/AppShell";
-import { collection, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { collection, getDocs, limit, onSnapshot, orderBy, query, startAfter, where } from "firebase/firestore";
 import { useAppDispatch } from "./store/store";
 import { addItems } from "./store/history/actions";
 import AppRouter from "./components/AppRouter";
@@ -26,10 +26,31 @@ const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const colRef = collection(firestore, 'work-history')
 
-  const qery = query(colRef, orderBy('timeValue', 'asc')) 
+  const qery = query(colRef, orderBy('timeValue', 'asc'), limit(20)) 
+
+
+  // Query the first page of docs
+// const first = query(collection(db, "cities"), orderBy("population"), limit(25));
+
 
   useEffect(() => {
-    function getData() {
+    async function getData() {
+
+      // const documentSnapshots = await getDocs(qery);
+
+      // Get the last visible document
+      // const lastVisible = documentSnapshots.docs[documentSnapshots.docs.length-1];
+      // console.log("last", lastVisible);
+      
+      // Construct a new query starting at this document,
+      // get the next 25 cities.
+      // const next = query(collection(db, "cities"),
+      //     orderBy("population"),
+      //     startAfter(lastVisible),
+      //     limit(25));
+
+
+
       onSnapshot(qery, (snapshot: any) => {
         let historyCollection: any[] = [];
         snapshot.docs.forEach((doc: any) => {
