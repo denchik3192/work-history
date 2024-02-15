@@ -43,14 +43,36 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
   const { classes, cx } = useStyles();
   const [section, setSection] = useState<"history" | "todo">("history");
   const [active, setActive] = useState<string>("Home");
-  
-  const { auth , firestore} = useContext(Context);
-  const [user] = useAuthState(auth);
-  
+  const [isNewRecord, setIsNewRecord] = useState<boolean>(true);
 
-  const links = tabs[section].map((item) => (
-    item.label === 'History' ?
-    <Indicator color="orange" position="middle-end" size={12} withBorder>
+  const { auth, firestore } = useContext(Context);
+  const [user] = useAuthState(auth);
+
+  const links = tabs[section].map((item, idx) =>
+    item.label === "History" && isNewRecord ? (
+      <Indicator
+        color="orange"
+        key={idx}
+        position="middle-end"
+        size={12}
+        withBorder
+      >
+        <Link
+          className={cx(classes.link, {
+            [classes.linkActive]: item.label === active,
+          })}
+          to={item.link}
+          key={item.label}
+          onClick={() => {
+            setOpened((o) => !o);
+            setActive(item.label);
+          }}
+        >
+          <item.icon className={classes.linkIcon} stroke={1.5} />
+          <span>{item.label}</span>
+        </Link>
+      </Indicator>
+    ) : (
       <Link
         className={cx(classes.link, {
           [classes.linkActive]: item.label === active,
@@ -65,21 +87,8 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
         <item.icon className={classes.linkIcon} stroke={1.5} />
         <span>{item.label}</span>
       </Link>
-    </Indicator>: <Link
-        className={cx(classes.link, {
-          [classes.linkActive]: item.label === active,
-        })}
-        to={item.link}
-        key={item.label}
-        onClick={() => {
-          setOpened((o) => !o);
-          setActive(item.label);
-        }}
-      >
-        <item.icon className={classes.linkIcon} stroke={1.5} />
-        <span>{item.label}</span>
-      </Link>
-  ));
+    )
+  );
 
   const logout = () => {
     setOpened((o) => !o);

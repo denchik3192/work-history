@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { MantineProvider, Flex, AppShell } from "@mantine/core";
+import { MantineProvider, Flex, AppShell, Notification } from "@mantine/core";
 import { NavbarSegmented } from "./components/Sidebar/NavbarSegmented";
 import { ColorSchemeProvider, ColorScheme } from "@mantine/core";
 import { Context } from ".";
@@ -10,6 +10,8 @@ import { collection, getDocs, onSnapshot, orderBy, query, where } from "firebase
 import { useAppDispatch } from "./store/store";
 import { addItems } from "./store/history/actions";
 import AppRouter from "./components/AppRouter";
+import { Notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
 
 
 const App: React.FC = () => {
@@ -57,6 +59,7 @@ const App: React.FC = () => {
           withGlobalStyles
           withNormalizeCSS
         >
+          <Notifications />
         <AppShellComponent/>
 
         </MantineProvider>

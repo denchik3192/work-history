@@ -26,7 +26,6 @@ const firebaseConfig = {
 export const Context = createContext<any>(null);
 
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 
@@ -41,7 +40,6 @@ root.render(
       }}>
       <Provider store={store}>
         <Router>
-          {/* <AppShell/> */}
           <App />
         </Router>
       </Provider>

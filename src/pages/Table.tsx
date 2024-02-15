@@ -1,11 +1,15 @@
-import { TableReviews } from '../components/Table/TableReviews';
-import { Pagination } from '@mantine/core';
+import { TableReviews } from "../components/Table/TableReviews";
+import { MediaQuery, Pagination } from "@mantine/core";
 
 const Table: React.FC = () => {
   return (
     <>
       <TableReviews />
-      <Pagination total={10} style={{ position: 'absolute', left: '350px', bottom: '1%' }} />
+      <MediaQuery smallerThan={"sm"} styles={{position: "absolute", left:'10'}}>
+        <Pagination size={'sm'}
+          total={10}
+        />
+      </MediaQuery>
     </>
   );
 };

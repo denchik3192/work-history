@@ -6,6 +6,7 @@ import {
   Title,
   Badge,
   Card,
+  Flex,
 } from "@mantine/core";
 import { IconSquareRoundedChevronsDownFilled } from "@tabler/icons-react";
 import classes from "./Statistic.module.css";
@@ -17,7 +18,7 @@ import {
   selectDatesStats,
   selectNumberOfWorkplaceStats,
   selectTitlesStats,
-  
+
   //  selectWorkSubjectStats
 } from "../store/statistic/selectors";
 
@@ -25,14 +26,12 @@ export function Statistic() {
   const numberOfRecords = useSelector(
     (state: RootState) => state.history.items.length
   );
-  
+
   const workplaceStats = useSelector(selectWorkplaceStats);
   const datesStats = useSelector(selectDatesStats);
   const titleStats = useSelector(selectTitlesStats);
   const numberofWorkplaceStats = useSelector(selectNumberOfWorkplaceStats);
   const numberofWorkplace = Object.values(numberofWorkplaceStats);
-
-  
 
   const titles = Object.entries(titleStats).map((stat: any, idx: number) => {
     return (
@@ -86,25 +85,39 @@ export function Statistic() {
           })
         )}
       />
-      
-      <Card shadow="sm" padding="md" radius="md" withBorder mb={15} bg={'transparent'}>
-        <Title order={3} mb={15}>
-          - Workplace -
-        </Title>
-        {wpStats}
-      </Card>
-      <Card shadow="sm" padding="md" radius="md" withBorder mb={15} bg={'transparent'}>
-        <Title order={3} mb={15}>
-          - Title -
-        </Title>
-        {titles}
-      </Card>
-      {/* <Card shadow="sm" padding="md" radius="md" withBorder mb={15} bg={'transparent'}>
-      <Title order={3} mb={15}>
-          - Subject -
-        </Title>
-        <Group>{stats}</Group></Card> */}
-      
+
+      <Flex >
+        {" "}
+        <Card
+        miw={'300px'}
+        mr={'md'}
+          shadow="sm"
+          padding="md"
+          radius="md"
+          withBorder
+          mb={15}
+          bg={"transparent"}
+        >
+          <Title order={3} mb={15}>
+            - Workplace -
+          </Title>
+          {wpStats}
+        </Card>
+        <Card
+          shadow="sm"
+          padding="md"
+          maw={"400px"}
+          radius="md"
+          withBorder
+          mb={15}
+          bg={"transparent"}
+        >
+          <Title order={3} mb={15}>
+            - Title -
+          </Title>
+          {titles}
+        </Card>
+      </Flex>
     </div>
   );
 }

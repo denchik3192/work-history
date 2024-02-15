@@ -18,10 +18,8 @@ import { TNewRecord } from "../../types/TNewRecord";
 import Spiner from "../Spiner/Spiner";
 import { doc, deleteDoc } from "firebase/firestore";
 import { Cane, Viewfinder } from "tabler-icons-react";
-
-const table: CSSObject = {
-  display: "none",
-};
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 export function TableReviews() {
   const { auth, firestore } = useContext(Context);
@@ -34,7 +32,14 @@ export function TableReviews() {
   console.log(historyData);
 
   async function deleteRecord(id: string) {
-    await deleteDoc(doc(firestore, "work-history", `${id}`));
+    await deleteDoc(doc(firestore, "work-history", `${id}`)).then(()=> {
+      notifications.show({
+        color:'red',
+        icon: <IconCheck />,
+        title: 'Seccess',
+        message: 'Your record was deleted!',
+      })
+    });
   }
 
   const rows = historyData?.map((row: any, idx: number) => {
@@ -49,7 +54,7 @@ export function TableReviews() {
         <td>{date}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
-        <MediaQuery smallerThan={"sm"} styles={table}>
+        <MediaQuery smallerThan={"sm"} styles={{display:'none'}}>
           <td style={{ maxWidth: "200px", overflow: "hidden" }}>
             {row.comment}
           </td>
@@ -57,7 +62,7 @@ export function TableReviews() {
 
         <td>
           <Link to={`/history/:${row.id}`}>
-            <Button variant="light" radius="xs" style={{ height: "20px" }}>
+            <Button variant="light" radius="xs" style={{ height: "30px" }} mr={'md'}>
               View
             </Button>
           </Link>
@@ -67,7 +72,7 @@ export function TableReviews() {
             color="red"
             radius="xs"
             onClick={() => deleteRecord(row.id)}
-            style={{ height: "20px" }}
+            style={{ height: "30px" }}
           >
             Dele
           </Button>
@@ -122,7 +127,7 @@ export function TableReviews() {
               <th>Date/Time</th>
               <th>Place</th>
               <th>Title</th>
-              <MediaQuery smallerThan={"sm"} styles={table}>
+              <MediaQuery smallerThan={"sm"} styles={{display:'none'}}>
                 <th>Descr</th>
               </MediaQuery>
               <th>view/del</th>

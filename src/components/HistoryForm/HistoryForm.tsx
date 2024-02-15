@@ -9,6 +9,7 @@ import {
   Radio,
   TextInput,
   MediaQuery,
+  Notification,
 } from "@mantine/core";
 import {
   TPType,
@@ -24,6 +25,8 @@ import { Context } from "../..";
 import Spiner from "../Spiner/Spiner";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
 
 function HistoryForm() {
   const { auth, firestore } = useContext(Context);
@@ -54,11 +57,18 @@ function HistoryForm() {
 
     await addDoc(collection(firestore, "work-history"), {
       place: data.place,
-      title: data.title + ' ' + data.subject,
+      title: data.title + " " + data.subject,
       comment: data.comment,
       timeValue: serverTimestamp(),
       substationType: data.substationType,
       numberOfTP: data.numberOfTP,
+    }).then(() => {
+      notifications.show({
+        icon: <IconCheck />,
+        color: "teal",
+        title: "Success",
+        message: "Your record is sucsessfully added!",
+      });
     });
     form.reset();
   };
@@ -69,108 +79,101 @@ function HistoryForm() {
 
   return (
     <>
-      <Flex
-        gap="md"
-        justify="space-evenly"
-        align="center"
-        wrap="wrap"
-        
-      >
+      <Flex gap="md" justify="space-evenly" align="center" wrap="wrap">
         <form onSubmit={form.onSubmit(sendData)}>
-              <Select
-                label="Place"
-                withAsterisk
-                {...form.getInputProps("place")}
-                data={workplace}
-                placeholder="Pick work place"
-                clearable
-                transitionProps={{
-                  transition: "pop-top-left",
-                  duration: 100,
-                  timingFunction: "ease",
-                }}
-              />
+          <Select
+            label="Place"
+            withAsterisk
+            {...form.getInputProps("place")}
+            data={workplace}
+            placeholder="Pick work place"
+            clearable
+            transitionProps={{
+              transition: "pop-top-left",
+              duration: 100,
+              timingFunction: "ease",
+            }}
+          />
 
-              <Select
-                label="Title"
-                withAsterisk
-                {...form.getInputProps("title")}
-                data={workTitle}
-                placeholder="Pick work title"
-                clearable
-                transitionProps={{
-                  transition: "pop-top-left",
-                  duration: 100,
-                  timingFunction: "ease",
-                }}
-              />
-              <Select
-                label="Subject"
-                {...form.getInputProps("subject")}
-                withAsterisk
-                data={workSubject}
-                placeholder="Pick worksubject"
-                clearable
-                transitionProps={{
-                  transition: "pop-top-left",
-                  duration: 100,
-                  timingFunction: "ease",
-                }}
-              />
+          <Select
+            label="Title"
+            withAsterisk
+            {...form.getInputProps("title")}
+            data={workTitle}
+            placeholder="Pick work title"
+            clearable
+            transitionProps={{
+              transition: "pop-top-left",
+              duration: 100,
+              timingFunction: "ease",
+            }}
+          />
+          <Select
+            label="Subject"
+            {...form.getInputProps("subject")}
+            withAsterisk
+            data={workSubject}
+            placeholder="Pick worksubject"
+            clearable
+            transitionProps={{
+              transition: "pop-top-left",
+              duration: 100,
+              timingFunction: "ease",
+            }}
+          />
 
-              <Select
-                label="Select substation"
-                searchValue={searchValue}
-                onSearchChange={onSearchChange}
-                placeholder="Pick one"
-                searchable
-                nothingFound="No options"
-                data={substations}
-                transitionProps={{
-                  transition: "pop-top-left",
-                  duration: 100,
-                  timingFunction: "ease",
-                }}
-              />
+          <Select
+            label="Select substation"
+            searchValue={searchValue}
+            onSearchChange={onSearchChange}
+            placeholder="Pick one"
+            searchable
+            nothingFound="No options"
+            data={substations}
+            transitionProps={{
+              transition: "pop-top-left",
+              duration: 100,
+              timingFunction: "ease",
+            }}
+          />
 
-              <Radio.Group name="substation type">
-                <Flex style={{ alignItems: "center" }}>
-                  <Select
-                    pr={"sm"}
-                    label="Select substation type"
-                    data={TPType}
-                    {...form.getInputProps("substationType")}
-                  />
-                  <TextInput
-                    label="№"
-                    // style={{ flexGrow: "1" }}
-                    type="number"
-                    {...form.getInputProps("numberOfTP")}
-                    onFocus={() => setFocused(true)}
-                    onBlur={() => setFocused(false)}
-                    inputContainer={(children) => (
-                      <Tooltip
-                        label="Enter the number"
-                        position="top-start"
-                        opened={focused}
-                      >
-                        {children}
-                      </Tooltip>
-                    )}
-                  />
-                </Flex>
-              </Radio.Group>
-              <Textarea
-                placeholder="Comment"
-                label="Comment"
-                {...form.getInputProps("comment")}
-                style={{ marginBottom: "10px", margin: "20px auto" }}
+          <Radio.Group name="substation type">
+            <Flex style={{ alignItems: "center" }}>
+              <Select
+                pr={"sm"}
+                label="Select substation type"
+                data={TPType}
+                {...form.getInputProps("substationType")}
               />
-            <MediaQuery smallerThan={"sm"} styles={{marginBottom:'auto'}}>
-              <Button type="submit" fullWidth size="lg">
-                Submit
-              </Button>
-            </MediaQuery>
+              <TextInput
+                label="№"
+                type="number"
+                {...form.getInputProps("numberOfTP")}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                inputContainer={(children) => (
+                  <Tooltip
+                    label="Enter the number"
+                    position="top-start"
+                    opened={focused}
+                  >
+                    {children}
+                  </Tooltip>
+                )}
+              />
+            </Flex>
+          </Radio.Group>
+          <Textarea
+            placeholder="Comment"
+            label="Comment"
+            {...form.getInputProps("comment")}
+            style={{ marginBottom: "10px", margin: "20px auto" }}
+          />
+          <MediaQuery smallerThan={"sm"} styles={{ marginBottom: "auto" }}>
+            <Button type="submit" fullWidth size="lg">
+              Submit
+            </Button>
+          </MediaQuery>
         </form>
       </Flex>
     </>
