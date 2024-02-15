@@ -1,5 +1,5 @@
-import { useForm, isNotEmpty } from "@mantine/form";
-import { serverTimestamp, addDoc, doc, collection } from "firebase/firestore";
+import { useForm, isNotEmpty } from '@mantine/form';
+import { serverTimestamp, addDoc, doc, collection } from 'firebase/firestore';
 import {
   Button,
   Flex,
@@ -10,38 +10,32 @@ import {
   TextInput,
   MediaQuery,
   Notification,
-} from "@mantine/core";
-import {
-  TPType,
-  substations,
-  workSubject,
-  workTitle,
-  workplace,
-} from "../../db/db";
-import { useContext, useState } from "react";
-import { useAppDispatch } from "../../store/store";
-import { TNewRecord } from "../../types/TNewRecord";
-import { Context } from "../..";
-import Spiner from "../Spiner/Spiner";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { notifications } from "@mantine/notifications";
-import { IconCheck } from "@tabler/icons-react";
+} from '@mantine/core';
+import { TPType, substations, workSubject, workTitle, workplace } from '../../db/db';
+import { useContext, useState } from 'react';
+import { useAppDispatch } from '../../store/store';
+import { TNewRecord } from '../../types/TNewRecord';
+import { Context } from '../..';
+import Spiner from '../Spiner/Spiner';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
 
 function HistoryForm() {
   const { auth, firestore } = useContext(Context);
   // const [user] = useAuthState(auth);
-  const [searchValue, onSearchChange] = useState<string>("");
+  const [searchValue, onSearchChange] = useState<string>('');
   const [focused, setFocused] = useState<boolean>(false);
   const [loading] = useCollectionData();
 
   const form = useForm({
     initialValues: {
       place: `${workplace[0].value}`,
-      subject: "",
-      title: "",
-      comment: "",
-      numberOfTP: "",
+      subject: '',
+      title: '',
+      comment: '',
+      numberOfTP: '',
       substationType: ``,
     },
 
@@ -55,9 +49,9 @@ function HistoryForm() {
   const sendData = async (data: TNewRecord, event: any) => {
     event.preventDefault();
 
-    await addDoc(collection(firestore, "work-history"), {
+    await addDoc(collection(firestore, 'work-history'), {
       place: data.place,
-      title: data.title + " " + data.subject,
+      title: data.title + ' ' + data.subject,
       comment: data.comment,
       timeValue: serverTimestamp(),
       substationType: data.substationType,
@@ -65,10 +59,10 @@ function HistoryForm() {
     }).then(() => {
       notifications.show({
         icon: <IconCheck />,
-        color: "teal",
-        title: "Success",
-        message: "Your record is sucsessfully added!",
-        autoClose: 1000
+        color: 'teal',
+        title: 'Success',
+        message: 'Your record is sucsessfully added!',
+        autoClose: 1500,
       });
     });
     form.reset();
@@ -85,41 +79,41 @@ function HistoryForm() {
           <Select
             label="Place"
             withAsterisk
-            {...form.getInputProps("place")}
+            {...form.getInputProps('place')}
             data={workplace}
             placeholder="Pick work place"
             clearable
             transitionProps={{
-              transition: "pop-top-left",
+              transition: 'pop-top-left',
               duration: 100,
-              timingFunction: "ease",
+              timingFunction: 'ease',
             }}
           />
 
           <Select
             label="Title"
             withAsterisk
-            {...form.getInputProps("title")}
+            {...form.getInputProps('title')}
             data={workTitle}
             placeholder="Pick work title"
             clearable
             transitionProps={{
-              transition: "pop-top-left",
+              transition: 'pop-top-left',
               duration: 100,
-              timingFunction: "ease",
+              timingFunction: 'ease',
             }}
           />
           <Select
             label="Subject"
-            {...form.getInputProps("subject")}
+            {...form.getInputProps('subject')}
             withAsterisk
             data={workSubject}
             placeholder="Pick worksubject"
             clearable
             transitionProps={{
-              transition: "pop-top-left",
+              transition: 'pop-top-left',
               duration: 100,
-              timingFunction: "ease",
+              timingFunction: 'ease',
             }}
           />
 
@@ -132,32 +126,28 @@ function HistoryForm() {
             nothingFound="No options"
             data={substations}
             transitionProps={{
-              transition: "pop-top-left",
+              transition: 'pop-top-left',
               duration: 100,
-              timingFunction: "ease",
+              timingFunction: 'ease',
             }}
           />
 
           <Radio.Group name="substation type">
-            <Flex style={{ alignItems: "center" }}>
+            <Flex style={{ alignItems: 'center' }}>
               <Select
-                pr={"sm"}
+                pr={'sm'}
                 label="Select substation type"
                 data={TPType}
-                {...form.getInputProps("substationType")}
+                {...form.getInputProps('substationType')}
               />
               <TextInput
                 label="№"
                 type="number"
-                {...form.getInputProps("numberOfTP")}
+                {...form.getInputProps('numberOfTP')}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
                 inputContainer={(children) => (
-                  <Tooltip
-                    label="Enter the number"
-                    position="top-start"
-                    opened={focused}
-                  >
+                  <Tooltip label="Enter the number" position="top-start" opened={focused}>
                     {children}
                   </Tooltip>
                 )}
@@ -167,10 +157,10 @@ function HistoryForm() {
           <Textarea
             placeholder="Comment"
             label="Comment"
-            {...form.getInputProps("comment")}
-            style={{ marginBottom: "10px", margin: "20px auto" }}
+            {...form.getInputProps('comment')}
+            style={{ marginBottom: '10px', margin: '20px auto' }}
           />
-          <MediaQuery smallerThan={"sm"} styles={{ marginBottom: "auto" }}>
+          <MediaQuery smallerThan={'sm'} styles={{ marginBottom: 'auto' }}>
             <Button type="submit" fullWidth size="lg">
               Submit
             </Button>
