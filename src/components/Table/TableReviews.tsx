@@ -15,13 +15,13 @@ import { Cane, Viewfinder } from 'tabler-icons-react';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconX } from '@tabler/icons-react';
 
-export function TableReviews() {
+export function TableReviews({activePage}:{activePage:number}) {
   const { auth, firestore } = useContext(Context);
   const dispatch = useAppDispatch();
   const historyData = useSelector((state: RootState) => state.history.items);
   const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
 
-  console.log(historyData);
+  console.log(activePage);
 
   async function deleteRecord(id: string) {
     await deleteDoc(doc(firestore, 'work-history', `${id}`)).then(() => {
@@ -41,7 +41,7 @@ export function TableReviews() {
       //fix key
 
       <tr key={row.id}>
-        <td>{idx + 1}</td>
+        <td>{activePage == 1 ? idx + 1: String(activePage) + String(idx + 1)}</td>
         <td>{date}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
