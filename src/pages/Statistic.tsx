@@ -1,4 +1,4 @@
-import { Group, Paper, Text, Progress, Title, Badge, Card, Flex } from '@mantine/core';
+import { Group, Paper, Text, Progress, Title, Badge, Card, Flex, Pagination } from '@mantine/core';
 import classes from './Statistic.module.css';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../store/store';
@@ -14,16 +14,16 @@ import { useEffect } from 'react';
 import { fetchItemsFromFireStore } from '../store/statistic/reducers';
 
 export function Statistic() {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const numberOfRecords = useSelector(selectNumberOfRecords);
   const workplaceStats = useSelector(selectWorkplaceStats);
   const datesStats = useSelector(selectDatesStats);
   const titleStats = useSelector(selectTitlesStats);
   const numberofWorkplace = useSelector(selectNumberOfWorkplaceStats);
 
-  useEffect(()=> {
-    dispatch(fetchItemsFromFireStore())
-  },[])
+  useEffect(() => {
+    dispatch(fetchItemsFromFireStore());
+  }, []);
 
   const titles = titleStats.map((stat: any, idx: number) => {
     const titleName = stat[0];
@@ -42,7 +42,7 @@ export function Statistic() {
   });
 
   const wpStats = workplaceStats.map((el: any, idx: number) => (
-    <Group className={classes.workPlaceRow} ml={10} key={idx}>
+    <Group key={idx} className={classes.workPlaceRow} ml={10}>
       <Group>
         <div className={classes.dot} style={{ backgroundColor: `${colors[idx]}` }} />
         <div>{el[0]}</div>
@@ -61,7 +61,6 @@ export function Statistic() {
         </Badge>
         <Badge size="lg">{datesStats}</Badge>
       </Group>
-
       <Progress
         mt="md"
         mb="md"
@@ -73,7 +72,6 @@ export function Statistic() {
           color: colors[idx],
         }))}
       />
-
       <Flex>
         <Card
           miw={'300px'}

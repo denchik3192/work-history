@@ -21,8 +21,10 @@ import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
+import { addItem } from '../../store/history/reducers';
 
 function HistoryForm() {
+  const dispatch = useAppDispatch();
   // const { auth, firestore } = useContext(Context);
   // const [user] = useAuthState(auth);
   const [searchValue, onSearchChange] = useState<string>('');
@@ -48,25 +50,14 @@ function HistoryForm() {
 
   const sendData = async (data: TNewRecord, event: any) => {
     event.preventDefault();
-    console.log(data);
-    
-
-    // await addDoc(collection(firestore, 'work-history'), {
-    //   place: data.place,
-    //   title: data.title + ' ' + data.subject,
-    //   comment: data.comment,
-    //   timeValue: serverTimestamp(),
-    //   substationType: data.substationType,
-    //   numberOfTP: data.numberOfTP,
-    // }).then(() => {
-    //   notifications.show({
-    //     icon: <IconCheck />,
-    //     color: 'teal',
-    //     title: 'Success',
-    //     message: 'Your record is sucsessfully added!',
-    //     autoClose: 1500,
-    //   });
-    // });
+    dispatch(addItem(data));
+    notifications.show({
+      icon: <IconCheck />,
+      color: 'teal',
+      title: 'Success',
+      message: 'Your record is sucsessfully added!',
+      autoClose: 1500,
+    });
     form.reset();
   };
 

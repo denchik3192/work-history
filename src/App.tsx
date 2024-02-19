@@ -22,6 +22,7 @@ import AppRouter from './components/AppRouter';
 import { Notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 import { auth } from './FireBase/Config';
+import { fetchItemsFromFireStore } from './store/history/reducers';
 
 const App: React.FC = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
@@ -30,8 +31,8 @@ const App: React.FC = () => {
     setColorScheme(nextColorScheme);
   };
   // const { auth, firestore } = useContext(Context);
-  const [user, loading] = useAuthState(auth);
-  // const dispatch = useAppDispatch();
+  // const [user, loading] = useAuthState(auth);
+  const dispatch = useAppDispatch();
   // const colRef = collection(firestore, 'work-history');
 
   // const [lastRecord, setlastRecord] = useState<null | number>(0);
@@ -44,15 +45,15 @@ const App: React.FC = () => {
     //     snapshot.docs.forEach((doc: any) => {
     //       historyCollection.push({ ...doc.data(), id: doc.id });
     //     });
-    //     dispatch(addItems(historyCollection));
+    dispatch(fetchItemsFromFireStore());
     //   });
     // }
     // getData();
   }, []);
 
-  if (loading) {
-    return <Spiner />;
-  }
+  // if (loading) {
+  //   return <Spiner />;
+  // }
 
   console.log('app render');
 

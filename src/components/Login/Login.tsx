@@ -5,11 +5,10 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../FireBase/Config';
 
 export function Login() {
-
   const login = async () => {
     const provider = new GoogleAuthProvider();
     const user = await signInWithPopup(auth, provider);
-    // console.log(user);
+    console.log(user);
   };
 
   return (

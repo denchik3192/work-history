@@ -1,57 +1,33 @@
-import { useContext, useEffect, useState } from "react";
-import { TableReviews } from "../components/Table/TableReviews";
-import { Pagination } from "@mantine/core";
-import {
-  collection,
-  getDocs,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { useContext, useEffect, useState } from 'react';
+import { TableReviews } from '../components/Table/TableReviews';
+
+import { collection, getDocs, onSnapshot, orderBy, query } from 'firebase/firestore';
 // import { Context } from "..";
-import { useAppDispatch } from "../store/store";
-import { addItems } from "../store/history/actions";
+import { useAppDispatch } from '../store/store';
+import { addItems } from '../store/history/actions';
+import { Pagination } from '@mantine/core';
+import { useSelector } from 'react-redux';
+import { selectNumberOfRecords } from '../store/statistic/selectors';
 
 const Table: React.FC = () => {
   const itemsPerPage = 10;
   const dispatch = useAppDispatch();
   const [activePage, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
-  // const { firestore, auth, loading} = useContext(Context);
+  const items = useSelector(selectNumberOfRecords);
 
-  // const firstQuery = query(
-  //   collection(firestore, "work-history"),
-  //   orderBy("timeValue", "asc")
-  // );
+  const getTotalPages = () => {
+    return items / itemsPerPage;
+  };
 
-  useEffect(() => {
-    // fetchData();
-  }, [activePage]);
+  const total = getTotalPages();
 
-  async function fetchData() {
-    // onSnapshot(firstQuery, (snapshot: any) => {
-    //   let historyCollection: any[] = [];
-    //   snapshot.docs.forEach((doc: any) => {
-    //     historyCollection.push({ ...doc.data(), id: doc.id });
-    //   });
-    //   const totalCount = snapshot?.size || 0;
-    //   setTotalPages(Math.ceil(totalCount / itemsPerPage));
-    //   const indexOfLastItem = activePage * itemsPerPage;
-    //   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    //   const currentItems = historyCollection.slice(
-    //     indexOfFirstItem,
-    //     indexOfLastItem
-    //   );
-    //   dispatch(addItems(currentItems));
-    // });
-  }
-
-  console.log("table renderr");
+  console.log('table renderr');
 
   return (
     <>
-      <TableReviews activePage={activePage} itemsPerPage={itemsPerPage}/>
-      <Pagination value={activePage} onChange={setPage} total={totalPages} />
+      <TableReviews activePage={activePage} itemsPerPage={itemsPerPage} />
+      <Pagination total={total} color="indigo" value={activePage} onChange={setPage} />
     </>
   );
 };
