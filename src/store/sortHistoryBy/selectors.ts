@@ -32,17 +32,17 @@ export const selectHistoryByFilter = createSelector(
   }
 );
 
-export const selectWorkplaceStats = createSelector(
-  [historyItems],
-  (items) => {
-    return items.reduce((acc, current) => {
-      let { place } = current;
+// export const selectWorkplaceStats = createSelector(
+//   [historyItems],
+//   (items) => {
+//     return items.reduce((acc, current) => {
+//       let { place } = current;
 
-      const oneRecordPersent = 100 / items.length
-      return { ...acc, [place.toLowerCase()]: (acc[place.toLowerCase()] || 0) + oneRecordPersent };
-    }, {});
-  }
-);
+//       const oneRecordPersent = 100 / items.length
+//       return { ...acc, [place.toLowerCase()]: (acc[place.toLowerCase()] || 0) + oneRecordPersent };
+//     }, {});
+//   }
+// );
 // export const selectWorkplaceStats = createSelector(//!
 //   [historyItems],
 //   (items) => {

@@ -15,7 +15,7 @@ import { TPType, substations, workSubject, workTitle, workplace } from '../../db
 import { useContext, useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { TNewRecord } from '../../types/TNewRecord';
-import { Context } from '../..';
+// import { Context } from '../..';
 import Spiner from '../Spiner/Spiner';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -23,7 +23,7 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 
 function HistoryForm() {
-  const { auth, firestore } = useContext(Context);
+  // const { auth, firestore } = useContext(Context);
   // const [user] = useAuthState(auth);
   const [searchValue, onSearchChange] = useState<string>('');
   const [focused, setFocused] = useState<boolean>(false);
@@ -48,23 +48,25 @@ function HistoryForm() {
 
   const sendData = async (data: TNewRecord, event: any) => {
     event.preventDefault();
+    console.log(data);
+    
 
-    await addDoc(collection(firestore, 'work-history'), {
-      place: data.place,
-      title: data.title + ' ' + data.subject,
-      comment: data.comment,
-      timeValue: serverTimestamp(),
-      substationType: data.substationType,
-      numberOfTP: data.numberOfTP,
-    }).then(() => {
-      notifications.show({
-        icon: <IconCheck />,
-        color: 'teal',
-        title: 'Success',
-        message: 'Your record is sucsessfully added!',
-        autoClose: 1500,
-      });
-    });
+    // await addDoc(collection(firestore, 'work-history'), {
+    //   place: data.place,
+    //   title: data.title + ' ' + data.subject,
+    //   comment: data.comment,
+    //   timeValue: serverTimestamp(),
+    //   substationType: data.substationType,
+    //   numberOfTP: data.numberOfTP,
+    // }).then(() => {
+    //   notifications.show({
+    //     icon: <IconCheck />,
+    //     color: 'teal',
+    //     title: 'Success',
+    //     message: 'Your record is sucsessfully added!',
+    //     autoClose: 1500,
+    //   });
+    // });
     form.reset();
   };
 

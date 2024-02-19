@@ -15,13 +15,14 @@ import {
   IconHomeStats,
 } from "@tabler/icons-react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Context } from "../..";
+// import { Context } from "../..";
 import { useStyles } from "./navbarSegmentedStyles";
 import { getPathNameURL } from "../../helpers/getPathNameURL";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { usePrevPropValue } from "../../hooks/usePrevPropValue";
+import { auth } from "../../FireBase/Config";
 
 type NewNavBarProps = {
   hidden: boolean;
@@ -45,7 +46,7 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
   const [active, setActive] = useState<string>("Home");
   const [isNewRecord, setIsNewRecord] = useState<boolean>(true);
 
-  const { auth, firestore } = useContext(Context);
+  // const { auth, firestore } = useContext(Context);
   const [user] = useAuthState(auth);
 
   const links = tabs[section].map((item, idx) =>
@@ -123,7 +124,7 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
       <Navbar.Section className={classes.footer}>
         <Link to={"/login"} className={classes.link} onClick={logout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
-          {user ? <span>Logout {auth.currentUser.displayName}</span> : ""}
+          {user ? <span>Logout {auth?.currentUser?.displayName}</span> : ""}
         </Link>
       </Navbar.Section>
     </Navbar>

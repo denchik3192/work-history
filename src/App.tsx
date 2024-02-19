@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MantineProvider, Flex, AppShell, Notification } from '@mantine/core';
 import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
 import { ColorSchemeProvider, ColorScheme } from '@mantine/core';
-import { Context } from '.';
+// import { Context } from '.';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import Spiner from './components/Spiner/Spiner';
 import AppShellComponent from './layout/AppShell';
@@ -21,6 +21,7 @@ import { addItems } from './store/history/actions';
 import AppRouter from './components/AppRouter';
 import { Notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
+import { auth } from './FireBase/Config';
 
 const App: React.FC = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
@@ -28,7 +29,7 @@ const App: React.FC = () => {
     const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
     setColorScheme(nextColorScheme);
   };
-  const { auth, firestore } = useContext(Context);
+  // const { auth, firestore } = useContext(Context);
   const [user, loading] = useAuthState(auth);
   // const dispatch = useAppDispatch();
   // const colRef = collection(firestore, 'work-history');

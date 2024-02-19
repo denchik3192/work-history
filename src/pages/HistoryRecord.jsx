@@ -6,6 +6,7 @@ import { Card, Text, Group, Badge } from "@mantine/core";
 import { selectItemById, selectRecordById } from "../store/history/selectors";
 import { RootState } from "../store/store";
 import { TNewRecord } from "../types/TNewRecord";
+import { convertDataTolocale } from "../helpers/convertDataToLacale";
 
 function HistoryRecord() {
   const { id } = useParams();
@@ -13,9 +14,7 @@ function HistoryRecord() {
     (state) => state.history.items.filter((el) => el.id === id?.slice(1))[0]
   );
   // const record = useSelector(selectItemById);
-  const date = new Date(record.timeValue.seconds * 1000)
-    .toLocaleString()
-    .replace(",", "/");
+  const date = convertDataTolocale(record.timeValue.seconds)
 
   if (!record) {
     return <Card>{"Can not find the record"} </Card>;
@@ -58,8 +57,6 @@ function HistoryRecord() {
           </Button>
         </Link>
         </Group>
-
-       
       </Card>
     </Center>
   );

@@ -1,16 +1,15 @@
 import { Paper, Button, Title } from '@mantine/core';
 import classes from './login.module.css';
 import { useContext } from 'react';
-import { Context } from '../..';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../FireBase/Config';
 
 export function Login() {
-  const { auth } = useContext(Context);
 
   const login = async () => {
     const provider = new GoogleAuthProvider();
     const user = await signInWithPopup(auth, provider);
-    console.log(user);
+    // console.log(user);
   };
 
   return (

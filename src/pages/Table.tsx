@@ -8,7 +8,7 @@ import {
   orderBy,
   query,
 } from "firebase/firestore";
-import { Context } from "..";
+// import { Context } from "..";
 import { useAppDispatch } from "../store/store";
 import { addItems } from "../store/history/actions";
 
@@ -17,33 +17,33 @@ const Table: React.FC = () => {
   const dispatch = useAppDispatch();
   const [activePage, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
-  const { firestore, auth, loading} = useContext(Context);
+  // const { firestore, auth, loading} = useContext(Context);
 
-  const firstQuery = query(
-    collection(firestore, "work-history"),
-    orderBy("timeValue", "asc")
-  );
+  // const firstQuery = query(
+  //   collection(firestore, "work-history"),
+  //   orderBy("timeValue", "asc")
+  // );
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
   }, [activePage]);
 
   async function fetchData() {
-    onSnapshot(firstQuery, (snapshot: any) => {
-      let historyCollection: any[] = [];
-      snapshot.docs.forEach((doc: any) => {
-        historyCollection.push({ ...doc.data(), id: doc.id });
-      });
-      const totalCount = snapshot?.size || 0;
-      setTotalPages(Math.ceil(totalCount / itemsPerPage));
-      const indexOfLastItem = activePage * itemsPerPage;
-      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-      const currentItems = historyCollection.slice(
-        indexOfFirstItem,
-        indexOfLastItem
-      );
-      dispatch(addItems(currentItems));
-    });
+    // onSnapshot(firstQuery, (snapshot: any) => {
+    //   let historyCollection: any[] = [];
+    //   snapshot.docs.forEach((doc: any) => {
+    //     historyCollection.push({ ...doc.data(), id: doc.id });
+    //   });
+    //   const totalCount = snapshot?.size || 0;
+    //   setTotalPages(Math.ceil(totalCount / itemsPerPage));
+    //   const indexOfLastItem = activePage * itemsPerPage;
+    //   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    //   const currentItems = historyCollection.slice(
+    //     indexOfFirstItem,
+    //     indexOfLastItem
+    //   );
+    //   dispatch(addItems(currentItems));
+    // });
   }
 
   console.log("table renderr");

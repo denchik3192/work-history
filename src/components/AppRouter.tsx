@@ -7,13 +7,13 @@ import HistoryRecord from "../pages/HistoryRecord";
 import Statistic from "../pages/Statistic";
 import Settings from "../pages/Settings";
 import { Login } from "./Login/Login";
-import { Context } from "..";
+// import { Context } from "..";
 import { useAuthState } from "react-firebase-hooks/auth";
-import AppShellComponent from "../layout/AppShell";
-import { NotFoundTitle } from "../pages/NotFoundTitle";
+
+import { auth } from "../FireBase/Config";
 
 function AppRouter() {
-  const { auth } = useContext(Context);
+  
   const [user] = useAuthState(auth);
   return (
     <>

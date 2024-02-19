@@ -7,7 +7,7 @@ import { addItems } from "../store/history/actions";
 import HistoryForm from "../components/HistoryForm/HistoryForm";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { collection, getDocs } from "firebase/firestore";
-import { Context } from "..";
+// import { Context } from "..";
 import Template from "../components/Template/Template";
 
 const Home: React.FC = () => {
