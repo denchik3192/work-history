@@ -1,68 +1,90 @@
-import { Table, ScrollArea, Button, CSSObject, MediaQuery, SegmentedControl } from '@mantine/core';
-import {} from '../../store/settings/actions';
-import { RootState, useAppDispatch } from '../../store/store';
-import { useSelector } from 'react-redux';
-import { useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { Context } from '../..';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { getFirestore, collection, getDocs, query } from 'firebase/firestore';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { TNewRecord } from '../../types/TNewRecord';
-import Spiner from '../Spiner/Spiner';
-import { doc, deleteDoc } from 'firebase/firestore';
-import { Cane, Viewfinder } from 'tabler-icons-react';
-import { notifications } from '@mantine/notifications';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import {
+  Table,
+  ScrollArea,
+  Button,
+  CSSObject,
+  MediaQuery,
+  SegmentedControl,
+} from "@mantine/core";
+import {} from "../../store/settings/actions";
+import { RootState, useAppDispatch } from "../../store/store";
+import { useSelector } from "react-redux";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { Context } from "../..";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { collection } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { TNewRecord } from "../../types/TNewRecord";
+import Spiner from "../Spiner/Spiner";
+import { doc, deleteDoc } from "firebase/firestore";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
+import { convertDataTolocale } from "../../helpers/convertDataToLacale";
+import { convertNumberRecord } from "../../helpers/convertNumberRecord";
 
-export function TableReviews({activePage}:{activePage:number}) {
+export function TableReviews({
+  activePage,
+  itemsPerPage,
+}: {
+  activePage: number;
+  itemsPerPage: number;
+}) {
   const { auth, firestore } = useContext(Context);
   const dispatch = useAppDispatch();
   const historyData = useSelector((state: RootState) => state.history.items);
-  const [value, loading, error] = useCollectionData(collection(firestore, 'work-history'));
-
-  console.log(activePage);
+  const [value, loading, error] = useCollectionData(
+    collection(firestore, "work-history")
+  );
 
   async function deleteRecord(id: string) {
-    await deleteDoc(doc(firestore, 'work-history', `${id}`)).then(() => {
+    await deleteDoc(doc(firestore, "work-history", `${id}`)).then(() => {
       notifications.show({
-        color: 'red',
+        color: "red",
         icon: <IconCheck />,
-        title: 'Seccess',
-        message: 'Your record was deleted!',
+        title: "Seccess",
+        message: "Your record was deleted!",
         autoClose: 1000,
       });
     });
   }
 
   const rows = historyData?.map((row: any, idx: number) => {
-    const date = new Date(row.timeValue.seconds * 1000).toLocaleString().replace(',', '/');
+    const date = convertDataTolocale(row);
+    const numberRecord = convertNumberRecord(idx, activePage, itemsPerPage) 
     return (
       //fix key
-
       <tr key={row.id}>
-        <td>{activePage == 1 ? idx + 1: String(activePage) + String(idx + 1)}</td>
+        <td>{numberRecord}</td>
         <td>{date}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
-        <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
-          <td style={{ maxWidth: '200px', overflow: 'hidden' }}>{row.comment}</td>
+        <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+          <td style={{ maxWidth: "200px", overflow: "hidden" }}>
+            {row.comment}
+          </td>
         </MediaQuery>
 
         <td>
           <Link to={`/history/:${row.id}`}>
-            <Button variant="light" radius="xs" style={{ height: '30px' }} mr={'xs'}>
+            <Button
+              variant="light"
+              radius="xs"
+              style={{ height: "30px" }}
+              mr={"xs"}
+            >
               View
             </Button>
           </Link>
 
           <Button
-            mt={'xs'}
+            mt={"xs"}
             variant="light"
             color="red"
             radius="xs"
             onClick={() => deleteRecord(row.id)}
-            style={{ height: '30px' }}>
+            style={{ height: "30px" }}
+          >
             Dele
           </Button>
         </td>
@@ -101,21 +123,22 @@ export function TableReviews({activePage}:{activePage:number}) {
           'Шклов',
         ]}
       /> */}
-      <ScrollArea h={'calc(100vh - 115px)'}>
+      <ScrollArea h={"calc(100vh - 115px)"}>
         <Table verticalSpacing="xs" fontSize="sm">
           <thead
             style={{
-              position: 'sticky',
-              top: '0',
-              background: '#1A1B1E',
-              zIndex: '10',
-            }}>
+              position: "sticky",
+              top: "0",
+              background: "#1A1B1E",
+              zIndex: "10",
+            }}
+          >
             <tr>
               <th>№</th>
               <th>Date/Time</th>
               <th>Place</th>
               <th>Title</th>
-              <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
+              <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
                 <th>Descr</th>
               </MediaQuery>
               <th>view/del</th>

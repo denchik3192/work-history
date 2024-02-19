@@ -50,7 +50,7 @@ const Table: React.FC = () => {
 
   return (
     <>
-      <TableReviews activePage={activePage}/>
+      <TableReviews activePage={activePage} itemsPerPage={itemsPerPage}/>
       <Pagination value={activePage} onChange={setPage} total={totalPages} />
     </>
   );

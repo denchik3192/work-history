@@ -9,8 +9,6 @@ import {
   selectDatesStats,
   selectNumberOfWorkplaceStats,
   selectTitlesStats,
-
-  //  selectWorkSubjectStats
 } from '../store/statistic/selectors';
 
 export function Statistic() {
