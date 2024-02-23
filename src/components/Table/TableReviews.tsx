@@ -1,4 +1,4 @@
-import { Table, ScrollArea, Button, MediaQuery } from '@mantine/core';
+import { Table, ScrollArea, Button, MediaQuery, Pagination } from '@mantine/core';
 import {} from '../../store/settings/actions';
 import { RootState, useAppDispatch } from '../../store/store';
 import { useSelector } from 'react-redux';
@@ -36,13 +36,13 @@ export function TableReviews({
   }
 
   const rows = historyData?.map((row: any, idx: number) => {
-    const date = convertDataTolocale(row);
+    // const date = convertDataTolocale(row);
     const numberRecord = convertNumberRecord(idx, activePage, itemsPerPage);
     return (
       //fix key
       <tr key={row.id}>
         <td>{numberRecord}</td>
-        <td>{date}</td>
+        <td>{null}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
         <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>

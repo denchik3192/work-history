@@ -12,6 +12,7 @@ export const store = configureStore({
     sortHistory: sortHistoryReducer,
     statistic: statisticReducer,
   },
+
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
