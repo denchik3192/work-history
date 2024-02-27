@@ -1,11 +1,6 @@
-import { Dispatch, useContext, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  useParams,
-} from "react-router-dom";
-import { Group, Indicator, Navbar, SegmentedControl } from "@mantine/core";
+import { Dispatch, useContext, useState } from 'react';
+import { BrowserRouter as Router, Route, Link, useParams } from 'react-router-dom';
+import { Group, Indicator, Navbar, SegmentedControl } from '@mantine/core';
 import {
   IconSettings,
   IconDatabaseImport,
@@ -13,16 +8,16 @@ import {
   IconHome,
   IconReport,
   IconHomeStats,
-} from "@tabler/icons-react";
-import { useAuthState } from "react-firebase-hooks/auth";
+} from '@tabler/icons-react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 // import { Context } from "../..";
-import { useStyles } from "./navbarSegmentedStyles";
-import { getPathNameURL } from "../../helpers/getPathNameURL";
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
-import { collection, doc, onSnapshot, query } from "firebase/firestore";
-import { usePrevPropValue } from "../../hooks/usePrevPropValue";
-import { auth } from "../../FireBase/Config";
+import { useStyles } from './navbarSegmentedStyles';
+import { getPathNameURL } from '../../helpers/getPathNameURL';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { collection, doc, onSnapshot, query } from 'firebase/firestore';
+import { usePrevPropValue } from '../../hooks/usePrevPropValue';
+import { auth } from '../../FireBase/Config';
 
 type NewNavBarProps = {
   hidden: boolean;
@@ -31,33 +26,27 @@ type NewNavBarProps = {
 
 const tabs = {
   history: [
-    { link: "/", label: "Home", icon: IconHome },
-    { link: "/history", label: "History", icon: IconDatabaseImport },
-    { link: "/statistic", label: "Statistic", icon: IconHomeStats },
-    { link: "/settings", label: "Settings", icon: IconSettings },
+    { link: '/', label: 'Home', icon: IconHome },
+    { link: '/history', label: 'History', icon: IconDatabaseImport },
+    { link: '/statistic', label: 'Statistic', icon: IconHomeStats },
+    { link: '/settings', label: 'Settings', icon: IconSettings },
   ],
-  todo: [{ link: "/todo", label: "ToDo", icon: IconReport }],
+  todo: [{ link: '/todo', label: 'ToDo', icon: IconReport }],
 };
 
 export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
   // const capitalizedURL = getPathNameURL()
   const { classes, cx } = useStyles();
-  const [section, setSection] = useState<"history" | "todo">("history");
-  const [active, setActive] = useState<string>("Home");
+  const [section, setSection] = useState<'history' | 'todo'>('history');
+  const [active, setActive] = useState<string>('Home');
   const [isNewRecord, setIsNewRecord] = useState<boolean>(true);
 
   // const { auth, firestore } = useContext(Context);
   const [user] = useAuthState(auth);
 
   const links = tabs[section].map((item, idx) =>
-    item.label === "History" && isNewRecord ? (
-      <Indicator
-        color="orange"
-        key={idx}
-        position="middle-end"
-        size={12}
-        withBorder
-      >
+    item.label === 'History' && isNewRecord ? (
+      <Indicator color="orange" key={idx} position="middle-end" size={12} withBorder>
         <Link
           className={cx(classes.link, {
             [classes.linkActive]: item.label === active,
@@ -67,8 +56,7 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
           onClick={() => {
             setOpened((o) => !o);
             setActive(item.label);
-          }}
-        >
+          }}>
           <item.icon className={classes.linkIcon} stroke={1.5} />
           <span>{item.label}</span>
         </Link>
@@ -83,12 +71,11 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
         onClick={() => {
           setOpened((o) => !o);
           setActive(item.label);
-        }}
-      >
+        }}>
         <item.icon className={classes.linkIcon} stroke={1.5} />
         <span>{item.label}</span>
       </Link>
-    )
+    ),
   );
 
   const logout = () => {
@@ -98,21 +85,16 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
   };
 
   return (
-    <Navbar
-      p="md"
-      hiddenBreakpoint="sm"
-      hidden={!hidden}
-      width={{ sm: 200, lg: 300 }}
-    >
+    <Navbar p="md" hiddenBreakpoint="sm" hidden={!hidden} width={{ sm: 200, lg: 300 }}>
       <Navbar.Section>
         <SegmentedControl
           value={section}
-          onChange={(value: "history" | "todo") => setSection(value)}
+          onChange={(value: 'history') => setSection(value)}
           transitionTimingFunction="ease"
           fullWidth
           data={[
-            { label: "History", value: "history" },
-            { label: "ToDo", value: "todo" },
+            { label: 'Dash', value: 'dash' },
+            // { label: 'ToDo', value: 'todo' },
           ]}
         />
       </Navbar.Section>
@@ -122,9 +104,9 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
       </Navbar.Section>
 
       <Navbar.Section className={classes.footer}>
-        <Link to={"/login"} className={classes.link} onClick={logout}>
+        <Link to={'/login'} className={classes.link} onClick={logout}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
-          {user ? <span>Logout {auth?.currentUser?.displayName}</span> : ""}
+          {user ? <span>Logout {auth?.currentUser?.displayName}</span> : ''}
         </Link>
       </Navbar.Section>
     </Navbar>

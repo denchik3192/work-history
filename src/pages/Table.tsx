@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { TableReviews } from '../components/Table/TableReviews';
 
 import {
@@ -19,6 +19,7 @@ import { selectNumberOfRecords } from '../store/statistic/selectors';
 import { IconArrowDown, IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 import { fetchItemsFromFireStore, loadMoreItems } from '../store/history/reducers';
 import { firestore } from '../FireBase/Config';
+import Spiner from '../components/Spiner/Spiner';
 
 const Table: React.FC = () => {
   const itemsPerPage = 10;
@@ -28,15 +29,14 @@ const Table: React.FC = () => {
   const [items, setItems] = useState<any[]>([]);
   const [lastVisible, setLastVisible] = useState<any>(null);
   const [isEmpty, setIsEmpty] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const itemsLingth = useSelector(selectNumberOfRecords);
   const colRef = collection(firestore, 'work-history');
   // const items = useSelector((state: RootState) => state.history.items);
-  console.log(items);
-  console.log(lastVisible);
-
   useEffect(() => {
     const fetchItemsFromFireStore = async () => {
-      const qery = query(colRef, orderBy('timeValue', 'asc'), limit(10));
+      setIsLoading(true);
+      const qery = query(colRef, orderBy('timeValue', 'desc'), limit(10));
       const documentSnapshots = await getDocs(qery);
       const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
       onSnapshot(qery, (snapshot: any) => {
@@ -47,16 +47,19 @@ const Table: React.FC = () => {
         setItems(historyCollection);
         setLastVisible(last);
       });
+      setIsLoading(false);
+      if (documentSnapshots.size === 0) {
+        setIsEmpty(true);
+      }
     };
     fetchItemsFromFireStore();
   }, []);
 
   const loadMore = async () => {
-    const qery = query(colRef, orderBy('timeValue', 'asc'), limit(10), startAfter(lastVisible));
+    setIsLoading(true);
+    const qery = query(colRef, orderBy('timeValue', 'desc'), limit(10), startAfter(lastVisible));
     const documentSnapshots = await getDocs(qery);
-    if (documentSnapshots.size === 0) {
-      setIsEmpty(true);
-    }
+
     const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
     onSnapshot(qery, (snapshot: any) => {
       let historyCollection: any[] = [];
@@ -65,19 +68,27 @@ const Table: React.FC = () => {
       });
       setItems((items) => [...items, ...historyCollection]);
       setLastVisible(last);
+      setIsLoading(false);
     });
+    if (documentSnapshots.size === 0) {
+      setIsEmpty(true);
+    }
   };
 
   console.log('table renderr');
+  if (isLoading) {
+    return <Spiner />;
+  }
 
   return (
     <>
-      <TableReviews activePage={activePage} itemsPerPage={itemsPerPage} items={items} />
+      <TableReviews items={items} />
       <Button
         fullWidth
         disabled={isEmpty}
         leftIcon={<IconArrowDown />}
-        color="orange"
+        color={isEmpty ? 'orange' : 'blue'}
+        variant="light"
         mr={'md'}
         onClick={loadMore}>
         {isEmpty ? 'All Records Loaded ' : 'More'}

@@ -8,7 +8,8 @@ export const historyItems = (state: RootState) =>
   state.statistic.allItems as Array<any>;
 
 export const selectDatesStats = createSelector([historyItems], (items) => {
-  const dates = items.map((d) =>
+  const sortedItems = [...items.sort((a: any, b: any) => a.timeValue - b.timeValue)]
+  const dates = sortedItems.map((d) =>
     new Date(d.timeValue.seconds * 1000).toLocaleString().slice(0, 10)
   );
   return `${dates[0]} - ${dates[items.length - 1]}`;
@@ -20,7 +21,7 @@ export const selectTitlesStats = createSelector([historyItems], (items) => {
       ...acc,
       [title.toLowerCase()]: (acc[title.toLowerCase()] || 0) + 1,
     });
-   
+
   }, {});
   return Object.entries(result)
 });
@@ -28,7 +29,7 @@ export const selectTitlesStats = createSelector([historyItems], (items) => {
 export const selectNumberOfWorkplaceStats = createSelector(
   [historyItems],
   (items) => {
-    const result=  items.reduce((acc, current) => {
+    const result = items.reduce((acc, current) => {
       let { place } = current;
       return {
         ...acc,
@@ -42,7 +43,7 @@ export const selectNumberOfWorkplaceStats = createSelector(
 export const selectWorkplaceStats = createSelector(
   [historyItems],
   (items) => {
-    const result =  items.reduce((acc, current) => {
+    const result = items.reduce((acc, current) => {
       let { place } = current;
 
       const oneRecordPersent = 100 / items.length

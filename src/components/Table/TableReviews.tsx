@@ -13,17 +13,11 @@ import { convertDataTolocale } from '../../helpers/convertDataToLacale';
 import { convertNumberRecord } from '../../helpers/convertNumberRecord';
 import { deleteItem } from '../../store/history/reducers';
 
-export function TableReviews({
-  activePage,
-  itemsPerPage,
-  items,
-}: {
-  activePage: number;
-  itemsPerPage: number;
-  items: any;
-}) {
+export function TableReviews({ items }: { items: any }) {
   const dispatch = useAppDispatch();
   const historyData = useSelector((state: RootState) => state.history.items);
+
+  console.log(items);
 
   async function deleteRecord(id: string) {
     dispatch(deleteItem(id));
@@ -38,13 +32,13 @@ export function TableReviews({
   }
 
   const rows = items?.map((row: any, idx: number) => {
-    // const date = convertDataTolocale(row);
-    const numberRecord = convertNumberRecord(idx, activePage, itemsPerPage);
+    const date = convertDataTolocale(row);
+    // const numberRecord = convertNumberRecord(idx, );
     return (
       //fix key
       <tr key={row.id}>
-        <td>{numberRecord}</td>
-        <td>{null}</td>
+        <td>{idx + 1}</td>
+        <td>{date}</td>
         <td>{row.place}</td>
         <td>{row.title}</td>
         <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>

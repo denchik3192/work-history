@@ -18,10 +18,6 @@ const App: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    // dispatch(fetchItemsFromFireStore());
-  }, []);
-
   // if (loading) {
   //   return <Spiner />;
   // }
