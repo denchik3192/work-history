@@ -16,9 +16,11 @@ import { deleteItem } from '../../store/history/reducers';
 export function TableReviews({
   activePage,
   itemsPerPage,
+  items,
 }: {
   activePage: number;
   itemsPerPage: number;
+  items: any;
 }) {
   const dispatch = useAppDispatch();
   const historyData = useSelector((state: RootState) => state.history.items);
@@ -35,7 +37,7 @@ export function TableReviews({
     });
   }
 
-  const rows = historyData?.map((row: any, idx: number) => {
+  const rows = items?.map((row: any, idx: number) => {
     // const date = convertDataTolocale(row);
     const numberRecord = convertNumberRecord(idx, activePage, itemsPerPage);
     return (

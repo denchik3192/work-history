@@ -25,45 +25,62 @@ const Table: React.FC = () => {
   const dispatch = useAppDispatch();
   const [activePage, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [items, setItems] = useState<any[]>([]);
+  const [lastVisible, setLastVisible] = useState<any>(null);
+  const [isEmpty, setIsEmpty] = useState<any>(null);
   const itemsLingth = useSelector(selectNumberOfRecords);
-  const items = useSelector((state: RootState) => state.history.items);
+  const colRef = collection(firestore, 'work-history');
+  // const items = useSelector((state: RootState) => state.history.items);
   console.log(items);
+  console.log(lastVisible);
 
-  // const getTotalPages = () => {
-  //   return itemsLingth / itemsPerPage;
-  // };
-
-  // const total = getTotalPages();
-
-  const handlePrevClick = async () => {
-    const firstVisible = items[0];
-    const colRef = collection(firestore, 'work-history');
-    const first = query(colRef, orderBy('timeValue', 'asc'), startAfter(firstVisible), limit(10));
-    const documentSnapshots = await getDocs(first);
-    const prevItems = documentSnapshots.docs.map((doc: any) => ({ ...doc.data(), id: doc.id }));
-    console.log(prevItems);
-
-    // Обновляем состояние Redux
-    // dispatch({ type: 'ADD_ITEMS', payload: prevItems });
-  };
+  useEffect(() => {
+    const fetchItemsFromFireStore = async () => {
+      const qery = query(colRef, orderBy('timeValue', 'asc'), limit(10));
+      const documentSnapshots = await getDocs(qery);
+      const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+      onSnapshot(qery, (snapshot: any) => {
+        let historyCollection: any[] = [];
+        snapshot.docs.forEach((doc: any) => {
+          historyCollection.push({ ...doc.data(), id: doc.id });
+        });
+        setItems(historyCollection);
+        setLastVisible(last);
+      });
+    };
+    fetchItemsFromFireStore();
+  }, []);
 
   const loadMore = async () => {
-    dispatch(loadMoreItems());
+    const qery = query(colRef, orderBy('timeValue', 'asc'), limit(10), startAfter(lastVisible));
+    const documentSnapshots = await getDocs(qery);
+    if (documentSnapshots.size === 0) {
+      setIsEmpty(true);
+    }
+    const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+    onSnapshot(qery, (snapshot: any) => {
+      let historyCollection: any[] = [];
+      snapshot.docs.forEach((doc: any) => {
+        historyCollection.push({ ...doc.data(), id: doc.id });
+      });
+      setItems((items) => [...items, ...historyCollection]);
+      setLastVisible(last);
+    });
   };
 
   console.log('table renderr');
 
   return (
     <>
-      <TableReviews activePage={activePage} itemsPerPage={itemsPerPage} />
+      <TableReviews activePage={activePage} itemsPerPage={itemsPerPage} items={items} />
       <Button
         fullWidth
-        variant="outline"
+        disabled={isEmpty}
         leftIcon={<IconArrowDown />}
         color="orange"
         mr={'md'}
         onClick={loadMore}>
-        More
+        {isEmpty ? 'All Records Loaded ' : 'More'}
       </Button>
     </>
   );
