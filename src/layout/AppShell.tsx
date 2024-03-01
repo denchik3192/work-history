@@ -2,17 +2,11 @@ import { useState } from 'react';
 import { AppShell, Header, Text, MediaQuery, Burger, useMantineTheme } from '@mantine/core';
 import { NavbarSegmented } from '../components/Sidebar/NavbarSegmented';
 import AppRouter from '../components/AppRouter';
-import { Link } from 'react-router-dom';
-import { Database, World } from 'tabler-icons-react';
-import { IconWorldCheck } from '@tabler/icons-react';
 
 export default function AppShellComponent() {
-  // const { auth } = useContext(Context);
-  // const [user] = useAuthState(auth);
   const theme = useMantineTheme();
-
   const [opened, setOpened] = useState<boolean>(false);
-  
+
   return (
     <AppShell
       styles={{

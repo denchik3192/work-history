@@ -20,6 +20,7 @@ export function Statistic() {
   const datesStats = useSelector(selectDatesStats);
   const titleStats = useSelector(selectTitlesStats);
   const numberofWorkplace = useSelector(selectNumberOfWorkplaceStats);
+  console.log(numberofWorkplace);
 
   useEffect(() => {
     dispatch(fetchItemsFromFireStore());
@@ -41,13 +42,15 @@ export function Statistic() {
     );
   });
 
-  const wpStats = workplaceStats.map((el: any, idx: number) => (
+  console.log(workplaceStats);
+
+  const wpStats = numberofWorkplace.map((el: any, idx: number) => (
     <Group key={idx} className={classes.workPlaceRow} ml={10}>
       <Group>
         <div className={classes.dot} style={{ backgroundColor: `${colors[idx]}` }} />
         <div>{el[0]}</div>
       </Group>
-      <Text style={{ fontWeight: '700' }}>{`${numberofWorkplace[idx]}`}</Text>
+      <Text style={{ fontWeight: '700' }}>{`${el[1]}`}</Text>
       {/* //remove numberofWorkplace[idx]*/}
     </Group>
   ));
@@ -72,35 +75,35 @@ export function Statistic() {
           color: colors[idx],
         }))}
       />
-      <Flex>
-        <Card
-          miw={'300px'}
-          mr={'md'}
-          shadow="sm"
-          padding="md"
-          radius="md"
-          withBorder
-          mb={15}
-          bg={'transparent'}>
-          <Title order={3} mb={15}>
-            - Workplace -
-          </Title>
-          {wpStats}
-        </Card>
-        <Card
-          shadow="sm"
-          padding="md"
-          maw={'400px'}
-          radius="md"
-          withBorder
-          mb={15}
-          bg={'transparent'}>
-          <Title order={3} mb={15}>
-            - Title -
-          </Title>
-          {titles}
-        </Card>
-      </Flex>
+
+      <Card
+        miw={'300px'}
+        maw={'500px'}
+        mr={'md'}
+        shadow="sm"
+        padding="md"
+        radius="md"
+        withBorder
+        mb={15}
+        bg={'transparent'}>
+        <Title order={3} mb={15}>
+          - Workplace -
+        </Title>
+        {wpStats}
+      </Card>
+      <Card
+        shadow="sm"
+        padding="md"
+        maw={'500px'}
+        radius="md"
+        withBorder
+        mb={15}
+        bg={'transparent'}>
+        <Title order={3} mb={15}>
+          - Title -
+        </Title>
+        {titles}
+      </Card>
     </div>
   );
 }

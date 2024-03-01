@@ -1,6 +1,5 @@
-import { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { TableReviews } from '../components/Table/TableReviews';
-
 import {
   collection,
   getDocs,
@@ -10,33 +9,28 @@ import {
   query,
   startAfter,
 } from 'firebase/firestore';
-// import { Context } from "..";
-import { RootState, useAppDispatch } from '../store/store';
-import { addItems } from '../store/history/actions';
-import { Button, Flex, Pagination } from '@mantine/core';
+import { useAppDispatch } from '../store/store';
+import { Box, Button, Text } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import { selectNumberOfRecords } from '../store/statistic/selectors';
-import { IconArrowDown, IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-import { fetchItemsFromFireStore, loadMoreItems } from '../store/history/reducers';
+import { IconArrowDown } from '@tabler/icons-react';
 import { firestore } from '../FireBase/Config';
 import Spiner from '../components/Spiner/Spiner';
 
 const Table: React.FC = () => {
   const itemsPerPage = 10;
   const dispatch = useAppDispatch();
-  const [activePage, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState(0);
   const [items, setItems] = useState<any[]>([]);
   const [lastVisible, setLastVisible] = useState<any>(null);
   const [isEmpty, setIsEmpty] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const itemsLingth = useSelector(selectNumberOfRecords);
+  const itemsLength = useSelector(selectNumberOfRecords);
   const colRef = collection(firestore, 'work-history');
-  // const items = useSelector((state: RootState) => state.history.items);
+
   useEffect(() => {
     const fetchItemsFromFireStore = async () => {
       setIsLoading(true);
-      const qery = query(colRef, orderBy('timeValue', 'desc'), limit(10));
+      const qery = query(colRef, orderBy('timeValue', 'desc'), limit(itemsPerPage));
       const documentSnapshots = await getDocs(qery);
       const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
       onSnapshot(qery, (snapshot: any) => {
@@ -46,53 +40,52 @@ const Table: React.FC = () => {
         });
         setItems(historyCollection);
         setLastVisible(last);
+        setIsLoading(false);
       });
-      setIsLoading(false);
-      if (documentSnapshots.size === 0) {
-        setIsEmpty(true);
-      }
     };
     fetchItemsFromFireStore();
   }, []);
 
   const loadMore = async () => {
     setIsLoading(true);
-    const qery = query(colRef, orderBy('timeValue', 'desc'), limit(10), startAfter(lastVisible));
+    const qery = query(
+      colRef,
+      orderBy('timeValue', 'desc'),
+      limit(itemsPerPage),
+      startAfter(lastVisible),
+    );
     const documentSnapshots = await getDocs(qery);
-
     const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
+
     onSnapshot(qery, (snapshot: any) => {
       let historyCollection: any[] = [];
       snapshot.docs.forEach((doc: any) => {
         historyCollection.push({ ...doc.data(), id: doc.id });
       });
       setItems((items) => [...items, ...historyCollection]);
-      setLastVisible(last);
       setIsLoading(false);
+      setLastVisible(last);
     });
-    if (documentSnapshots.size === 0) {
-      setIsEmpty(true);
-    }
   };
-
-  console.log('table renderr');
-  if (isLoading) {
-    return <Spiner />;
-  }
 
   return (
     <>
-      <TableReviews items={items} />
-      <Button
-        fullWidth
-        disabled={isEmpty}
-        leftIcon={<IconArrowDown />}
-        color={isEmpty ? 'orange' : 'blue'}
-        variant="light"
-        mr={'md'}
-        onClick={loadMore}>
-        {isEmpty ? 'All Records Loaded ' : 'More'}
-      </Button>
+      {items.length === 0 ? (
+        <Text>No Records</Text>
+      ) : (
+        <>
+          {isLoading ? <Spiner /> : <TableReviews items={items} />}
+          <Button
+            fullWidth
+            disabled={isEmpty}
+            leftIcon={<IconArrowDown />}
+            variant="light"
+            mr={'md'}
+            onClick={loadMore}>
+            {isEmpty ? 'All Records Loaded ' : 'More'} ( {itemsLength - items.length} )
+          </Button>
+        </>
+      )}
     </>
   );
 };

@@ -1,5 +1,4 @@
 import { useForm, isNotEmpty } from '@mantine/form';
-import { serverTimestamp, addDoc, doc, collection } from 'firebase/firestore';
 import {
   Button,
   Flex,
@@ -9,25 +8,19 @@ import {
   Radio,
   TextInput,
   MediaQuery,
-  Notification,
 } from '@mantine/core';
 import { TPType, substations, workSubject, workTitle, workplace } from '../../db/db';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { TNewRecord } from '../../types/TNewRecord';
-// import { Context } from '../..';
 import Spiner from '../Spiner/Spiner';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { notifications } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons-react';
 import { addItem } from '../../store/history/reducers';
 
 function HistoryForm() {
   const dispatch = useAppDispatch();
-  // const { auth, firestore } = useContext(Context);
-  // const [user] = useAuthState(auth);
-  const [searchValue, onSearchChange] = useState<string>('');
   const [focused, setFocused] = useState<boolean>(false);
   const [loading] = useCollectionData();
 
@@ -48,7 +41,7 @@ function HistoryForm() {
     },
   });
 
-  const sendData = async (data: TNewRecord, event: any) => {
+  const sendData = async (data: TNewRecord, event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(addItem(data));
     notifications.show({
@@ -103,21 +96,6 @@ function HistoryForm() {
             data={workSubject}
             placeholder="Pick worksubject"
             clearable
-            transitionProps={{
-              transition: 'pop-top-left',
-              duration: 100,
-              timingFunction: 'ease',
-            }}
-          />
-
-          <Select
-            label="Select substation"
-            searchValue={searchValue}
-            onSearchChange={onSearchChange}
-            placeholder="Pick one"
-            searchable
-            nothingFound="No options"
-            data={substations}
             transitionProps={{
               transition: 'pop-top-left',
               duration: 100,

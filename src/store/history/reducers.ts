@@ -56,8 +56,6 @@ export const loadMoreItems = () => async (dispatch: any, getState: any) => {
   const colRef = collection(firestore, 'work-history');
   const qery = query(colRef, orderBy('timeValue', 'asc'), limit(10), startAfter(10));
   const documentSnapshots = await getDocs(qery);
-  // const last = documentSnapshots.docs[documentSnapshots.docs.length - 1];
-
 
   onSnapshot(qery, (snapshot: any) => {
     let historyCollection: any[] = [];
@@ -78,10 +76,8 @@ export const addItem = (data: TNewRecord) => async (dispatch: any) => {
   await addDoc(collection(firestore, 'work-history'), {
     place: data.place,
     title: data.title + ' ' + data.subject,
-    comment: data.comment,
+    comment: data.comment + ' ' + data.substationType + '-' + data.numberOfTP,
     timeValue: serverTimestamp(),
-    substationType: data.substationType,
-    numberOfTP: data.numberOfTP,
   })
 };
 

@@ -1,22 +1,9 @@
-import { Dispatch, useContext, useState } from 'react';
-import { BrowserRouter as Router, Route, Link, useParams } from 'react-router-dom';
-import { Group, Indicator, Navbar, SegmentedControl } from '@mantine/core';
-import {
-  IconSettings,
-  IconDatabaseImport,
-  IconLogout,
-  IconHome,
-  IconReport,
-  IconHomeStats,
-} from '@tabler/icons-react';
+import { Dispatch, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Indicator, Navbar, SegmentedControl } from '@mantine/core';
+import { IconDatabaseImport, IconLogout, IconHome, IconHomeStats } from '@tabler/icons-react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-// import { Context } from "../..";
 import { useStyles } from './navbarSegmentedStyles';
-import { getPathNameURL } from '../../helpers/getPathNameURL';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-import { collection, doc, onSnapshot, query } from 'firebase/firestore';
-import { usePrevPropValue } from '../../hooks/usePrevPropValue';
 import { auth } from '../../FireBase/Config';
 
 type NewNavBarProps = {
@@ -29,20 +16,27 @@ const tabs = {
     { link: '/', label: 'Home', icon: IconHome },
     { link: '/history', label: 'History', icon: IconDatabaseImport },
     { link: '/statistic', label: 'Statistic', icon: IconHomeStats },
-    { link: '/settings', label: 'Settings', icon: IconSettings },
   ],
-  todo: [{ link: '/todo', label: 'ToDo', icon: IconReport }],
 };
 
 export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
-  // const capitalizedURL = getPathNameURL()
   const { classes, cx } = useStyles();
-  const [section, setSection] = useState<'history' | 'todo'>('history');
-  const [active, setActive] = useState<string>('Home');
+  const [section, setSection] = useState<'history'>('history');
+  const [active, setActive] = useState<string>('');
   const [isNewRecord, setIsNewRecord] = useState<boolean>(true);
-
-  // const { auth, firestore } = useContext(Context);
   const [user] = useAuthState(auth);
+
+  useEffect(() => {
+    const currentUrl = window.location.pathname;
+    const getNavURL = (currentUrl: string) => {
+      if (currentUrl === '/') {
+        return setActive('Home');
+      } else {
+        return setActive(currentUrl.charAt(1).toUpperCase() + currentUrl.slice(2));
+      }
+    };
+    getNavURL(currentUrl);
+  }, []);
 
   const links = tabs[section].map((item, idx) =>
     item.label === 'History' && isNewRecord ? (
@@ -80,7 +74,7 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
 
   const logout = () => {
     setOpened((o) => !o);
-    // event.preventDefault();
+    // e.preventDefault();
     auth.signOut();
   };
 
@@ -92,10 +86,7 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
           onChange={(value: 'history') => setSection(value)}
           transitionTimingFunction="ease"
           fullWidth
-          data={[
-            { label: 'Dash', value: 'dash' },
-            // { label: 'ToDo', value: 'todo' },
-          ]}
+          data={[{ label: 'Dash', value: 'dash' }]}
         />
       </Navbar.Section>
 

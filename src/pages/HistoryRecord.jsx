@@ -1,23 +1,39 @@
 import { Button, Center, Image, Title } from '@mantine/core';
-import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { Card, Text, Group, Badge } from '@mantine/core';
-// import classes from "./HistoryRecord.module.css";
-import { selectItemById, selectRecordById } from '../store/history/selectors';
-import { RootState } from '../store/store';
-import { TNewRecord } from '../types/TNewRecord';
 import { convertDataTolocale } from '../helpers/convertDataToLacale';
+import { useEffect, useState } from 'react';
+import { firestore } from '../FireBase/Config';
+import { doc, getDoc } from 'firebase/firestore';
+import Spiner from '../components/Spiner/Spiner';
 
 function HistoryRecord() {
   const { id } = useParams();
-  const record = useSelector(
-    (state) => state.history.items.filter((el) => el.id === id?.slice(1))[0],
-  );
-  // const record = useSelector(selectItemById);
-  const date = convertDataTolocale(record);
-  if (!record) {
-    return <Card>{'Can not find the record'} </Card>;
+  const [record, setRecord] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(record);
+
+  useEffect(() => {
+    const fetchDocumentById = async (documentId) => {
+      setIsLoading(true);
+      const newID = documentId.slice(1);
+      const docRef = doc(firestore, 'work-history', newID);
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        setRecord(docSnapshot.data());
+        console.log('Document data:', docSnapshot.data());
+      } else {
+        console.log('Document not found');
+      }
+      setIsLoading(false);
+    };
+    fetchDocumentById(id);
+  }, []);
+
+  if (isLoading) {
+    return <Spiner></Spiner>;
   }
+  const date = convertDataTolocale(record?.timeValue);
   return (
     <Center w={800}>
       <Card shadow="sm" padding="lg" radius="md" withBorder w={'100%'}>
@@ -32,17 +48,17 @@ function HistoryRecord() {
         <Group justify="space-between" mt="md" mb="xs">
           <Badge>{date}</Badge>
           <Text fw={500} style={{ textTransform: 'uppercase' }}>
-            {record.place}{' '}
+            {record?.place}{' '}
           </Text>
         </Group>
         <Group justify="space-between" mt="md" mb="xs">
           <Text fw={600} style={{ textTransform: 'uppercase' }}>
-            {record.title} {record.subject}
+            {record?.title} {record?.subject}
           </Text>
         </Group>
 
         <Text size="m" c="dimmed">
-          {record.comment}
+          {record?.comment}
         </Text>
 
         <Group justify="space-between" mt="md" mb="xs">
@@ -59,6 +75,7 @@ function HistoryRecord() {
         </Group>
       </Card>
     </Center>
+    // <div></div>
   );
 }
 

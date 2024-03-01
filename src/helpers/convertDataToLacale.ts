@@ -1,3 +1,7 @@
-export const convertDataTolocale = (row: any) => {
-  return new Date(row.timeValue.seconds * 1000).toLocaleString().replace(",", "/");
+export interface Iprops {
+  seconds: number;
+}
+
+export const convertDataTolocale = (timeValue: Iprops) => {
+  return new Date(timeValue?.seconds * 1000).toLocaleString().replace(",", "/");
 };

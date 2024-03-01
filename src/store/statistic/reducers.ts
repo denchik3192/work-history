@@ -34,7 +34,7 @@ export default function statisticReducer(state = initialState, action: any) {
     case ADD_ALL_ITEMS: {
       return {
         ...state,
-        allItems: action.payload,
+        allItems: [...action.payload],
       };
     }
     default:
@@ -43,8 +43,12 @@ export default function statisticReducer(state = initialState, action: any) {
 }
 
 export const fetchItemsFromFireStore = () => async (dispatch: any) => {
-
-  const querySnapshot = await getDocs(collection(firestore, 'work-history'));
-  const items = querySnapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-  dispatch(addAllItems(items));
+  const colRef = collection(firestore, 'work-history')
+  onSnapshot(colRef, (snapshot: any) => {
+    let historyCollection: any[] = [];
+    snapshot.docs.forEach((doc: any) => {
+      historyCollection.push({ ...doc.data(), id: doc.id });
+    });
+    dispatch(addAllItems(historyCollection));
+  })
 };

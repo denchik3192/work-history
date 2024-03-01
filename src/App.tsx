@@ -7,7 +7,9 @@ import Spiner from './components/Spiner/Spiner';
 import AppShellComponent from './layout/AppShell';
 import { useAppDispatch } from './store/store';
 import { Notifications } from '@mantine/notifications';
-import { fetchItemsFromFireStore } from './store/history/reducers';
+import { fetchItemsFromFireStore } from './store/statistic/reducers';
+import AppRouter from './components/AppRouter';
+// import { fetchItemsFromFireStore } from './store/st/reducers';
 
 const App: React.FC = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
@@ -18,9 +20,9 @@ const App: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  // if (loading) {
-  //   return <Spiner />;
-  // }
+  useEffect(() => {
+    dispatch(fetchItemsFromFireStore());
+  }, []);
 
   console.log('app render');
 
