@@ -1,4 +1,4 @@
-import { Group, Paper, Text, Progress, Title, Badge, Card, Flex, Pagination } from '@mantine/core';
+import { Group, Text, Progress, Title, Badge, Card } from '@mantine/core';
 import classes from './Statistic.module.css';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../store/store';
@@ -20,11 +20,10 @@ export function Statistic() {
   const datesStats = useSelector(selectDatesStats);
   const titleStats = useSelector(selectTitlesStats);
   const numberofWorkplace = useSelector(selectNumberOfWorkplaceStats);
-  console.log(numberofWorkplace);
 
   useEffect(() => {
     dispatch(fetchItemsFromFireStore());
-  }, []);
+  }, [dispatch]);
 
   const titles = titleStats.map((stat: any, idx: number) => {
     const titleName = stat[0];
@@ -42,8 +41,6 @@ export function Statistic() {
     );
   });
 
-  console.log(workplaceStats);
-
   const wpStats = numberofWorkplace.map((el: any, idx: number) => (
     <Group key={idx} className={classes.workPlaceRow} ml={10}>
       <Group>
@@ -51,7 +48,6 @@ export function Statistic() {
         <div>{el[0]}</div>
       </Group>
       <Text style={{ fontWeight: '700' }}>{`${el[1]}`}</Text>
-      {/* //remove numberofWorkplace[idx]*/}
     </Group>
   ));
 

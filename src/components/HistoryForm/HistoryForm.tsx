@@ -9,7 +9,7 @@ import {
   TextInput,
   MediaQuery,
 } from '@mantine/core';
-import { TPType, substations, workSubject, workTitle, workplace } from '../../db/db';
+import { TPType, workSubject, workTitle, workplace } from '../../db/db';
 import { useState } from 'react';
 import { useAppDispatch } from '../../store/store';
 import { TNewRecord } from '../../types/TNewRecord';

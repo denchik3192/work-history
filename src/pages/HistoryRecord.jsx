@@ -1,4 +1,4 @@
-import { Button, Center, Image, Title } from '@mantine/core';
+import { Button, Center, Image } from '@mantine/core';
 import { Link, useParams } from 'react-router-dom';
 import { Card, Text, Group, Badge } from '@mantine/core';
 import { convertDataTolocale } from '../helpers/convertDataToLacale';
@@ -28,7 +28,7 @@ function HistoryRecord() {
       setIsLoading(false);
     };
     fetchDocumentById(id);
-  }, []);
+  }, [id]);
 
   if (isLoading) {
     return <Spiner></Spiner>;

@@ -1,15 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { MantineProvider, Flex, AppShell, Notification } from '@mantine/core';
-import { NavbarSegmented } from './components/Sidebar/NavbarSegmented';
+import React, { useEffect, useState } from 'react';
+import { MantineProvider } from '@mantine/core';
 import { ColorSchemeProvider, ColorScheme } from '@mantine/core';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import Spiner from './components/Spiner/Spiner';
 import AppShellComponent from './layout/AppShell';
 import { useAppDispatch } from './store/store';
 import { Notifications } from '@mantine/notifications';
 import { fetchItemsFromFireStore } from './store/statistic/reducers';
-import AppRouter from './components/AppRouter';
-// import { fetchItemsFromFireStore } from './store/st/reducers';
 
 const App: React.FC = () => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('dark');
@@ -22,9 +17,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchItemsFromFireStore());
-  }, []);
-
-  console.log('app render');
+  }, [dispatch]);
 
   return (
     <div className="App">

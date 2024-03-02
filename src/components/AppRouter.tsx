@@ -8,7 +8,6 @@ import { Login } from './Login/Login';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../FireBase/Config';
 import { NotFoundTitle } from '../pages/NotFoundTitle';
-import { useEffect, useState } from 'react';
 import Spiner from './Spiner/Spiner';
 
 function AppRouter() {
@@ -32,6 +31,7 @@ function AppRouter() {
       ) : (
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="*" element={<Login />} />
         </Routes>
       )}
     </>

@@ -1,4 +1,4 @@
-import { FILTER_BY_SUBSTATION, SORT_BY } from "./constants";
+import { SORT_BY } from "./constants";
 
 const initialState: any = {
   sortBy: 'date',
@@ -13,12 +13,7 @@ export default function sortHistoryReducer(state = initialState, action: any) {
         sortBy: action.payload,
       };
     }
-    // case FILTER_BY_SUBSTATION: {
-    //   return {
-    //     ...state,
-    //     activeSubstation: action.payload,
-    //   };
-    // }
+
     default:
       return state;
   }

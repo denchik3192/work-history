@@ -9,11 +9,13 @@ export function Login() {
   const login = async () => {
     const provider = new GoogleAuthProvider();
     const user = await signInWithPopup(auth, provider);
+    console.log(user);
+
     return navigate('/');
   };
 
   return (
-    <div style={{ position: 'absolute', height: window.innerHeight, width: '100%' }}>
+    <div style={{ height: window.innerHeight }}>
       <Paper className={classes.form} radius={0} p={30}>
         <Title order={2} className={classes.title} ta="center" mt="md" mb={50}>
           Welcome to Work History App!

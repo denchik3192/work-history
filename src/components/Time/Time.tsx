@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Title } from '@mantine/core';
 
 function Time() {
   const [time, setTime] = useState<string>(new Date().toLocaleTimeString().slice(0, 5));
-  const [date, setDate] = useState<string>(new Date().toLocaleDateString());
 
   useEffect(() => {
     const interval = setInterval(() => {
       const newTime = new Date().toLocaleTimeString().slice(0, 5);
-      const newDate = new Date().toLocaleDateString();
       setTime(newTime);
-      setDate(newDate);
     }, 1000);
     return () => clearInterval(interval);
   }, []);

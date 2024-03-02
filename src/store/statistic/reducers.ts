@@ -1,18 +1,11 @@
 import {
   collection,
-  getDocs,
-  limit,
   onSnapshot,
-  orderBy,
-  query,
 } from "firebase/firestore";
-import { TNewRecord } from "./../../types/TNewRecord";
 import { ADD_ALL_ITEMS } from "./constants";
 import { addAllItems } from "./actions";
 import { firestore } from "../../FireBase/Config";
-// import { addItems } from "./actions";
 
-// type TActions = typeof addNewRecord;
 export enum statusProperty {
   LOADING = 'loading',
   SUCSESS = 'sucsess',

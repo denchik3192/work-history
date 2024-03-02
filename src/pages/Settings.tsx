@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, ColorInput } from '@mantine/core';
 
 function Settings() {

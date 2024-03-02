@@ -1,14 +1,13 @@
 import React from 'react';
-import { Title, Group, Indicator, Flex, MediaQuery, Card } from '@mantine/core';
+import { Title, Group, Indicator, Flex, MediaQuery } from '@mantine/core';
 import { Calendar } from '@mantine/dates';
 import Time from '../components/Time/Time';
 import HistoryForm from '../components/HistoryForm/HistoryForm';
 
 const Home: React.FC = () => {
-  console.log('home render');
   return (
     <>
-      <Group position="apart" pb={'sm'} style={{ fontStyle: 'italic' }}>
+      <Group position="apart" pb={'sm'} style={{ fontStyle: 'italic' }} maw={580}>
         <Title order={2} style={{ alignSelf: 'start', textTransform: 'uppercase' }}>
           New record
         </Title>

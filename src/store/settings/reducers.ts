@@ -1,16 +1,5 @@
 import { SET_SORT_BY } from './constants';
 
-// type TSettings = {
-//   id: Number,
-//   title: String,
-//   active: Boolean,
-
-// }
-// type TDashSettings = {
-//   sortBy: String
-
-// }
-
 const initialState: any = {
   homeSettings: [
     { id: 0, title: 'font', active: true },

@@ -1,5 +1,4 @@
 import { Table, ScrollArea, Button, MediaQuery } from '@mantine/core';
-import {} from '../../store/settings/actions';
 import { useAppDispatch } from '../../store/store';
 import { Link } from 'react-router-dom';
 import { notifications } from '@mantine/notifications';
@@ -7,17 +6,19 @@ import { IconCheck } from '@tabler/icons-react';
 import { convertDataTolocale } from '../../helpers/convertDataToLacale';
 import { deleteItem } from '../../store/history/reducers';
 import { useLayoutEffect, useRef } from 'react';
-import { TNewRecord } from '../../types/TNewRecord';
+import { useSelector } from 'react-redux';
+import { selectItems } from '../../store/history/selectors';
 
-export function TableReviews({ items }: { items: TNewRecord[] }) {
+export function TableReviews() {
   const dispatch = useAppDispatch();
+  const items = useSelector(selectItems);
   const lastRowRef = useRef<HTMLTableRowElement | null>(null);
 
   useLayoutEffect(() => {
     if (lastRowRef.current) {
       lastRowRef.current.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [items]);
+  }, []);
 
   async function deleteRecord(id: string) {
     dispatch(deleteItem(id));
@@ -37,7 +38,7 @@ export function TableReviews({ items }: { items: TNewRecord[] }) {
       <tr key={row.id} ref={idx === items.length - 1 ? lastRowRef : null}>
         <td>{idx + 1}</td>
         <td>{date}</td>
-        <td>{row.place}</td>
+        <td>{row.place.toUpperCase()}</td>
         <td>{row.title}</td>
         <MediaQuery smallerThan={'sm'} styles={{ display: 'none' }}>
           <td style={{ maxWidth: '200px', overflow: 'hidden' }}>{row.comment}</td>
