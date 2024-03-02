@@ -23,7 +23,7 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
   const { classes, cx } = useStyles();
   const [section, setSection] = useState<'history'>('history');
   const [active, setActive] = useState<string>('');
-  const [isNewRecord, setIsNewRecord] = useState<boolean>(true);
+  const [isNewRecord] = useState<boolean>(true);
   const [user] = useAuthState(auth);
 
   useEffect(() => {
