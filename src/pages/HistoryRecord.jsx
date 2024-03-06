@@ -11,7 +11,6 @@ function HistoryRecord() {
   const { id } = useParams();
   const [record, setRecord] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  console.log(record);
 
   useEffect(() => {
     const fetchDocumentById = async (documentId) => {
@@ -21,7 +20,6 @@ function HistoryRecord() {
       const docSnapshot = await getDoc(docRef);
       if (docSnapshot.exists()) {
         setRecord(docSnapshot.data());
-        console.log('Document data:', docSnapshot.data());
       } else {
         console.log('Document not found');
       }
@@ -35,7 +33,7 @@ function HistoryRecord() {
   }
   const date = convertDataTolocale(record?.timeValue);
   return (
-    <Center w={800}>
+    <Center maw={800}>
       <Card shadow="sm" padding="lg" radius="md" withBorder w={'100%'}>
         <Card.Section component="a" href="https://mantine.dev/">
           <Image
@@ -75,7 +73,6 @@ function HistoryRecord() {
         </Group>
       </Card>
     </Center>
-    // <div></div>
   );
 }
 

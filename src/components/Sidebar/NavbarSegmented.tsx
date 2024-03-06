@@ -1,6 +1,6 @@
 import { Dispatch, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Indicator, Navbar, SegmentedControl } from '@mantine/core';
+import { Indicator, Navbar } from '@mantine/core';
 import { IconDatabaseImport, IconLogout, IconHome, IconHomeStats } from '@tabler/icons-react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useStyles } from './navbarSegmentedStyles';
@@ -21,7 +21,7 @@ const tabs = {
 
 export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
   const { classes, cx } = useStyles();
-  const [section, setSection] = useState<'history'>('history');
+  const [section] = useState<'history'>('history');
   const [active, setActive] = useState<string>('');
   const [isNewRecord] = useState<boolean>(true);
   const [user] = useAuthState(auth);
@@ -74,22 +74,11 @@ export function NavbarSegmented({ hidden, setOpened }: NewNavBarProps) {
 
   const logout = () => {
     setOpened((o) => !o);
-    // e.preventDefault();
     auth.signOut();
   };
 
   return (
     <Navbar p="md" hiddenBreakpoint="sm" hidden={!hidden} width={{ sm: 200, lg: 300 }}>
-      <Navbar.Section>
-        <SegmentedControl
-          value={section}
-          onChange={(value: 'history') => setSection(value)}
-          transitionTimingFunction="ease"
-          fullWidth
-          data={[{ label: 'Dash', value: 'dash' }]}
-        />
-      </Navbar.Section>
-
       <Navbar.Section grow mt="xl">
         {links}
       </Navbar.Section>

@@ -44,7 +44,11 @@ export function Statistic() {
   const wpStats = numberofWorkplace.map((el: any, idx: number) => (
     <Group key={idx} className={classes.workPlaceRow} ml={10}>
       <Group>
-        <div className={classes.dot} style={{ backgroundColor: `${colors[idx]}` }} />
+        <div
+          key={Math.random()}
+          className={classes.dot}
+          style={{ backgroundColor: `${colors[idx]}` }}
+        />
         <div>{el[0]}</div>
       </Group>
       <Text style={{ fontWeight: '700' }}>{`${el[1]}`}</Text>
